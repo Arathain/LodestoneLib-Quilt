@@ -1,5 +1,4 @@
 package com.sammy.ortus.systems.rendering.particle.screen;
-
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleEffect;
 import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
 import net.minecraft.item.ItemStack;

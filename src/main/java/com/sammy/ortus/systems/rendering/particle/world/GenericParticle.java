@@ -1,12 +1,15 @@
 package com.sammy.ortus.systems.rendering.particle.world;
 
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.sammy.ortus.config.ClientConfig;
+import com.sammy.ortus.handlers.RenderHandler;
+import com.sammy.ortus.setup.OrtusRenderLayers;
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleEffect;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
-import net.minecraft.client.gui.hud.BackgroundHelper;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.util.ColorUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 
@@ -55,9 +58,9 @@ public class GenericParticle extends SpriteBillboardParticle {
         float s = MathHelper.lerp(colorCoeff, hsv1[1], hsv2[1]);
         float v = MathHelper.lerp(colorCoeff, hsv1[2], hsv2[2]);
         int packed = Color.HSBtoRGB(h, s, v);
-        float r = BackgroundHelper.ColorMixer.getRed(packed) / 255.0f;
-        float g = BackgroundHelper.ColorMixer.getGreen(packed) / 255.0f;
-        float b = BackgroundHelper.ColorMixer.getBlue(packed) / 255.0f;
+        float r = ColorUtil.ARGB32.getRed(packed) / 255.0f;
+        float g = ColorUtil.ARGB32.getGreen(packed) / 255.0f;
+        float b = ColorUtil.ARGB32.getBlue(packed) / 255.0f;
         setColor(r, g, b);
     }
 
@@ -113,7 +116,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 
     @Override
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        super.buildGeometry(/*ClientConfig.DELAYED_PARTICLE_RENDERING ? RenderHandler.DELAYED_RENDER.getBuffer(RenderLayers.ADDITIVE_PARTICLE) :*/ vertexConsumer, camera, tickDelta);
+        super.buildGeometry(ClientConfig.DELAYED_RENDERING ? RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.ADDITIVE_PARTICLE) : vertexConsumer, camera, tickDelta);
     }
     @Override
     public ParticleTextureSheet getType() {

@@ -20,7 +20,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.sammy.ortus.OrtusLib"
+			"init": "com.sammy.ortus.OrtusLib",
+			"client_init": "com.sammy.ortus.OrtusLibClient"
 		},
 		"depends": [
 			{

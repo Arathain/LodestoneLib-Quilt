@@ -1,11 +1,11 @@
 package com.sammy.ortus.setup;
 
+import com.mojang.blaze3d.vertex.VertexFormats;
 import com.mojang.datafixers.util.Pair;
 import com.sammy.ortus.OrtusLib;
 import com.sammy.ortus.systems.rendering.ExtendedShader;
 import com.sammy.ortus.systems.rendering.ShaderHolder;
-import net.minecraft.client.render.Shader;
-import net.minecraft.client.render.VertexFormats;
+import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.resource.ResourceManager;
 
 import java.io.IOException;
@@ -14,17 +14,22 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class OrtusShaders {
-	public static List<Pair<Shader, Consumer<Shader>>> shaderList;
+	public static List<Pair<ShaderProgram, Consumer<ShaderProgram>>> shaderList;
 	public static ShaderHolder ADDITIVE_TEXTURE = new ShaderHolder();
 	public static ShaderHolder ADDITIVE_PARTICLE = new ShaderHolder();
 
+	public static ShaderHolder MASKED_TEXTURE = new ShaderHolder();
 	public static ShaderHolder DISTORTED_TEXTURE = new ShaderHolder("Speed", "TimeOffset", "Intensity", "XFrequency", "YFrequency", "UVCoordinates");
 	public static ShaderHolder METALLIC_NOISE = new ShaderHolder("Intensity", "Size", "Speed", "Brightness");
 	public static ShaderHolder RADIAL_NOISE = new ShaderHolder("Speed", "XFrequency", "YFrequency", "Intensity", "ScatterPower", "ScatterFrequency", "DistanceFalloff");
 	public static ShaderHolder RADIAL_SCATTER_NOISE = new ShaderHolder("Speed", "XFrequency", "YFrequency", "Intensity", "ScatterPower", "ScatterFrequency", "DistanceFalloff");
 
+	public static ShaderHolder VERTEX_DISTORTION = new ShaderHolder();
+	//public static ShaderHolder BLOOM = new ShaderHolder();
+
 	public static ShaderHolder SCROLLING_TEXTURE = new ShaderHolder("Speed");
 	public static ShaderHolder TRIANGLE_TEXTURE = new ShaderHolder();
+	public static ShaderHolder COLOR_GRADIENT_TEXTURE = new ShaderHolder("DarkColor");
 	public static ShaderHolder SCROLLING_TRIANGLE_TEXTURE = new ShaderHolder("Speed");
 
 	public static void init(ResourceManager manager) throws IOException {
@@ -42,9 +47,9 @@ public class OrtusShaders {
 		registerShader(ExtendedShader.createShaderInstance(SCROLLING_TRIANGLE_TEXTURE, manager, OrtusLib.id("vfx/scrolling_triangle_texture"), VertexFormats.POSITION_COLOR_TEXTURE_LIGHT));
 	}
 	public static void registerShader(ExtendedShader extendedShaderInstance) {
-		registerShader(extendedShaderInstance, (shader) -> ((ExtendedShader) shader).getHolder().setShader((ExtendedShader) shader));
+		registerShader(extendedShaderInstance, (shader) -> ((ExtendedShader) shader).getHolder().setInstance((ExtendedShader) shader));
 	}
-	public static void registerShader(Shader shader, Consumer<Shader> onLoaded)
+	public static void registerShader(ShaderProgram shader, Consumer<ShaderProgram> onLoaded)
 	{
 		shaderList.add(Pair.of(shader, onLoaded));
 	}

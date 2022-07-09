@@ -1,22 +1,27 @@
 package com.sammy.ortus.handlers;
 
+
+
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.datafixers.util.Pair;
 import com.sammy.ortus.systems.rendering.particle.screen.GenericScreenParticle;
 import com.sammy.ortus.systems.rendering.particle.screen.ScreenParticleEffect;
 import com.sammy.ortus.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
+import com.sammy.ortus.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import com.sammy.ortus.systems.rendering.particle.screen.emitter.ParticleEmitter;
+import dev.emi.emi.screen.RecipeScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Matrix4f;
+import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.*;
 
@@ -57,13 +62,14 @@ public class ScreenParticleHandler {
 					ScreenParticle.RenderOrder renderOrder = AFTER_EVERYTHING;
 					Screen screen = minecraft.currentScreen;
 					if (screen != null) {
-						//TODO: REI
-						renderOrder = BEFORE_TOOLTIPS;
+						if (!QuiltLoader.isModLoaded("emi") || !(screen instanceof RecipeScreen)) {
+							renderOrder = BEFORE_TOOLTIPS;
+						}
 						if (renderingHotbar) {
 							renderOrder = BEFORE_UI;
 						}
 					}
-					Matrix4f last = matrixStack.peek().getModel();
+					Matrix4f last = matrixStack.peek().getPosition();
 					float x = last.a03;
 					float y = last.a13;
 					if (canSpawnParticles) {
@@ -76,10 +82,11 @@ public class ScreenParticleHandler {
 	}
 
 	public static void renderParticles() {
-		Screen screen = MinecraftClient.getInstance().currentScreen;
-//        if (screen instanceof IRecipesGui) {
-//            renderParticles(AFTER_EVERYTHING);
-//        }
+		final MinecraftClient client = MinecraftClient.getInstance();
+		Screen screen = client.currentScreen;
+		if (QuiltLoader.isModLoaded("emi") && screen instanceof RecipeScreen) {
+			renderParticles(AFTER_EVERYTHING);
+		}
 		if (screen == null || screen instanceof ChatScreen || screen instanceof GameModeSelectionScreen) {
 			renderParticles(AFTER_EVERYTHING, BEFORE_UI);
 		}
@@ -88,15 +95,16 @@ public class ScreenParticleHandler {
 	}
 
 	public static void renderParticles(ScreenParticle.RenderOrder... renderOrders) {
+		final MinecraftClient client = MinecraftClient.getInstance();
 		PARTICLES.forEach((pair, particles) -> {
 			ParticleTextureSheet type = pair.getFirst();
 			if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(pair.getSecond()))) {
-				type.begin(TESSELATOR.getBuffer(), MinecraftClient.getInstance().getTextureManager());
+				type.begin(TESSELATOR.getBufferBuilder(), client.getTextureManager());
 				for (ScreenParticle next : particles) {
 					if (next instanceof GenericScreenParticle genericScreenParticle) {
 						genericScreenParticle.trackStack();
 					}
-					next.render(TESSELATOR.getBuffer());
+					next.render(TESSELATOR.getBufferBuilder());
 				}
 				type.draw(TESSELATOR);
 			}
@@ -117,7 +125,8 @@ public class ScreenParticleHandler {
 	public static void wipeParticles(ScreenParticle.RenderOrder... renderOrders) {
 		PARTICLES.forEach((pair, particles) -> {
 			if (!particles.isEmpty()) {
-				if (renderOrders.length == 0 || Arrays.stream(renderOrders).anyMatch(o -> o.equals(pair.getSecond()))) {
+				if (renderOrders.length == 0 || Arrays.stream(renderOrders)
+						.anyMatch(o -> o.equals(pair.getSecond()))) {
 					particles.clear();
 				}
 			}
@@ -132,6 +141,10 @@ public class ScreenParticleHandler {
 		for (Item item : items) {
 			EMITTERS.put(item, new ParticleEmitter(emitter));
 		}
+	}
+
+	public static void registerItemParticleEmitter(net.minecraft.util.Pair<ItemParticleEmitter, Item[]> pair) {
+		registerItemParticleEmitter(pair.getLeft()::particleTick, pair.getRight());
 	}
 
 	public record StackTracker(ItemStack stack, ScreenParticle.RenderOrder order, float xOrigin, float yOrigin) {

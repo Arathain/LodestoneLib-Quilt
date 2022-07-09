@@ -1,35 +1,57 @@
 package com.sammy.ortus.systems.screenshake;
 
+import com.sammy.ortus.systems.rendering.particle.Easing;
 import net.minecraft.client.render.Camera;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.random.RandomGenerator;
 
-import java.util.Random;
 
 public class ScreenshakeInstance {
-	public int time;
-	public float currentFalloff;
+	public int progress;
+	public final int duration;
+	public float intensity1, intensity2, intensity3;
+	public Easing intensityCurveStartEasing = Easing.LINEAR, intensityCurveEndEasing = Easing.LINEAR;
 
-	public float intensity;
-	public float falloffTransformSpeed;
-	public int timeBeforeFastFalloff;
-	public float slowFalloff;
-	public float fastFalloff;
-	public ScreenshakeInstance(float intensity, float falloffTransformSpeed, int timeBeforeFastFalloff, float slowFalloff, float fastFalloff) {
-		this.intensity = intensity;
-		this.falloffTransformSpeed = falloffTransformSpeed;
-		this.timeBeforeFastFalloff = timeBeforeFastFalloff;
-		this.slowFalloff = slowFalloff;
-		this.fastFalloff = fastFalloff;
+	public ScreenshakeInstance(int duration) {
+		this.duration = duration;
 	}
 
-	public float tick(Camera camera, Random random)
-	{
-		time++;
-		currentFalloff = MathHelper.lerp(falloffTransformSpeed, currentFalloff, time >= timeBeforeFastFalloff ? fastFalloff : slowFalloff);
-		return updateIntensity(camera, currentFalloff);
+	public ScreenshakeInstance setIntensity(float intensity) {
+		return setIntensity(intensity, intensity);
 	}
-	public float updateIntensity(Camera camera, float falloff)
-	{
-		return intensity=intensity-(intensity*falloff);
+
+	public ScreenshakeInstance setIntensity(float intensity1, float intensity2) {
+		return setIntensity(intensity1, intensity2, intensity2);
+	}
+
+	public ScreenshakeInstance setIntensity(float intensity1, float intensity2, float intensity3) {
+		this.intensity1 = intensity1;
+		this.intensity2 = intensity2;
+		this.intensity3 = intensity3;
+		return this;
+	}
+
+	public ScreenshakeInstance setEasing(Easing easing) {
+		return setEasing(easing, easing);
+	}
+
+	public ScreenshakeInstance setEasing(Easing intensityCurveStartEasing, Easing intensityCurveEndEasing) {
+		this.intensityCurveStartEasing = intensityCurveStartEasing;
+		this.intensityCurveEndEasing = intensityCurveEndEasing;
+		return this;
+	}
+
+	public float updateIntensity(Camera camera, RandomGenerator random) {
+		progress++;
+		float percentage = progress / (float) duration;
+		if (intensity2 != intensity3) {
+			if (percentage >= 0.5f) {
+				return MathHelper.lerp(intensityCurveEndEasing.ease(percentage - 0.5f, 0, 1, 0.5f), intensity2, intensity1);
+			} else {
+				return MathHelper.lerp(intensityCurveStartEasing.ease(percentage, 0, 1, 0.5f), intensity1, intensity2);
+			}
+		} else {
+			return MathHelper.lerp(intensityCurveStartEasing.ease(percentage, 0, 1, 1), intensity1, intensity2);
+		}
 	}
 }

@@ -3,10 +3,10 @@ package com.sammy.ortus.systems.rendering;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.client.gl.GlUniform;
+import com.mojang.blaze3d.shader.GlUniform;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.gl.ShaderParseException;
-import net.minecraft.client.render.Shader;
-import net.minecraft.client.render.VertexFormat;
+import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.resource.ResourceFactory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
@@ -14,7 +14,7 @@ import net.minecraft.util.JsonHelper;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class ExtendedShader extends Shader {
+public class ExtendedShader extends ShaderProgram {
 	public ExtendedShader(ResourceFactory resourceFactory, String string, VertexFormat vertexFormat) throws IOException {
 		super(resourceFactory, string, vertexFormat);
 	}
@@ -28,7 +28,7 @@ public class ExtendedShader extends Shader {
 	}
 
 	public void setUniformDefaults() {
-		getHolder().defaultUniformData.forEach(u -> u.setUniformValue(getUniformOrDefault(u.uniformName)));
+		getHolder().setUniformDefaults();
 	}
 
 	public ShaderHolder getHolder() {
@@ -82,7 +82,7 @@ public class ExtendedShader extends Shader {
 			} else if (i <= 7) {
 				uniform.setForDataType(afloat[0], afloat[1], afloat[2], afloat[3]);
 			} else {
-				uniform.set(Arrays.copyOfRange(afloat, 0, j));
+				uniform.setFloats(Arrays.copyOfRange(afloat, 0, j));
 			}
 			if (i > 3) {
 				if (getHolder().uniforms.contains(name)) {

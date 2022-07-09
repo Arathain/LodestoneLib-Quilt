@@ -6,6 +6,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.*;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public final class DataHelper {
 		return new Vec3f(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static Vec3d randPos(BlockPos pos, Random rand, double min, double max) {
+	public static Vec3d randPos(BlockPos pos, RandomGenerator rand, double min, double max) {
 		double x = MathHelper.nextDouble(rand, min, max) + pos.getX();
 		double y = MathHelper.nextDouble(rand, min, max) + pos.getY();
 		double z = MathHelper.nextDouble(rand, min, max) + pos.getZ();
@@ -173,7 +174,7 @@ public final class DataHelper {
 	public static ArrayList<Vec3d> blockOutlinePositions(World world, BlockPos pos) {
 		ArrayList<Vec3d> arrayList = new ArrayList<>();
 		double d0 = 0.5625D;
-		Random random = world.random;
+		RandomGenerator random = world.random;
 		for (Direction direction : Direction.values()) {
 			BlockPos blockpos = pos.offset(direction);
 			if (!world.getBlockState(blockpos).isOpaqueFullCube(world, blockpos)) {

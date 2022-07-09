@@ -1,7 +1,7 @@
 package com.sammy.ortus.systems.rendering.particle.screen;
 
 import com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParticle;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.world.World;
 
 public class ScreenParticleType<T extends ScreenParticleEffect> {
 
@@ -10,6 +10,6 @@ public class ScreenParticleType<T extends ScreenParticleEffect> {
     }
 
     public interface Factory<T extends ScreenParticleEffect> {
-        ScreenParticle createParticle(ClientWorld pWorld, T options, double pX, double pY, double pXSpeed, double pYSpeed);
+        ScreenParticle createParticle(World clientWorld, T options, double pX, double pY, double pXSpeed, double pYSpeed);
     }
 }

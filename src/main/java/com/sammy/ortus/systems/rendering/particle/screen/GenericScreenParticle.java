@@ -4,10 +4,10 @@ import com.sammy.ortus.handlers.ScreenParticleHandler;
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleEffect;
 import com.sammy.ortus.systems.rendering.particle.screen.base.SpriteBillboardScreenParticle;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
-import net.minecraft.client.gui.hud.BackgroundHelper;
 import net.minecraft.client.particle.ParticleTextureSheet;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.util.ColorUtil;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
 import java.awt.*;
 
@@ -17,8 +17,8 @@ public class GenericScreenParticle extends SpriteBillboardScreenParticle {
     protected final FabricSpriteProviderImpl spriteProvider;
     float[] hsv1 = new float[3], hsv2 = new float[3];
 
-    public GenericScreenParticle(ClientWorld world, ScreenParticleEffect data, FabricSpriteProviderImpl spriteSet, double x, double y, double xMotion, double yMotion) {
-        super(world, x, y);
+    public GenericScreenParticle(World clientWorld, ScreenParticleEffect data, FabricSpriteProviderImpl spriteSet, double x, double y, double xMotion, double yMotion) {
+        super(clientWorld, x, y);
         this.data = data;
         this.textureSheet = data.textureSheet;
         this.spriteProvider = spriteSet;
@@ -61,9 +61,9 @@ public class GenericScreenParticle extends SpriteBillboardScreenParticle {
         float s = MathHelper.lerp(colorCoeff, hsv1[1], hsv2[1]);
         float v = MathHelper.lerp(colorCoeff, hsv1[2], hsv2[2]);
         int packed = Color.HSBtoRGB(h, s, v);
-        float r = BackgroundHelper.ColorMixer.getRed(packed) / 255.0f;
-        float g = BackgroundHelper.ColorMixer.getGreen(packed) / 255.0f;
-        float b = BackgroundHelper.ColorMixer.getBlue(packed) / 255.0f;
+        float r = ColorUtil.ARGB32.getRed(packed) / 255.0f;
+        float g = ColorUtil.ARGB32.getGreen(packed) / 255.0f;
+        float b = ColorUtil.ARGB32.getBlue(packed) / 255.0f;
         setColor(r, g, b);
     }
 

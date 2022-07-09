@@ -1,22 +1,25 @@
 package com.sammy.ortus.setup;
 
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.datafixers.util.Pair;
 import com.sammy.ortus.OrtusLib;
 import com.sammy.ortus.handlers.RenderHandler;
 import com.sammy.ortus.systems.rendering.Phases;
 import com.sammy.ortus.systems.rendering.ShaderUniformHandler;
-import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
-import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Util;
+import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.HashMap;
 import java.util.function.Function;
 
-import static net.minecraft.client.render.VertexFormats.POSITION_COLOR_TEXTURE_LIGHT;
-import static net.minecraft.client.render.VertexFormats.POSITION_TEXTURE_COLOR_LIGHT;
+import static com.mojang.blaze3d.vertex.VertexFormats.POSITION_COLOR_TEXTURE_LIGHT;
+import static com.mojang.blaze3d.vertex.VertexFormats.POSITION_TEXTURE_COLOR_LIGHT;
+
 
 public class OrtusRenderLayers extends RenderPhase {
 	public OrtusRenderLayers(String string, Runnable runnable, Runnable runnable2) {
@@ -49,7 +52,7 @@ public class OrtusRenderLayers extends RenderPhase {
 	 */
 	public static RenderLayer createGenericRenderLayer(String name, VertexFormat format, VertexFormat.DrawMode mode, Shader shader, Transparency transparency, Identifier texture) {
 		RenderLayer type = RenderLayer.of(
-				OrtusLib.MODID + ":" + name, format, mode, 256, false, false, RenderLayer.MultiPhaseParameters.builder()
+				OrtusLib.MODID + ":" + name, format, mode, QuiltLoader.isModLoaded("sodium") ? 262144 : 256, false, false, RenderLayer.MultiPhaseParameters.builder()
 						.shader(shader)
 						.writeMaskState(new WriteMaskState(true, true))
 						.lightmap(new Lightmap(false))
@@ -58,13 +61,13 @@ public class OrtusRenderLayers extends RenderPhase {
 						.cull(new Cull(true))
 						.build(true)
 		);
-		RenderHandler.BUFFERS.put(type, new BufferBuilder(type.getExpectedBufferSize()));
+		RenderHandler.addRenderLayer(type);
 		return type;
 	}
 
 	/**
 	 * Queues shader uniform changes for a render layer. When we end batches in {@link RenderHandler#renderLast(net.minecraft.client.util.math.MatrixStack)}, we do so one render layer at a time.
-	 * Prior to ending a batch, we run {@link ShaderUniformHandler#updateShaderData(net.minecraft.client.render.Shader shader)} if one is present for a given render layer.
+	 * Prior to ending a batch, we run {@link ShaderUniformHandler#updateShaderData(net.minecraft.client.render.ShaderProgram shader)} if one is present for a given render layer.
 	 */
 	public static RenderLayer queueUniformChanges(RenderLayer type, ShaderUniformHandler handler) {
 		RenderHandler.HANDLERS.put(type, handler);
@@ -77,7 +80,7 @@ public class OrtusRenderLayers extends RenderPhase {
 	public static RenderLayer copy(int index, RenderLayer layer) {
 		return COPIES.computeIfAbsent(Pair.of(index, layer), (p) -> GENERIC.apply(new RenderLayerData((RenderLayer.MultiPhase) layer)));
 	}
-
+	public static void yea() {}
 	/**
 	 * Stores all relevant data from a RenderLayer.
 	 */
@@ -104,6 +107,23 @@ public class OrtusRenderLayers extends RenderPhase {
 
 		public RenderLayerData(RenderLayer.MultiPhase type) {
 			this(type.toString(), type.getVertexFormat(), type.getDrawMode(), type.phases.shader, type.phases.transparency, type.phases.texture.getId().orElseThrow());
+		}
+	}
+	public static class RenderLayerProvider {
+		private final Function<Identifier, RenderLayer> function;
+		private final Function<Identifier, RenderLayer> memorizedFunction;
+
+		public RenderLayerProvider(Function<Identifier, RenderLayer> function) {
+			this.function = function;
+			this.memorizedFunction = Util.memoize(function);
+		}
+
+		public RenderLayer apply(Identifier texture) {
+			return function.apply(texture);
+		}
+
+		public RenderLayer applyAndCache(Identifier texture) {
+			return this.memorizedFunction.apply(texture);
 		}
 	}
 }

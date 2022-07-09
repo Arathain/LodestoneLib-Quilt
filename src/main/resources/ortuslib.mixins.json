@@ -4,9 +4,17 @@
   "package": "com.sammy.ortus.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "GameRendererMixin"
+    "CameraMixin"
   ],
   "client": [
+    "FabricSpriteProviderImplAccessor",
+    "GameRendererMixin",
+    "HandledScreenMixin",
+    "InGameHudMixin",
+    "ItemRendererMixin",
+    "MinecraftClientMixin",
+    "ParticleManagerMixin",
+    "ScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 
 import java.awt.*;
 import java.util.Random;
+import java.util.random.RandomGenerator;
 
 public class ParticleBuilders {
     public static WorldParticleBuilder create(ParticleType<?> type) {
@@ -23,7 +24,7 @@ public class ParticleBuilders {
     }
 
     public static class WorldParticleBuilder {
-        static Random random = new Random();
+        static RandomGenerator random = new Random();
 
         ParticleType<?> type;
         WorldParticleEffect data;
@@ -384,7 +385,7 @@ public class ParticleBuilders {
     }
 
     public static class ScreenParticleBuilder {
-        static Random random = new Random();
+        static RandomGenerator random = new Random();
 
         ScreenParticleType<?> type;
         ScreenParticleEffect data;
