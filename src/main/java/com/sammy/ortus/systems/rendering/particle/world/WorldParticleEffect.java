@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3f;
 public class WorldParticleEffect extends SimpleParticleEffect implements ParticleEffect {
 
     public ParticleType<?> type;
-    public Vec3f startingMotion = Vec3f.ZERO, endingMotion = Vec3f.ZERO;
+    public Vec3f startingVelocity = Vec3f.ZERO, endingMotion = Vec3f.ZERO;
     public WorldParticleEffect(ParticleType<?> type) {
         this.type = type;
     }

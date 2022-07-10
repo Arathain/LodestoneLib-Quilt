@@ -15,7 +15,7 @@ public class FrameSetParticle extends GenericParticle {
     @Override
     public void tick() {
         if (age < frameSet.size()) {
-            pickSprite(frameSet.get(age));
+            setSprite(frameSet.get(age));
         }
         super.tick();
     }

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.ortus.config.ClientConfig;
 import com.sammy.ortus.handlers.RenderHandler;
 import com.sammy.ortus.setup.OrtusRenderLayers;
+import com.sammy.ortus.systems.rendering.particle.ParticleTextureSheets;
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleEffect;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -12,6 +13,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.util.ColorUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3f;
 
 import java.awt.*;
 
@@ -19,6 +21,9 @@ public class GenericParticle extends SpriteBillboardParticle {
     protected WorldParticleEffect data;
     private final ParticleTextureSheet textureSheet;
     protected final FabricSpriteProviderImpl spriteProvider;
+	private final Vec3f startingVelocity;
+	private boolean reachedPositiveAlpha;
+	private boolean reachedPositiveScale;
     float[] hsv1 = new float[3], hsv2 = new float[3];
     public GenericParticle(ClientWorld world, WorldParticleEffect data, FabricSpriteProviderImpl spriteProvider, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
         super(world, x, y, z);
@@ -32,23 +37,27 @@ public class GenericParticle extends SpriteBillboardParticle {
             this.velocityZ = velocityZ;
         }
         this.setMaxAge(data.lifetime);
-        this.gravityStrength = data.gravity ? 1 : 0;
+        this.gravityStrength = data.gravity;
         this.collidesWithWorld = !data.noClip;
         this.velocityMultiplier = 1;
-        Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r1)), (int) (255 * Math.min(1.0f, data.g1)), (int) (255 * Math.min(1.0f, data.b1)), hsv1);
+		this.startingVelocity = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? data.startingVelocity : new Vec3f((float)velocityX, (float)velocityY, (float)velocityZ);
+		Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r1)), (int) (255 * Math.min(1.0f, data.g1)), (int) (255 * Math.min(1.0f, data.b1)), hsv1);
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r2)), (int) (255 * Math.min(1.0f, data.g2)), (int) (255 * Math.min(1.0f, data.b2)), hsv2);
-        if (getAnimator().equals(SimpleParticleEffect.Animator.RANDOM_SPRITE)) {
-            setSprite(spriteProvider);
-        }
-        if (getAnimator().equals(SimpleParticleEffect.Animator.FIRST_INDEX) || getAnimator().equals(SimpleParticleEffect.Animator.WITH_AGE)) {
-            pickSprite(0);
-        }
-        if (getAnimator().equals(SimpleParticleEffect.Animator.LAST_INDEX)) {
-            pickSprite(spriteProvider.getSprites().size() - 1);
-        }
-        updateTraits();
+		if (spriteProvider != null) {
+			if (getAnimator().equals(SimpleParticleEffect.Animator.RANDOM_SPRITE)) {
+				setSprite(spriteProvider);
+			}
+			if (getAnimator().equals(SimpleParticleEffect.Animator.FIRST_INDEX) || getAnimator().equals(SimpleParticleEffect.Animator.WITH_AGE)) {
+				setSprite(0);
+			}
+			if (getAnimator().equals(SimpleParticleEffect.Animator.LAST_INDEX)) {
+				setSprite(spriteProvider.getSprites().size() - 1);
+			}
+		}
+		updateTraits();
     }
-    public void pickSprite(int spriteIndex) {
+
+    public void setSprite(int spriteIndex) {
         if (spriteIndex < spriteProvider.getSprites().size() && spriteIndex >= 0) {
             setSprite(spriteProvider.getSprites().get(spriteIndex));
         }
@@ -71,39 +80,53 @@ public class GenericParticle extends SpriteBillboardParticle {
         return data.animator;
     }
     protected void updateTraits() {
-        pickColor(data.colorCurveEasing.ease(getCurve(data.colorCurveMultiplier), 0, 1, 1));
-        if (data.isTrinaryScale()) {
-            float trinaryAge = getCurve(data.scaleCurveMultiplier);
-            if (trinaryAge >= 0.5f) {
-                scale = MathHelper.lerp(data.scaleCurveEndEasing.ease(trinaryAge - 0.5f, 0, 1, 0.5f), data.scale2, data.scale3);
-            } else {
-                scale = MathHelper.lerp(data.scaleCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.scale1, data.scale2);
-            }
-        } else {
-            scale = MathHelper.lerp(data.scaleCurveStartEasing.ease(getCurve(data.scaleCurveMultiplier), 0, 1, 1), data.scale1, data.scale2);
-        }
-        if (data.isTrinaryAlpha()) {
-            float trinaryAge = getCurve(data.alphaCurveMultiplier);
-            if (trinaryAge >= 0.5f) {
-                colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(trinaryAge-0.5f, 0, 1, 0.5f), data.alpha2, data.alpha3);
-            } else {
-                colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.alpha1, data.alpha2);
-            }
-        } else {
-            colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(getCurve(data.alphaCurveMultiplier), 0, 1, 1), data.alpha1, data.alpha2);
-        }
-        prevAngle = angle;
-        angle += MathHelper.lerp(data.spinEasing.ease(getCurve(data.spinCurveMultiplier), 0, 1, 1), data.spin1, data.spin2);
-        if (data.forcedMotion) {
-            float motionAge = getCurve(data.motionCurveMultiplier);
-            velocityX = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), data.startingMotion.getX(), data.endingMotion.getX());
-            velocityY = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), data.startingMotion.getY(), data.endingMotion.getY());
-            velocityZ = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), data.startingMotion.getZ(), data.endingMotion.getZ());
-        } else {
-            velocityX *= data.motionCurveMultiplier;
-            velocityY *= data.motionCurveMultiplier;
-            velocityZ *= data.motionCurveMultiplier;
-        }
+		if (data.removalProtocol == SimpleParticleEffect.SpecialRemovalProtocol.INVISIBLE ||
+				(data.removalProtocol == SimpleParticleEffect.SpecialRemovalProtocol.ENDING_CURVE_INVISIBLE && (getCurve(data.scaleCoefficient) > 0.5f || getCurve(data.alphaCoefficient) > 0.5f))) {
+			if ((reachedPositiveAlpha && colorAlpha <= 0) || (reachedPositiveScale && scale <= 0)) {
+				markDead();
+				return;
+			}
+		}
+		if (colorAlpha > 0) {
+			reachedPositiveAlpha = true;
+		}
+		if (scale > 0) {
+			reachedPositiveScale = true;
+		}
+		pickColor(data.colorCurveEasing.ease(getCurve(data.colorCoefficient), 0, 1, 1));
+		if (data.isTrinaryScale()) {
+			float trinaryAge = getCurve(data.scaleCoefficient);
+			if (trinaryAge >= 0.5f) {
+				scale = MathHelper.lerp(data.scaleCurveEndEasing.ease(trinaryAge - 0.5f, 0, 1, 0.5f), data.scale2, data.scale3);
+			} else {
+				scale = MathHelper.lerp(data.scaleCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.scale1, data.scale2);
+			}
+		} else {
+			scale = MathHelper.lerp(data.scaleCurveStartEasing.ease(getCurve(data.scaleCoefficient), 0, 1, 1), data.scale1, data.scale2);
+		}
+		if (data.isTrinaryAlpha()) {
+			float trinaryAge = getCurve(data.alphaCoefficient);
+			if (trinaryAge >= 0.5f) {
+				colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(trinaryAge - 0.5f, 0, 1, 0.5f), data.alpha2, data.alpha3);
+			} else {
+				colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.alpha1, data.alpha2);
+			}
+		} else {
+			colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(getCurve(data.alphaCoefficient), 0, 1, 1), data.alpha1, data.alpha2);
+		}
+		prevAngle = angle;
+		angle += MathHelper.lerp(data.spinCurveStartEasing.ease(getCurve(data.spinCoefficient), 0, 1, 1), data.spin1, data.spin2);
+		if (data.forcedMotion) {
+			float motionAge = getCurve(data.motionCoefficient);
+			Vec3f currentMotion = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? startingVelocity : new Vec3f((float) velocityX, (float) velocityY, (float) velocityZ);
+			velocityX = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.getX(), data.endingMotion.getX());
+			velocityY = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.getY(), data.endingMotion.getY());
+			velocityZ = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.getZ(), data.endingMotion.getZ());
+		} else {
+			velocityX *= data.motionCoefficient;
+			velocityY *= data.motionCoefficient;
+			velocityZ *= data.motionCoefficient;
+		}
     }
     @Override
     public void tick() {
@@ -116,7 +139,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 
     @Override
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        super.buildGeometry(ClientConfig.DELAYED_RENDERING ? RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.ADDITIVE_PARTICLE) : vertexConsumer, camera, tickDelta);
+        super.buildGeometry(ClientConfig.DELAYED_RENDERING && getType().equals(ParticleTextureSheets.ADDITIVE) ? RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.ADDITIVE_PARTICLE) : vertexConsumer, camera, tickDelta);
     }
     @Override
     public ParticleTextureSheet getType() {

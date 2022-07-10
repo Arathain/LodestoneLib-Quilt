@@ -10,12 +10,14 @@ public class PositionedScreenshakeInstance extends ScreenshakeInstance{
 	public Vec3d position;
 	public float falloffDistance;
 	public float maxDistance;
+	public float minDot;
 	public final Easing falloffEasing;
 
-	public PositionedScreenshakeInstance(int duration, Vec3d position, float falloffDistance, float maxDistance, Easing falloffEasing) {
+	public PositionedScreenshakeInstance(int duration, Vec3d position, float falloffDistance, float minDot, float maxDistance, Easing falloffEasing) {
 		super(duration);
 		this.position = position;
 		this.falloffDistance = falloffDistance;
+		this.minDot = minDot;
 		this.maxDistance = maxDistance;
 		this.falloffEasing = falloffEasing;
 	}
@@ -36,8 +38,7 @@ public class PositionedScreenshakeInstance extends ScreenshakeInstance{
 
 		Vec3f lookDirection = camera.getHorizontalPlane();
 		Vec3d directionToScreenshake = position.subtract(camera.getPos()).normalize();
-		float angle = Math.max(0.1f, lookDirection.dot(new Vec3f(directionToScreenshake)));
-		System.out.println(intensity);
+		float angle = Math.max(minDot, lookDirection.dot(new Vec3f(directionToScreenshake)));
 		return intensity * distanceMultiplier * angle;
 	}
 }

@@ -24,7 +24,7 @@ public class OrtTestItem extends Item {
 			PlayerEntity user = context.getPlayer();
 			s.getPlayers(players -> players.getWorld().isChunkLoaded(new ChunkPos(user.getBlockPos()).x, new ChunkPos(user.getBlockPos()).z)).forEach(players -> {
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-				new PositionedScreenshakePacket(40, Vec3d.ofCenter(context.getBlockPos()),0.4f,3f, Easing.EXPO_OUT).setIntensity(0.1f, 1f).write(buf);
+				new PositionedScreenshakePacket(20, Vec3d.ofCenter(context.getBlockPos()),40f, 0.8f, 128f, Easing.EXPO_OUT).setIntensity(0f, 0.8f).setEasing(Easing.ELASTIC_OUT, Easing.EXPO_OUT).write(buf);
 				ServerPlayNetworking.send(players, PositionedScreenshakePacket.ID, buf);
 			});
 		}
