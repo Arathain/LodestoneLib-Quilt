@@ -21,6 +21,7 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"init": "com.sammy.ortus.OrtusLib",
+			"cardinal-components-entity": "com.sammy.ortus.setup.OrtusComponents",
 			"client_init": "com.sammy.ortus.OrtusLibClient"
 		},
 		"depends": [
@@ -39,5 +40,8 @@
 		]
 	},
 	"access_widener": "ortuslib.accesswidener",
-	"mixin": "ortuslib.mixins.json"
+	"mixin": "ortuslib.mixins.json",
+	"cardinal-components": [
+		"ortus:entity"
+	]
 }

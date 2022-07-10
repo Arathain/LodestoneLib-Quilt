@@ -24,20 +24,20 @@ public class PositionedScreenshakeInstance extends ScreenshakeInstance{
 	public float updateIntensity(Camera camera, RandomGenerator random) {
 		float intensity = super.updateIntensity(camera, random);
 		float distance = (float) position.distanceTo(camera.getPos());
-		if (distance > maxDistance)
-		{
+		if (distance > maxDistance) {
 			return 0;
 		}
 		float distanceMultiplier = 1;
-		if (distance > falloffDistance)
-		{
+		if (distance > falloffDistance) {
 			float remaining = maxDistance-falloffDistance;
 			float current = distance-falloffDistance;
 			distanceMultiplier = 1-current/remaining;
 		}
+
 		Vec3f lookDirection = camera.getHorizontalPlane();
 		Vec3d directionToScreenshake = position.subtract(camera.getPos()).normalize();
-		float angle = Math.max(0, lookDirection.dot(new Vec3f(directionToScreenshake)));
+		float angle = Math.max(0.1f, lookDirection.dot(new Vec3f(directionToScreenshake)));
+		System.out.println(intensity);
 		return intensity * distanceMultiplier * angle;
 	}
 }

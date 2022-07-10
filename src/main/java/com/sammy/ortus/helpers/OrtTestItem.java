@@ -1,18 +1,16 @@
 package com.sammy.ortus.helpers;
 
 import com.sammy.ortus.network.screenshake.PositionedScreenshakePacket;
-import com.sammy.ortus.network.screenshake.ScreenshakePacket;
 import com.sammy.ortus.systems.rendering.particle.Easing;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.ChunkPos;
-import net.minecraft.world.World;
+import net.minecraft.util.math.Vec3d;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
 
 public class OrtTestItem extends Item {
@@ -21,14 +19,15 @@ public class OrtTestItem extends Item {
 	}
 
 	@Override
-	public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-		if(world instanceof ServerWorld s) {
+	public ActionResult useOnBlock(ItemUsageContext context) {
+		if(context.getWorld() instanceof ServerWorld s) {
+			PlayerEntity user = context.getPlayer();
 			s.getPlayers(players -> players.getWorld().isChunkLoaded(new ChunkPos(user.getBlockPos()).x, new ChunkPos(user.getBlockPos()).z)).forEach(players -> {
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
-				new ScreenshakePacket(40).setIntensity(0.4f, 1f).setEasing(Easing.EXPO_OUT).write(buf);
+				new PositionedScreenshakePacket(40, Vec3d.ofCenter(context.getBlockPos()),0.4f,3f, Easing.EXPO_OUT).setIntensity(0.1f, 1f).write(buf);
 				ServerPlayNetworking.send(players, PositionedScreenshakePacket.ID, buf);
 			});
 		}
-		return super.use(world, user, hand);
+		return super.useOnBlock(context);
 	}
 }
