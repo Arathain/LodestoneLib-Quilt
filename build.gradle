@@ -6,6 +6,8 @@ plugins {
 archivesBaseName = project.archives_base_name
 version = project.version
 group = project.maven_group
+sourceCompatibility = 1.17 // java 17
+targetCompatibility = 1.17
 
 repositories {
 	maven {
