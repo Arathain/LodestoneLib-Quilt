@@ -107,19 +107,27 @@ loom {
 	accessWidenerPath = file("src/main/resources/ortuslib.accesswidener")
 }
 
-// Configure the maven publication
+// configure the maven publication
 publishing {
 	publications {
 		mavenJava(MavenPublication) {
-			from components.java
+			// add all the jars that should be included when publishing to maven
+			artifact(remapJar) {
+				builtBy remapJar
+			}
+			artifact(sourcesJar) {
+				builtBy remapSourcesJar
+			}
 		}
 	}
 
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	// select the repositories you want to publish to
 	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
+		// uncomment to publish to the local maven
+		// mavenLocal()
 	}
+}
+wrapper {
+	gradleVersion = "7.3.3"
+	distributionType = Wrapper.DistributionType.ALL
 }
