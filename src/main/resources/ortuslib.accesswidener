@@ -6,6 +6,8 @@ accessible      class     net/minecraft/client/particle/ParticleManager$SimpleSp
 accessible      class     net/minecraft/util/registry/Registry$RegistryBootstrap
 accessible      class     net/minecraft/network/NetworkState$PacketHandler
 
+accessible      field     net/minecraft/client/gl/ShaderEffect                                     passes                       Ljava/util/List;
+accessible      field     net/minecraft/client/render/RenderPhase                                  name                         Ljava/lang/String;
 accessible      field     net/minecraft/client/render/ShaderProgram                                uniforms                     Ljava/util/List;
 accessible      field     net/minecraft/client/particle/ParticleManager                            spriteAwareFactories         Ljava/util/Map;
 accessible      field     net/minecraft/util/math/Matrix4f                                         a03                          F
@@ -31,6 +33,7 @@ mutable         field     net/minecraft/item/SwordItem                          
 mutable         field     net/minecraft/item/SwordItem                                             attributeModifiers           Lcom/google/common/collect/Multimap;
 mutable         field     net/minecraft/item/ArmorItem                                             attributeModifiers           Lcom/google/common/collect/Multimap;
 
+accessible      method    net/minecraft/client/render/GameRenderer                                 getFov                       (Lnet/minecraft/client/render/Camera;FZ)D
 accessible      method    net/minecraft/client/render/Camera                                       setRotation                  (FF)V
 extendable      method    net/minecraft/client/render/ShaderProgram                                addUniform                   (Lcom/google/gson/JsonElement;)V
 accessible      method    net/minecraft/entity/damage/DamageSource                                 setUnblockable               ()Lnet/minecraft/entity/damage/DamageSource;

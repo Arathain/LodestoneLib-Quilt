@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityMixin {
 
 	@Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;updateSwimming()V"))
-	private void ortusFireEffectTicking(CallbackInfo ci) {
+	private void lodestoneFireEffectTicking(CallbackInfo ci) {
 		FireEffectHandler.entityUpdate(((Entity) (Object) this));
 	}
 
 	@Inject(method = "setOnFireFor", at = @At(value = "RETURN"))
-	private void ortusFireEffectOverride(int pSeconds, CallbackInfo ci) {
+	private void lodestoneFireEffectOverride(int pSeconds, CallbackInfo ci) {
 		FireEffectHandler.onVanillaFireTimeUpdate((Entity) (Object) this);
 	}
 

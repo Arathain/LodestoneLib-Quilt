@@ -139,7 +139,16 @@ public class GenericParticle extends SpriteBillboardParticle {
 
     @Override
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        super.buildGeometry(ClientConfig.DELAYED_RENDERING && getType().equals(ParticleTextureSheets.ADDITIVE) ? RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.ADDITIVE_PARTICLE) : vertexConsumer, camera, tickDelta);
+		VertexConsumer consumer = vertexConsumer;
+		if (ClientConfig.DELAYED_RENDERING) {
+			if (getType().equals(ParticleTextureSheets.ADDITIVE)) {
+				consumer = RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.ADDITIVE_PARTICLE);
+			}
+			if (getType().equals(ParticleTextureSheets.TRANSPARENT)) {
+				consumer = RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.TRANSPARENT_PARTICLE);
+			}
+		}
+        super.buildGeometry(consumer, camera, tickDelta);
     }
     @Override
     public ParticleTextureSheet getType() {

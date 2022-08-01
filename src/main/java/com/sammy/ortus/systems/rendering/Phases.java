@@ -19,10 +19,12 @@ public class Phases extends RenderPhase {
 	});
 
 	public static final Transparency NORMAL_TRANSPARENCY = new Transparency("normal_transparency", () -> {
+		RenderSystem.depthMask(false);
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GlStateManager.class_4535.SRC_ALPHA, GlStateManager.class_4534.ONE_MINUS_SRC_ALPHA);
 	}, () -> {
 		RenderSystem.disableBlend();
 		RenderSystem.defaultBlendFunc();
+		RenderSystem.depthMask(true);
 	});
 }

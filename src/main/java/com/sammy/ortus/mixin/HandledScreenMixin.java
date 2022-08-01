@@ -13,7 +13,7 @@ import static com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParti
 @Mixin(HandledScreen.class)
 final class HandledScreenMixin {
 	@Inject(at = @At("RETURN"), method = "render")
-	private void malum$beforeTooltipParticle(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+	private void lodestone$beforeTooltipParticle(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
 		ScreenParticleHandler.renderParticles(BEFORE_TOOLTIPS);
 	}
 }

@@ -17,7 +17,8 @@
     "ItemRendererMixin",
     "MinecraftClientMixin",
     "ParticleManagerMixin",
-    "ScreenMixin"
+    "ScreenMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

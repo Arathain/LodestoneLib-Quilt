@@ -16,19 +16,19 @@ import static com.sammy.ortus.OrtusLib.RANDOM;
 @Mixin(MinecraftClient.class)
 final class MinecraftClientMixin {
 	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V", ordinal = 17))
-	private void ortus$registerParticleFactories(RunArgs runArgs, CallbackInfo ci) {
+	private void lodestone$registerParticleFactories(RunArgs runArgs, CallbackInfo ci) {
 		OrtusParticles.registerFactories();
 		OrtusScreenParticles.registerParticleFactories();
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))
-	private void ortus$clientTick(CallbackInfo ci) {
+	private void lodestone$clientTick(CallbackInfo ci) {
 		ScreenParticleHandler.clientTick();
 		ScreenshakeHandler.clientTick(MinecraftClient.getInstance().gameRenderer.getCamera(), RANDOM);
 	}
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 4, shift = At.Shift.AFTER))
-	private void ortus$renderTickThingamajig(boolean tick, CallbackInfo ci) {
+	private void lodestone$renderTickThingamajig(boolean tick, CallbackInfo ci) {
 		ScreenParticleHandler.renderParticles();
 	}
 }

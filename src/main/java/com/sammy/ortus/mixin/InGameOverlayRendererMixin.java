@@ -13,12 +13,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameOverlayRenderer.class)
 public class InGameOverlayRendererMixin {
 	@Inject(method = "renderOverlays", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isSpectator()Z"))
-	private static void ortusFireEffectRendering(MinecraftClient mc, MatrixStack overlay, CallbackInfo ci) {
+	private static void lodestoneFireEffectRendering(MinecraftClient mc, MatrixStack overlay, CallbackInfo ci) {
 		FireEffectHandler.ClientOnly.renderUIMeteorFire(mc, overlay);
 	}
 
 	@Inject(method = "renderFireOverlay", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;translate(DDD)V"))
-	private static void ortusFireEffectOffset(MinecraftClient minecraft, MatrixStack stack, CallbackInfo ci) {
+	private static void lodestoneFireEffectOffset(MinecraftClient minecraft, MatrixStack stack, CallbackInfo ci) {
 		stack.translate(0, -(ClientConfig.FIRE_OVERLAY_OFFSET) * 0.3f, 0);
 	}
 }

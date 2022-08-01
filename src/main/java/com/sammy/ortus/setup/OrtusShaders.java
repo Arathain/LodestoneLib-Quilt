@@ -16,6 +16,7 @@ import java.util.function.Consumer;
 public class OrtusShaders {
 	public static List<Pair<ShaderProgram, Consumer<ShaderProgram>>> shaderList;
 	public static ShaderHolder ADDITIVE_TEXTURE = new ShaderHolder();
+	public static ShaderHolder ORTUS_PARTICLE = new ShaderHolder();
 	public static ShaderHolder ADDITIVE_PARTICLE = new ShaderHolder();
 
 	public static ShaderHolder MASKED_TEXTURE = new ShaderHolder();
@@ -34,6 +35,7 @@ public class OrtusShaders {
 
 	public static void init(ResourceManager manager) throws IOException {
 		shaderList = new ArrayList<>();
+		registerShader(ExtendedShader.createShaderInstance(ORTUS_PARTICLE, manager, OrtusLib.id("particle"), VertexFormats.POSITION_TEXTURE_COLOR_LIGHT));
 		registerShader(ExtendedShader.createShaderInstance(ADDITIVE_TEXTURE, manager, OrtusLib.id("additive_texture"), VertexFormats.POSITION_COLOR_TEXTURE_LIGHT));
 		registerShader(ExtendedShader.createShaderInstance(ADDITIVE_PARTICLE, manager, OrtusLib.id("additive_particle"), VertexFormats.POSITION_TEXTURE_COLOR_LIGHT));
 

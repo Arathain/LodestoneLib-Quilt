@@ -16,12 +16,12 @@ final class InGameHudMixin {
 	@Shadow @Final private MinecraftClient client;
 
 	@Inject(at = @At("HEAD"), method = "renderHotbar")
-	private void ortus$renderHotbarStart(float l1, MatrixStack j1, CallbackInfo ci) {
+	private void lodestone$renderHotbarStart(float l1, MatrixStack j1, CallbackInfo ci) {
 		ScreenParticleHandler.renderingHotbar = true;
 	}
 
 	@Inject(at = @At("RETURN"), method = "renderHotbar")
-	private void ortus$renderHotbarEnd(float l1, MatrixStack j1, CallbackInfo ci) {
+	private void lodestone$renderHotbarEnd(float l1, MatrixStack j1, CallbackInfo ci) {
 		ScreenParticleHandler.renderingHotbar = false;
 	}
 }

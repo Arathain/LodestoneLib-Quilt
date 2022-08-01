@@ -13,7 +13,7 @@ import static com.sammy.ortus.systems.rendering.particle.screen.base.ScreenParti
 @Mixin(Screen.class)
 final class ScreenMixin {
 	@Inject(at = @At("HEAD"), method = "renderBackground(Lnet/minecraft/client/util/math/MatrixStack;I)V")
-	private void ortus$beforeBackgroundParticle(MatrixStack pPoseStack, int pVOffset, CallbackInfo ci) {
+	private void lodestone$beforeBackgroundParticle(MatrixStack pPoseStack, int pVOffset, CallbackInfo ci) {
 		ScreenParticleHandler.renderParticles(BEFORE_UI);
 	}
 }

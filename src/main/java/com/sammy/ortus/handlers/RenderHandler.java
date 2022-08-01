@@ -42,7 +42,7 @@ public class RenderHandler {
 			}
 			RenderSystem.applyModelViewMatrix();
 			DELAYED_RENDER.draw(OrtusRenderLayers.ADDITIVE_PARTICLE);
-			DELAYED_RENDER.draw(OrtusRenderLayers.ADDITIVE_BLOCK_PARTICLE);
+			DELAYED_RENDER.draw(OrtusRenderLayers.TRANSPARENT_PARTICLE);
 			RenderSystem.getModelViewStack().pop();
 			RenderSystem.applyModelViewMatrix();
 		}

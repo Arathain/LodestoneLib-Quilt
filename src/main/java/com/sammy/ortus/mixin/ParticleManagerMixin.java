@@ -22,7 +22,7 @@ final class ParticleManagerMixin {
 	private static List<ParticleTextureSheet> PARTICLE_TEXTURE_SHEETS;
 
 	@Inject(at = @At("RETURN"), method = "<clinit>")
-	private static void ortus$addTypes(CallbackInfo ci) {
+	private static void lodestone$addTypes(CallbackInfo ci) {
 		PARTICLE_TEXTURE_SHEETS = ImmutableList.<ParticleTextureSheet>builder().addAll(PARTICLE_TEXTURE_SHEETS)
 				.add(ParticleTextureSheets.ADDITIVE, ParticleTextureSheets.TRANSPARENT)
 				.build();
