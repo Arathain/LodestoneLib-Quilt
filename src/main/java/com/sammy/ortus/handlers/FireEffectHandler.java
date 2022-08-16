@@ -35,18 +35,19 @@ public class FireEffectHandler {
 	}
 
 	public static void setCustomFireInstance(Entity entity, FireEffectInstance instance) {
-		OrtusEntityComponent cmp = entity.getComponent(ENTITY_COMPONENT);
-		cmp.fireEffectInstance = instance;
-		if (cmp.fireEffectInstance != null) {
-			if (entity.getFireTicks() > 0) {
-				entity.setFireTicks(0);
+		if(entity != null) {
+			OrtusEntityComponent cmp = entity.getComponent(ENTITY_COMPONENT);
+			cmp.fireEffectInstance = instance;
+			if (cmp.fireEffectInstance != null) {
+				if (entity.getFireTicks() > 0) {
+					entity.setFireTicks(0);
+				}
+				if (!entity.world.isClient) {
+					cmp.fireEffectInstance.sync(entity);
+				}
+			} else if (!entity.world.isClient) {
+				ClearFireEffectInstancePacket.send(entity, PlayerLookup.tracking(entity));
 			}
-			if (!entity.world.isClient) {
-				cmp.fireEffectInstance.sync(entity);
-			}
-		}
-		else if (!entity.world.isClient) {
-			 ClearFireEffectInstancePacket.send(entity, PlayerLookup.tracking(entity));
 		}
 	}
 
