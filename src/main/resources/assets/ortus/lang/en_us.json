@@ -4,8 +4,9 @@
   "attribute.name.ortus.magic_resistance": "Magic Resistance",
   "command.ortus.devsetup": "World setup for not-annoying development work",
   "command.ortus.screenshake": "Command Successful, enjoy your screenshake.",
-  "options.ortus.fire_offset": "Fire Overlay Offset",
+  "ortus.midnightconfig.FIRE_OVERLAY_OFFSET": "Fire Overlay Offset",
   "options.ortus.fire_offset.tooltip": "Offsets the fire overlay effect downwards, clearing up your vision.",
-  "options.ortus.screenshake_intensity": "Screenshake Intensity",
-  "options.ortus.screenshake_intensity.tooltip": "Controls how much screenshake is applied to your screen."
+  "ortus.midnightconfig.SCREENSHAKE_INTENSITY": "Screenshake Intensity",
+  "options.ortus.screenshake_intensity.tooltip": "Controls how much screenshake is applied to your screen.",
+  "ortus.midnightconfig.DELAYED_RENDERING": "Delayed Rendering"
 }
