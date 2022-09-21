@@ -31,7 +31,7 @@ public class ClearFireEffectInstancePacket {
 
 	public static void handle(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender sender) {
 		int entityId = buf.isReadable() ? buf.readInt() : -1;
-		if(MinecraftClient.getInstance().world != null) {
+		if(MinecraftClient.getInstance().world != null && MinecraftClient.getInstance().world.getEntityById(entityId) != null) {
 			FireEffectHandler.setCustomFireInstance(MinecraftClient.getInstance().world.getEntityById(entityId), null);
 		}
 	}
