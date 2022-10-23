@@ -33,7 +33,6 @@ dependencies {
 	}
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
 
-	modImplementation "org.quiltmc:qsl:${project.qsl_version}+${project.minecraft_version}"
 	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${project.quilted_fabric_api_version}-${project.minecraft_version}"
 	modImplementation include("io.github.ladysnake:satin:${project.satin_version}")
 	modImplementation include("maven.modrinth:midnightlib:$midnightlib_version")
@@ -42,20 +41,6 @@ dependencies {
 	//ease of multiplayer testing & game control
 	modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"
 
-	modImplementation include ("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_version}") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-	// Adds a dependency on a specific module
-	modImplementation include ("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_version}") {
-		exclude(group: "net.fabricmc")
-		exclude(group: "net.fabricmc.fabric-api")
-	}
-
-	modImplementation("com.github.Chocohead:Fabric-ASM:v${project.fabric_asm_version}") {
-		exclude (group: "net.fabricmc.fabric-api")
-	}
-	include("com.github.Chocohead:Fabric-ASM:v${project.fabric_asm_version}")
 }
 
 processResources {
