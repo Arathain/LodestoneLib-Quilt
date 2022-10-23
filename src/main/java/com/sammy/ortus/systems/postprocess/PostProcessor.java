@@ -35,7 +35,7 @@ public abstract class PostProcessor {
 			Pair.of("upVector", u -> u.setVec3(MC.gameRenderer.getCamera().getVerticalPlane())),
 			Pair.of("leftVector", u -> u.setVec3(MC.gameRenderer.getCamera().getDiagonalPlane())),
 			Pair.of("invViewMat", u -> {
-				Matrix4f invertedViewMatrix = new Matrix4f(PostProcessor.viewModelStack.peek().getPosition());
+				Matrix4f invertedViewMatrix = new Matrix4f(PostProcessor.viewModelStack.peek().getModel());
 				invertedViewMatrix.invert();
 				u.setMat4x4(invertedViewMatrix);
 			}),

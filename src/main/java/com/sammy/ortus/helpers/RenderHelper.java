@@ -62,7 +62,7 @@ public final class RenderHelper {
 	}
 
 	public static void innerBlit(MatrixStack matrices, ShaderHolder shader, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float uw, float vh) {
-		Matrix4f last = matrices.peek().getPosition();
+		Matrix4f last = matrices.peek().getModel();
 		RenderSystem.setShader(shader.getInstance());
 		BufferBuilder bufferbuilder = Tessellator.getInstance().getBufferBuilder();
 		bufferbuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
@@ -74,7 +74,7 @@ public final class RenderHelper {
 	}
 
 	public static void innerBlit(MatrixStack stack, ShaderHolder shader, int x, int y, double w, double h, float u, float v, float uw, float vh) {
-		Matrix4f last = stack.peek().getPosition();
+		Matrix4f last = stack.peek().getModel();
 		RenderSystem.setShader(shader.getInstance());
 		BufferBuilder bufferbuilder = Tessellator.getInstance().getBufferBuilder();
 		bufferbuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
@@ -118,7 +118,7 @@ public final class RenderHelper {
 	}
 
 	public static void innerBlit(MatrixStack matrices, int x, int y, double w, double h, float r, float g, float b, float a, float u, float v, float uw, float vh) {
-		Matrix4f last = matrices.peek().getPosition();
+		Matrix4f last = matrices.peek().getModel();
 		RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
 		BufferBuilder bufferbuilder = Tessellator.getInstance().getBufferBuilder();
 		bufferbuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
@@ -130,7 +130,7 @@ public final class RenderHelper {
 	}
 
 	public static void innerBlit(MatrixStack matrices, int x, int y, double w, double h, float u, float v, float uw, float vh) {
-		Matrix4f last = matrices.peek().getPosition();
+		Matrix4f last = matrices.peek().getModel();
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		BufferBuilder bufferbuilder = Tessellator.getInstance().getBufferBuilder();
 		bufferbuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
@@ -229,7 +229,7 @@ public final class RenderHelper {
 		}
 
 		public VertexBuilder renderTriangle(VertexConsumer vertexConsumer, MatrixStack matrices, float width, float height) {
-			Matrix4f last = matrices.peek().getPosition();
+			Matrix4f last = matrices.peek().getModel();
 
 			vertexPosColorUVLight(vertexConsumer, last, -width, -height, 0, r, g, b, a, 0, 1, light);
 			vertexPosColorUVLight(vertexConsumer, last, width, -height, 0, r, g, b, a, 1, 1, light);
@@ -245,7 +245,7 @@ public final class RenderHelper {
 			Vec3d cameraPosition = client.getBlockEntityRenderDispatcher().camera.getPos();
 			Vec3d delta = end.subtract(start);
 			Vec3d normal = start.subtract(cameraPosition).crossProduct(delta).normalize().multiply(width / 2f, width / 2f, width / 2f);
-			Matrix4f last = matrices.peek().getPosition();
+			Matrix4f last = matrices.peek().getModel();
 			Vec3d[] positions = new Vec3d[]{start.subtract(normal), start.add(normal), end.add(normal), end.subtract(normal)};
 			vertexPosColorUVLight(vertexConsumer, last, (float) positions[0].x, (float) positions[0].y, (float) positions[0].z, r, g, b, a, u0, v1, light);
 			vertexPosColorUVLight(vertexConsumer, last, (float) positions[1].x, (float) positions[1].y, (float) positions[1].z, r, g, b, a, u1, v1, light);
@@ -260,7 +260,7 @@ public final class RenderHelper {
 		}
 
 		public VertexBuilder renderQuad(VertexConsumer vertexConsumer, MatrixStack matrices, float width, float height) {
-			Matrix4f last = matrices.peek().getPosition();
+			Matrix4f last = matrices.peek().getModel();
 			matrices.translate(xOffset, yOffset, zOffset);
 			Vec3d[] positions = new Vec3d[]{new Vec3d(-width, -height, 0), new Vec3d(width, -height, 0), new Vec3d(width, height, 0), new Vec3d(-width, height, 0)};
 			vertexPosColorUVLight(vertexConsumer, last, (float) positions[0].x, (float) positions[0].y, (float) positions[0].z, r, g, b, a, u0, v1, light);
@@ -272,7 +272,7 @@ public final class RenderHelper {
 		}
 
 		public VertexBuilder renderTrail(VertexConsumer vertexConsumer, MatrixStack stack, java.util.List<Vector4f> trailSegments, Function<Float, Float> widthFunc) {
-			return renderTrail(vertexConsumer, stack.peek().getPosition(), trailSegments, widthFunc);
+			return renderTrail(vertexConsumer, stack.peek().getModel(), trailSegments, widthFunc);
 		}
 		public VertexBuilder renderTrail(VertexConsumer vertexConsumer, Matrix4f matrix, java.util.List<Vector4f> trailSegments, Function<Float, Float> widthFunc) {
 			if (trailSegments.size() < 3) {
@@ -312,7 +312,7 @@ public final class RenderHelper {
 		}
 
 		public VertexBuilder renderSphere(VertexConsumer vertexConsumer, MatrixStack matrices, float radius, int longs, int lats) {
-			Matrix4f last = matrices.peek().getPosition();
+			Matrix4f last = matrices.peek().getModel();
 			float startU = 0;
 			float startV = 0;
 			float endU = MathHelper.PI * 2;

@@ -69,7 +69,7 @@ public class ScreenParticleHandler {
 							renderOrder = BEFORE_UI;
 						}
 					}
-					Matrix4f last = matrixStack.peek().getPosition();
+					Matrix4f last = matrixStack.peek().getModel();
 					float x = last.a03;
 					float y = last.a13;
 					if (canSpawnParticles) {
