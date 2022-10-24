@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
 import com.sammy.ortus.handlers.RenderHandler;
-import com.sammy.ortus.setup.OrtusShaders;
+import com.sammy.ortus.setup.LodestoneShaders;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.texture.TextureManager;
@@ -19,7 +19,7 @@ public class ParticleTextureSheets {
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
-            RenderSystem.setShader(OrtusShaders.ADDITIVE_PARTICLE.getInstance());
+            RenderSystem.setShader(LodestoneShaders.LODESTONE_PARTICLE.getInstance());
             RenderSystem.setShaderTexture(0, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
             RenderHandler.PARTICLE_MATRIX = RenderSystem.getModelViewMatrix();
             builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
@@ -33,10 +33,6 @@ public class ParticleTextureSheets {
             RenderSystem.defaultBlendFunc();
         }
 
-        @Override
-        public String toString() {
-            return "ADDITIVE";
-        }
     };
     public static final ParticleTextureSheet TRANSPARENT = new ParticleTextureSheet() {
         @Override

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.shader.ShaderStage;
 import com.mojang.datafixers.util.Pair;
 import com.sammy.ortus.handlers.PostProcessHandler;
 import com.sammy.ortus.handlers.RenderHandler;
-import com.sammy.ortus.setup.OrtusShaders;
+import com.sammy.ortus.setup.LodestoneShaders;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.client.util.math.MatrixStack;
@@ -23,13 +23,15 @@ import java.util.function.Consumer;
 final class GameRendererMixin {
 	@Inject(method = "renderWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;render(Lnet/minecraft/client/util/math/MatrixStack;FJZLnet/minecraft/client/render/Camera;Lnet/minecraft/client/render/GameRenderer;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/util/math/Matrix4f;)V", shift = At.Shift.AFTER))
 	private void lodestone$renderWorldLast(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
+		matrix.push();
 		RenderHandler.renderLast(matrix);
 		PostProcessHandler.renderLast(matrix);
+		matrix.pop();
 	}
 	@Inject(method = "loadShaders", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void lodestone$registerShaders(ResourceManager manager, CallbackInfo ci, List<ShaderStage> list, List<Pair<ShaderProgram, Consumer<ShaderProgram>>> list2) throws IOException {
-		OrtusShaders.init(manager);
-		list2.addAll(OrtusShaders.shaderList);
+		LodestoneShaders.init(manager);
+		list2.addAll(LodestoneShaders.shaderList);
 	}
 	@Inject(method = "onResized", at = @At(value = "HEAD"))
 	public void injectionResizeListener(int width, int height, CallbackInfo ci) {

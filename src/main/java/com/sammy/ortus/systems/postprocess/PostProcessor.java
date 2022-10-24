@@ -7,7 +7,7 @@ import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.shader.GlUniform;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.datafixers.util.Pair;
-import com.sammy.ortus.OrtusLib;
+import com.sammy.ortus.LodestoneLib;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.JsonEffectGlShader;
 import net.minecraft.client.gl.PostProcessShader;
@@ -111,7 +111,7 @@ public abstract class PostProcessor {
 			shaderEffect.setupDimensions(MC.getWindow().getWidth(), MC.getWindow().getHeight());
 			effects = shaderEffect.passes.stream().map(PostProcessShader::getProgram).toArray(JsonEffectGlShader[]::new);
 		} catch (IOException | JsonParseException e) {
-			OrtusLib.LOGGER.error("Failed to load post-processing shader: ", e);
+			LodestoneLib.LOGGER.error("Failed to load post-processing shader: ", e);
 		}
 	}
 

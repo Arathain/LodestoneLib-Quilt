@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "ortus:additive_particle",
-  "fragment": "ortus:additive_particle",
+  "vertex": "lodestone:particle",
+  "fragment": "lodestone:particle",
   "attributes": [
     "Position",
     "UV0",

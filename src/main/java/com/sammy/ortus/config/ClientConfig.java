@@ -8,6 +8,4 @@ public class ClientConfig extends MidnightConfig {
 	@Entry(min=0,max=5)
 	public static double SCREENSHAKE_INTENSITY = 1;
 
-	@Entry(min=0,max=1)
-	public static double FIRE_OVERLAY_OFFSET = 0;
 }

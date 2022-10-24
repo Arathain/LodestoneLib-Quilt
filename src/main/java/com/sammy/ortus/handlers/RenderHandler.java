@@ -4,14 +4,12 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.sammy.ortus.config.ClientConfig;
 import com.sammy.ortus.helpers.RenderHelper;
-import com.sammy.ortus.setup.OrtusRenderLayers;
+import com.sammy.ortus.setup.LodestoneRenderLayers;
 import com.sammy.ortus.systems.rendering.ExtendedShader;
 import com.sammy.ortus.systems.rendering.ShaderUniformHandler;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3d;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.HashMap;
@@ -41,8 +39,8 @@ public class RenderHandler {
 				RenderSystem.getModelViewStack().multiplyMatrix(PARTICLE_MATRIX);
 			}
 			RenderSystem.applyModelViewMatrix();
-			DELAYED_RENDER.draw(OrtusRenderLayers.ADDITIVE_PARTICLE);
-			DELAYED_RENDER.draw(OrtusRenderLayers.TRANSPARENT_PARTICLE);
+			DELAYED_RENDER.draw(LodestoneRenderLayers.ADDITIVE_PARTICLE);
+			DELAYED_RENDER.draw(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
 			RenderSystem.getModelViewStack().pop();
 			RenderSystem.applyModelViewMatrix();
 		}

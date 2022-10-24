@@ -3,8 +3,11 @@ package com.sammy.ortus.systems.rendering;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.render.OverlayTexture;
+import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.math.Vector4f;
 
 public class TrailPoint {
+
 
 	public final float xp;
 	public final float xn;
@@ -20,13 +23,22 @@ public class TrailPoint {
 		this.z = z;
 	}
 
-	public void renderStart(VertexConsumer builder, int packedLight, float r, float g, float b, float a, float u0, float v0, float u1, float v1) {
-		builder.vertex(xp, yp, z).color(r, g, b, a).uv(u0, v0).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).next();
-		builder.vertex(xn, yn, z).color(r, g, b, a).uv(u1, v0).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).next();
+	public TrailPoint(Vector4f pos, Vec2f perp) {
+		this(pos.getX() + perp.x, pos.getX() - perp.x, pos.getY() + perp.y, pos.getY() - perp.y, pos.getZ());
 	}
 
-	public void renderEnd(VertexConsumer builder, int packedLight, float r, float g, float b, float a, float u0, float v0, float u1, float v1) {
-		builder.vertex(xn, yn, z).color(r, g, b, a).uv(u1, v1).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).next();
-		builder.vertex(xp, yp, z).color(r, g, b, a).uv(u0, v1).overlay(OverlayTexture.DEFAULT_UV).light(packedLight).next();
+	public void renderStart(VertexConsumer builder, VFXBuilders.WorldVFXBuilder.WorldVertexPlacementSupplier supplier, float u0, float v0, float u1, float v1) {
+		supplier.placeVertex(builder, null, xp, yp, z, u0, v0);
+		supplier.placeVertex(builder, null, xn, yn, z, u1, v0);
+	}
+
+	public void renderEnd(VertexConsumer builder, VFXBuilders.WorldVFXBuilder.WorldVertexPlacementSupplier supplier, float u0, float v0, float u1, float v1) {
+		supplier.placeVertex(builder, null, xn, yn, z, u1, v1);
+		supplier.placeVertex(builder, null, xp, yp, z, u0, v1);
+	}
+
+	public void renderMid(VertexConsumer builder, VFXBuilders.WorldVFXBuilder.WorldVertexPlacementSupplier supplier, float u0, float v0, float u1, float v1) {
+		renderEnd(builder, supplier, u0, v0, u1, v1);
+		renderStart(builder, supplier, u0, v0, u1, v1);
 	}
 }

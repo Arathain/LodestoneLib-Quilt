@@ -1,6 +1,6 @@
 package com.sammy.ortus.network.screenshake;
 
-import com.sammy.ortus.OrtusLib;
+import com.sammy.ortus.LodestoneLib;
 import com.sammy.ortus.handlers.ScreenshakeHandler;
 import com.sammy.ortus.systems.rendering.particle.Easing;
 import com.sammy.ortus.systems.screenshake.ScreenshakeInstance;
@@ -10,7 +10,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.util.Identifier;
 
 public class ScreenshakePacket implements Packet<ClientPlayPacketListener> {
-	public static final Identifier ID = new Identifier(OrtusLib.MODID, "screenshake");
+	public static final Identifier ID = new Identifier(LodestoneLib.MODID, "screenshake");
 
 	public final int duration;
 	public float intensity1, intensity2, intensity3;

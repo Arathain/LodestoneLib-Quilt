@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "ortus:vertex_distortion",
-  "fragment": "ortus:additive_texture",
+  "vertex": "lodestone:vertex_distortion",
+  "fragment": "lodestone:additive_texture",
   "attributes": [
     "Position",
     "Color",

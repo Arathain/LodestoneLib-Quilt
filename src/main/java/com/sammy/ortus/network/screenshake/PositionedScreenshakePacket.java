@@ -1,6 +1,6 @@
 package com.sammy.ortus.network.screenshake;
 
-import com.sammy.ortus.OrtusLib;
+import com.sammy.ortus.LodestoneLib;
 import com.sammy.ortus.handlers.ScreenshakeHandler;
 import com.sammy.ortus.systems.rendering.particle.Easing;
 import com.sammy.ortus.systems.screenshake.PositionedScreenshakeInstance;
@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class PositionedScreenshakePacket extends ScreenshakePacket {
 
-	public static final Identifier ID = new Identifier(OrtusLib.MODID, "positionedscreenshake");
+	public static final Identifier ID = new Identifier(LodestoneLib.MODID, "positionedscreenshake");
 
 	public final Vec3d position;
 	public final float falloffDistance;

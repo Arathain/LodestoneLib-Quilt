@@ -1,7 +1,7 @@
 package com.sammy.ortus.systems.postprocess;
 
 import com.mojang.blaze3d.shader.GlslImportProcessor;
-import com.sammy.ortus.OrtusLib;
+import com.sammy.ortus.LodestoneLib;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
@@ -15,7 +15,7 @@ public class OrtusGlslPreprocessor extends GlslImportProcessor {
 	@Nullable
 	@Override
 	public String loadImport(boolean inline, String name) {
-		OrtusLib.LOGGER.debug("Loading moj_import in EffectProgram: " + name);
+		LodestoneLib.LOGGER.debug("Loading moj_import in EffectProgram: " + name);
 
 		Identifier id= new Identifier(name);
 		Identifier id1 = new Identifier(id.getNamespace(), "shaders/include/" + id.getPath() + ".glsl");
@@ -44,7 +44,7 @@ public class OrtusGlslPreprocessor extends GlslImportProcessor {
 
 			return s2;
 		} catch (IOException ioexception) {
-			OrtusLib.LOGGER.error("Could not open GLSL import {}: {}", name, ioexception.getMessage());
+			LodestoneLib.LOGGER.error("Could not open GLSL import {}: {}", name, ioexception.getMessage());
 			return "#error " + ioexception.getMessage();
 		}
 	}

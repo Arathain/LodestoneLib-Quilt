@@ -1,0 +1,11 @@
+{
+  "attribute.name.lodestone.magic_damage": "Magic Damage",
+  "attribute.name.lodestone.magic_proficiency": "Magic Proficiency",
+  "attribute.name.lodestone.magic_resistance": "Magic Resistance",
+  "command.lodestone.devsetup": "World setup for not-annoying development work",
+  "command.lodestone.screenshake": "Command Successful, enjoy your screenshake.",
+  "lodestone.midnightconfig.SCREENSHAKE_INTENSITY": "Screenshake Intensity",
+  "lodestone.midnightconfig.title": "LodestoneLib Config",
+  "options.lodestone.screenshake_intensity.tooltip": "Controls how much screenshake is applied to your screen.",
+  "lodestone.midnightconfig.DELAYED_RENDERING": "Delayed Rendering"
+}

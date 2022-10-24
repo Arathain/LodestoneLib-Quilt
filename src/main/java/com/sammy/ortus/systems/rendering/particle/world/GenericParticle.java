@@ -3,7 +3,7 @@ package com.sammy.ortus.systems.rendering.particle.world;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.ortus.config.ClientConfig;
 import com.sammy.ortus.handlers.RenderHandler;
-import com.sammy.ortus.setup.OrtusRenderLayers;
+import com.sammy.ortus.setup.LodestoneRenderLayers;
 import com.sammy.ortus.systems.rendering.particle.ParticleTextureSheets;
 import com.sammy.ortus.systems.rendering.particle.SimpleParticleEffect;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
@@ -142,10 +142,10 @@ public class GenericParticle extends SpriteBillboardParticle {
 		VertexConsumer consumer = vertexConsumer;
 		if (ClientConfig.DELAYED_RENDERING) {
 			if (getType().equals(ParticleTextureSheets.ADDITIVE)) {
-				consumer = RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.ADDITIVE_PARTICLE);
+				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.ADDITIVE_PARTICLE);
 			}
 			if (getType().equals(ParticleTextureSheets.TRANSPARENT)) {
-				consumer = RenderHandler.DELAYED_RENDER.getBuffer(OrtusRenderLayers.TRANSPARENT_PARTICLE);
+				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
 			}
 		}
         super.buildGeometry(consumer, camera, tickDelta);
