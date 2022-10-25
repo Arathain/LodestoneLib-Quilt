@@ -19,9 +19,5 @@ public class WorldRendererMixin {
 	public void lodestone$injectionBeforeTransparencyChainProcess(CallbackInfo ci) {
 		PostProcessHandler.copyDepthBuffer();
 	}
-	@Inject(method="render", at=@At(value="CONSTANT", args="stringValue=blockentities", ordinal=0))
-	private void afterEntities(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
-		RenderHandler.renderLast(matrices);
-	}
 
 }

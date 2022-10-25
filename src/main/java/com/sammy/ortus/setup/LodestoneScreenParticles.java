@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 
-public class OrtusScreenParticles {
+public class LodestoneScreenParticles {
 	public static final ArrayList<ScreenParticleType<?>> PARTICLE_TYPES = new ArrayList<>();
 	public static final ScreenParticleType<ScreenParticleEffect> WISP = registerType(new OrtusScreenParticleType());
 	public static final ScreenParticleType<ScreenParticleEffect> SMOKE = registerType(new OrtusScreenParticleType());

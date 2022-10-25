@@ -9,7 +9,7 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.function.BiConsumer;
 
-public class OrtusParticles {
+public class LodestoneParticles {
 	public static final OrtusParticleType WISP_PARTICLE = new OrtusParticleType();
 	public static final OrtusParticleType SMOKE_PARTICLE = new OrtusParticleType();
 	public static final OrtusParticleType SPARKLE_PARTICLE = new OrtusParticleType();

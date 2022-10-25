@@ -43,6 +43,11 @@ dependencies {
 	modImplementation include("io.github.ladysnake:satin:${project.satin_version}")
 	modImplementation include("maven.modrinth:midnightlib:$midnightlib_version")
 	modImplementation ("dev.emi:emi:${project.emi_version}")
+	modRuntimeOnly("maven.modrinth:sodium:mc1.19.2-0.4.4")
+	modRuntimeOnly("maven.modrinth:iris:1.19.x-v1.3.1")
+
+	runtimeOnly compileOnly("org.anarres:jcpp:1.4.14") // for iris
+	runtimeOnly('org.joml:joml:1.10.4') // for sodium
 
 	//ease of multiplayer testing & game control
 	modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"

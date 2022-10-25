@@ -1,7 +1,7 @@
 package com.sammy.ortus;
 
 import com.sammy.ortus.helpers.OrtTestItem;
-import com.sammy.ortus.setup.OrtusParticles;
+import com.sammy.ortus.setup.LodestoneParticles;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -23,7 +23,7 @@ public class LodestoneLib implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("jesser where is the cocainer");
-		OrtusParticles.init();
+		LodestoneParticles.init();
 		if(QuiltLoader.isDevelopmentEnvironment()) {
 			Registry.register(Registry.ITEM, id("ort"), new OrtTestItem(new QuiltItemSettings().rarity(Rarity.EPIC).group(ItemGroup.MISC)));
 		}

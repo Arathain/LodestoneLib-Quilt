@@ -328,7 +328,7 @@ public class VFXBuilders {
 			if (trailSegments.size() < 3) {
 				return this;
 			}
-			trailSegments = trailSegments.stream().map(v -> new Vector4f(v.getY(), v.getY(), v.getZ(), v.getW())).collect(Collectors.toList());
+			trailSegments = trailSegments.stream().map(v -> new Vector4f(v.getX(), v.getY(), v.getZ(), v.getW())).collect(Collectors.toList());
 			for (Vector4f pos : trailSegments) {
 				pos.add(xOffset, yOffset, zOffset, 0);
 				pos.transform(pose);
@@ -360,6 +360,7 @@ public class VFXBuilders {
 			trailPoints.get(count).renderEnd(vertexConsumer, supplier, u0, MathHelper.lerp((count) * increment, v0, v1), u1, v1);
 			return this;
 		}
+
 
 		public WorldVFXBuilder renderBeam(VertexConsumer vertexConsumer, MatrixStack stack, Vec3d start, Vec3d end, float width) {
 			MinecraftClient minecraft = MinecraftClient.getInstance();

@@ -2,8 +2,8 @@ package com.sammy.ortus.mixin;
 
 import com.sammy.ortus.handlers.ScreenParticleHandler;
 import com.sammy.ortus.handlers.ScreenshakeHandler;
-import com.sammy.ortus.setup.OrtusParticles;
-import com.sammy.ortus.setup.OrtusScreenParticles;
+import com.sammy.ortus.setup.LodestoneParticles;
+import com.sammy.ortus.setup.LodestoneScreenParticles;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,8 +17,8 @@ import static com.sammy.ortus.LodestoneLib.RANDOM;
 final class MinecraftClientMixin {
 	@Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ReloadableResourceManager;registerReloader(Lnet/minecraft/resource/ResourceReloader;)V", ordinal = 17))
 	private void lodestone$registerParticleFactories(RunArgs runArgs, CallbackInfo ci) {
-		OrtusParticles.registerFactories();
-		OrtusScreenParticles.registerParticleFactories();
+		LodestoneParticles.registerFactories();
+		LodestoneScreenParticles.registerParticleFactories();
 	}
 
 	@Inject(method = "tick", at = @At("TAIL"))
