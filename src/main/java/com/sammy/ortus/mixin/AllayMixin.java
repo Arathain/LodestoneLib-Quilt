@@ -7,8 +7,10 @@ import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.quiltmc.loader.api.QuiltLoader;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -29,9 +31,12 @@ public abstract class AllayMixin extends PathAwareEntity implements PositionTrac
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	public void tick(CallbackInfo ci) {
-		trackPastPositions();
+		if (QuiltLoader.isDevelopmentEnvironment()) {
+			trackPastPositions();
+		}
 	}
 
+	@Unique
 	public void trackPastPositions() {
 		Vec3d position = getPos().add(0f, 0.2f, 0f);
 		if (!pastPositions.isEmpty()) {
