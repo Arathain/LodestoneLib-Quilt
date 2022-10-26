@@ -31,9 +31,9 @@ public abstract class AllayMixin extends PathAwareEntity implements PositionTrac
 
 	@Inject(method = "tick", at = @At("HEAD"))
 	public void tick(CallbackInfo ci) {
-		if (QuiltLoader.isDevelopmentEnvironment()) {
-			trackPastPositions();
-		}
+//		if (QuiltLoader.isDevelopmentEnvironment()) {
+//			trackPastPositions();
+//		}
 	}
 
 	@Unique
