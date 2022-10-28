@@ -1,7 +1,7 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "com.sammy.ortus",
+		"group": "com.sammy.lodestone",
 		"id": "lodestone",
 		"version": "${version}",
 		"metadata": {
@@ -20,8 +20,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.sammy.ortus.LodestoneLib",
-			"client_init": "com.sammy.ortus.LodestoneLibClient"
+			"init": "com.sammy.lodestone.LodestoneLib",
+			"client_init": "com.sammy.lodestone.LodestoneLibClient"
 		},
 		"depends": [
 			{
@@ -38,6 +38,6 @@
 			}
 		]
 	},
-	"access_widener": "ortuslib.accesswidener",
-	"mixin": "ortuslib.mixins.json"
+	"access_widener": "lodestone.accesswidener",
+	"mixin": "lodestone.mixins.json"
 }

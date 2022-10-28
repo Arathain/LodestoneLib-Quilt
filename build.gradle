@@ -77,7 +77,7 @@ jar {
 	}
 }
 loom {
-	accessWidenerPath = file("src/main/resources/ortuslib.accesswidener")
+	accessWidenerPath = file("src/main/resources/lodestone.accesswidener")
 }
 
 // configure the maven publication
