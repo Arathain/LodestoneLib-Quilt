@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.sammy.ortus.mixin",
+  "package": "com.sammy.lodestone.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [],
   "client": [
     "CameraMixin",
+    "EffectShaderMixin",
     "FabricSpriteProviderImplAccessor",
     "GameRendererMixin",
     "HandledScreenMixin",
