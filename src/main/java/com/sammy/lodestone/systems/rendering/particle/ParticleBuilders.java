@@ -357,9 +357,9 @@ public class ParticleBuilders {
 			double d = 0.25;
 			voxelShape.forEachBox(
 					(x1, y1, z1, x2, y2, z2) -> {
-						for (double x = x1; x <= x2; x = Math.round((x + 0.05) * 100) / 100) {
-							for (double y = y1; y <= y2; y = Math.round((y + 0.05) * 100) / 100) {
-								for (double z = z1; z <= z2; z = Math.round((z + 0.05) * 100) / 100) {
+						for (double x = x1; x <= x2; x = Math.round((x + 0.05) * 16) / 16) {
+							for (double y = y1; y <= y2; y = Math.round((y + 0.05) * 16) / 16) {
+								for (double z = z1; z <= z2; z = Math.round((z + 0.05) * 16) / 16) {
 									int components = 0;
 									if (x == x1 || x == x2) components++;
 									if (y == y1 || y == x2) components++;
