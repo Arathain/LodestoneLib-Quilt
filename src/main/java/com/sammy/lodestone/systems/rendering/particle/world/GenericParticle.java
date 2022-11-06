@@ -115,7 +115,16 @@ public class GenericParticle extends SpriteBillboardParticle {
 			colorAlpha = MathHelper.lerp(data.alphaCurveStartEasing.ease(getCurve(data.alphaCoefficient), 0, 1, 1), data.alpha1, data.alpha2);
 		}
 		prevAngle = angle;
-		angle += MathHelper.lerp(data.spinCurveStartEasing.ease(getCurve(data.spinCoefficient), 0, 1, 1), data.spin1, data.spin2);
+		if (data.isTrinarySpin()) {
+			float trinaryAge = getCurve(data.spinCoefficient);
+			if (trinaryAge >= 0.5f) {
+				angle += MathHelper.lerp(data.spinCurveEndEasing.ease(trinaryAge - 0.5f, 0, 1, 0.5f), data.spin2, data.spin3);
+			} else {
+				angle += MathHelper.lerp(data.spinCurveStartEasing.ease(trinaryAge, 0, 1, 0.5f), data.spin1, data.spin2);
+			}
+		} else {
+			angle += MathHelper.lerp(data.spinCurveStartEasing.ease(getCurve(data.alphaCoefficient), 0, 1, 1), data.spin1, data.spin2);
+		}
 		if (data.forcedMotion) {
 			float motionAge = getCurve(data.motionCoefficient);
 			Vec3f currentMotion = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? startingVelocity : new Vec3f((float) velocityX, (float) velocityY, (float) velocityZ);
