@@ -4,6 +4,7 @@ import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.systems.screenshake.ScreenshakeInstance;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.util.random.RandomGenerator;
 
@@ -17,8 +18,8 @@ public class ScreenshakeHandler {
 
 	public static void cameraTick(Camera camera, RandomGenerator random) {
 		if (intensity >= 0.1) {
-			yawOffset = randomizeOffset();
-			pitchOffset = randomizeOffset();
+			yawOffset = randomizeOffset(10);
+			pitchOffset = randomizeOffset(-10);
 			camera.setRotation(camera.getYaw() + yawOffset, camera.getPitch() + pitchOffset);
 		}
 	}
@@ -34,9 +35,10 @@ public class ScreenshakeHandler {
 		INSTANCES.add(instance);
 	}
 
-	public static float randomizeOffset() {
+	public static float randomizeOffset(int offset) {
 		float min = -intensity * 2;
 		float max = intensity * 2;
-		return min >= max ? min : (float) sampler.sample((MinecraftClient.getInstance().world.getTime() + MinecraftClient.getInstance().getTickDelta())/20, 0, 0) * (max - min) + min;
+		float sampled = (float) sampler.sample((MinecraftClient.getInstance().world.getTime() + MinecraftClient.getInstance().getTickDelta())/intensity, offset, 0) * 1.5f;
+		return min >= max ? min : sampled * max;
 	}
 }
