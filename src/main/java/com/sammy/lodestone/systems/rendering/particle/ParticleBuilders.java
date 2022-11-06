@@ -6,14 +6,11 @@ import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
 import com.sammy.lodestone.systems.rendering.particle.world.WorldParticleEffect;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.particle.BlockDustParticle;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.*;
-import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 
@@ -357,26 +354,32 @@ public class ParticleBuilders {
 			double d = 0.25;
 			voxelShape.forEachBox(
 					(x1, y1, z1, x2, y2, z2) -> {
-						for (double x = x1; x <= x2; x = Math.round((x + 0.05) * 16) / 16) {
-							for (double y = y1; y <= y2; y = Math.round((y + 0.05) * 16) / 16) {
-								for (double z = z1; z <= z2; z = Math.round((z + 0.05) * 16) / 16) {
-									int components = 0;
-									if (x == x1 || x == x2) components++;
-									if (y == y1 || y == x2) components++;
-									if (z == z1 || z == x2) components++;
-
-									if (components >= 2) {
-										double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
-										this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
-										this.vy += Math.sin(pitch) * ySpeed;
-										this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
-										level.addParticle(data, pos.getX() + x, pos.getY() + y, pos.getZ() + z, vx, vy, vz);
-									}
-								}
-							}
-						}
+						Vec3d v = Vec3d.of(pos);
+						Vec3d b = Vec3d.of(pos).add(x1, y1, z1);
+						Vec3d e = Vec3d.of(pos).add(x2, y2, z2);
+						spawnLine(level, b, v.add(x2, y1, z1));
+						spawnLine(level, b, v.add(x1, y2, z1));
+						spawnLine(level, b, v.add(x1, y1, z2));
+						spawnLine(level, v.add(x1, y2, z1), v.add(x2, y2, z1));
+						spawnLine(level, v.add(x1, y2, z1), v.add(x1, y2, z2));
+						spawnLine(level, e, v.add(x2, y2, z1));
+						spawnLine(level, e, v.add(x1, y2, z2));
+						spawnLine(level, e, v.add(x2, y1, z2));
+						spawnLine(level, v.add(x2, y1, z1), v.add(x2, y1, z2));
+						spawnLine(level, v.add(x1, y1, z2), v.add(x2, y1, z2));
+						spawnLine(level, v.add(x2, y1, z1), v.add(x2, y2, z1));
+						spawnLine(level, v.add(x1, y1, z2), v.add(x1, y2, z2));
 					}
 			);
+			return this;
+		}
+		public WorldParticleBuilder spawnLine(World world, Vec3d one, Vec3d two) {
+			double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
+			this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
+			this.vy += Math.sin(pitch) * ySpeed;
+			this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
+			Vec3d pos = one.lerp(two, random.nextDouble());
+			world.addParticle(data, pos.x, pos.y, pos.z, vx, vy, vz);
 			return this;
 		}
 
