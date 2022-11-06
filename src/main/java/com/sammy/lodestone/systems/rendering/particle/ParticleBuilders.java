@@ -356,25 +356,22 @@ public class ParticleBuilders {
 			VoxelShape voxelShape = state.getOutlineShape(level, pos);
 			double d = 0.25;
 			voxelShape.forEachBox(
-					(dx, e, f, g, h, i) -> {
-						double j = Math.min(1.0, g - dx);
-						double k = Math.min(1.0, h - e);
-						double l = Math.min(1.0, i - f);
-						int m = Math.max(2, MathHelper.ceil(j / 0.25));
-						int n = Math.max(2, MathHelper.ceil(k / 0.25));
-						int o = Math.max(2, MathHelper.ceil(l / 0.25));
+					(x1, y1, z1, x2, y2, z2) -> {
+						for (double x = x1; x <= x2; x = Math.round((x + 0.05) * 100) / 100) {
+							for (double y = y1; y <= y2; y = Math.round((y + 0.05) * 100) / 100) {
+								for (double z = z1; z <= z2; z = Math.round((z + 0.05) * 100) / 100) {
+									int components = 0;
+									if (x == x1 || x == x2) components++;
+									if (y == y1 || y == x2) components++;
+									if (z == z1 || z == x2) components++;
 
-						for(int p = 0; p < m; ++p) {
-							for(int q = 0; q < n; ++q) {
-								for(int r = 0; r < o; ++r) {
-									double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
-									this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
-									this.vy += Math.sin(pitch) * ySpeed;
-									this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
-									double v = ((double)p + 0.5) / (double)m * j + dx;
-									double w = ((double)q + 0.5) / (double)n * k + e;
-									double x = ((double)r + 0.5) / (double)o * l + f;
-									level.addParticle(data, pos.getX() + v, pos.getY() + w, pos.getZ() + x, vx, vy, vz);
+									if (components >= 2) {
+										double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
+										this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
+										this.vy += Math.sin(pitch) * ySpeed;
+										this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
+										level.addParticle(data, pos.getX() + x, pos.getY() + y, pos.getZ() + z, vx, vy, vz);
+									}
 								}
 							}
 						}
@@ -397,7 +394,6 @@ public class ParticleBuilders {
 			this.dz = direction$axis == Direction.Axis.Z ? 0.5D + d0 * (double) direction.getOffsetZ() : random.nextDouble();
 
 			level.addParticle(data, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, vx, vy, vz);
-//            PostProcessing.BLOOM_UNREAL.postParticle(data, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, vx, vy, vz);
 			return this;
 		}
 
