@@ -378,6 +378,10 @@ public class ParticleBuilders {
 			this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
 			this.vy += Math.sin(pitch) * ySpeed;
 			this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
+			double yaw2 = random.nextFloat() * Math.PI * 2, pitch2 = random.nextFloat() * Math.PI - Math.PI / 2, xDist = random.nextFloat() * maxXDist, yDist = random.nextFloat() * maxYDist, zDist = random.nextFloat() * maxZDist;
+			this.dx = Math.sin(yaw2) * Math.cos(pitch2) * xDist;
+			this.dy = Math.sin(pitch2) * yDist;
+			this.dz = Math.cos(yaw2) * Math.cos(pitch2) * zDist;
 			Vec3d pos = one.lerp(two, random.nextDouble());
 			world.addParticle(data, pos.x, pos.y, pos.z, vx, vy, vz);
 			return this;
