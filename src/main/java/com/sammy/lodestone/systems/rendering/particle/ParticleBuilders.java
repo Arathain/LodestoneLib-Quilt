@@ -383,7 +383,7 @@ public class ParticleBuilders {
 			this.dy = Math.sin(pitch2) * yDist;
 			this.dz = Math.cos(yaw2) * Math.cos(pitch2) * zDist;
 			Vec3d pos = one.lerp(two, random.nextDouble());
-			world.addParticle(data, pos.x, pos.y, pos.z, vx, vy, vz);
+			world.addParticle(data, pos.x + dx, pos.y + dy, pos.z + dz, vx, vy, vz);
 			return this;
 		}
 
