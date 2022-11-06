@@ -5,11 +5,16 @@ import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleEffec
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
 import com.sammy.lodestone.systems.rendering.particle.world.WorldParticleEffect;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.particle.BlockDustParticle;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.*;
+import net.minecraft.util.random.RandomGenerator;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -345,6 +350,36 @@ public class ParticleBuilders {
 				level.addParticle(data, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, vx, vy, vz);
 
 			}
+			return this;
+		}
+		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state) {
+			VoxelShape voxelShape = state.getOutlineShape(level, pos);
+			double d = 0.25;
+			voxelShape.forEachBox(
+					(dx, e, f, g, h, i) -> {
+						double j = Math.min(1.0, g - dx);
+						double k = Math.min(1.0, h - e);
+						double l = Math.min(1.0, i - f);
+						int m = Math.max(2, MathHelper.ceil(j / 0.25));
+						int n = Math.max(2, MathHelper.ceil(k / 0.25));
+						int o = Math.max(2, MathHelper.ceil(l / 0.25));
+
+						for(int p = 0; p < m; ++p) {
+							for(int q = 0; q < n; ++q) {
+								for(int r = 0; r < o; ++r) {
+									double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
+									this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
+									this.vy += Math.sin(pitch) * ySpeed;
+									this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
+									double v = ((double)p + 0.5) / (double)m * j + dx;
+									double w = ((double)q + 0.5) / (double)n * k + e;
+									double x = ((double)r + 0.5) / (double)o * l + f;
+									level.addParticle(data, pos.getX() + v, pos.getY() + w, pos.getZ() + x, vx, vy, vz);
+								}
+							}
+						}
+					}
+			);
 			return this;
 		}
 
