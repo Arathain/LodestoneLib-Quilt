@@ -15,7 +15,11 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
 
 import java.awt.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Supplier;
 
 @SuppressWarnings("ALL")
 public class ParticleBuilders {
@@ -350,25 +354,52 @@ public class ParticleBuilders {
 			return this;
 		}
 		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state) {
+			return evenlySpawnAtAlignedEdges(level, pos, state, 100);
+		}
+		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state, int max) {
 			VoxelShape voxelShape = state.getOutlineShape(level, pos);
-			double d = 0.25;
+			int[] c = new int[1];
+			boolean[] bl = new boolean[1];
+			bl[0] = false;
 			voxelShape.forEachBox(
 					(x1, y1, z1, x2, y2, z2) -> {
+						if(bl[0]) {
+							return;
+						}
 						Vec3d v = Vec3d.of(pos);
 						Vec3d b = Vec3d.of(pos).add(x1, y1, z1);
 						Vec3d e = Vec3d.of(pos).add(x2, y2, z2);
-						spawnLine(level, b, v.add(x2, y1, z1));
-						spawnLine(level, b, v.add(x1, y2, z1));
-						spawnLine(level, b, v.add(x1, y1, z2));
-						spawnLine(level, v.add(x1, y2, z1), v.add(x2, y2, z1));
-						spawnLine(level, v.add(x1, y2, z1), v.add(x1, y2, z2));
-						spawnLine(level, e, v.add(x2, y2, z1));
-						spawnLine(level, e, v.add(x1, y2, z2));
-						spawnLine(level, e, v.add(x2, y1, z2));
-						spawnLine(level, v.add(x2, y1, z1), v.add(x2, y1, z2));
-						spawnLine(level, v.add(x1, y1, z2), v.add(x2, y1, z2));
-						spawnLine(level, v.add(x2, y1, z1), v.add(x2, y2, z1));
-						spawnLine(level, v.add(x1, y1, z2), v.add(x1, y2, z2));
+						Supplier<Boolean> r = () -> {
+							c[0]++;
+							if(c[0] >= max) {
+								return true;
+							}
+							return false;
+						};
+						List<Runnable> runs = new ArrayList<>();
+						runs.add(() -> spawnLine(level, b, v.add(x2, y1, z1)));
+						runs.add(() -> spawnLine(level, b, v.add(x1, y2, z1)));
+						runs.add(() -> spawnLine(level, b, v.add(x1, y1, z2)));
+						runs.add(() -> spawnLine(level, v.add(x1, y2, z1), v.add(x2, y2, z1)));
+						runs.add(() -> spawnLine(level, v.add(x1, y2, z1), v.add(x1, y2, z2)));
+						runs.add(() -> spawnLine(level, e, v.add(x2, y2, z1)));
+						runs.add(() -> spawnLine(level, e, v.add(x1, y2, z2)));
+						runs.add(() -> spawnLine(level, e, v.add(x2, y1, z2)));
+						runs.add(() -> spawnLine(level, v.add(x2, y1, z1), v.add(x2, y1, z2)));
+						runs.add(() -> spawnLine(level, v.add(x1, y1, z2), v.add(x2, y1, z2)));
+						runs.add(() -> spawnLine(level, v.add(x2, y1, z1), v.add(x2, y2, z1)));
+						runs.add(() -> spawnLine(level, v.add(x1, y1, z2), v.add(x1, y2, z2)));
+						Collections.shuffle(runs);
+						for(Runnable runnable : runs) {
+							runnable.run();
+							if(r.get()) {
+								bl[0] = true;
+								break;
+							}
+						}
+						if(bl[0]) {
+							return;
+						}
 					}
 			);
 			return this;
