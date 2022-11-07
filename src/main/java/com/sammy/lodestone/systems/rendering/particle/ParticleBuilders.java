@@ -12,6 +12,7 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
 
 import java.awt.*;
@@ -358,6 +359,9 @@ public class ParticleBuilders {
 		}
 		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state, int max) {
 			VoxelShape voxelShape = state.getOutlineShape(level, pos);
+			if(voxelShape.isEmpty()) {
+				voxelShape = VoxelShapes.fullCube();
+			}
 			int[] c = new int[1];
 			int perBoxMax = (int) max/voxelShape.getBoundingBoxes().size();
 			Supplier<Boolean> r = () -> {
