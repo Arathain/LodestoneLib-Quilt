@@ -359,23 +359,20 @@ public class ParticleBuilders {
 		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state, int max) {
 			VoxelShape voxelShape = state.getOutlineShape(level, pos);
 			int[] c = new int[1];
-			boolean[] bl = new boolean[1];
-			bl[0] = false;
+			int perBoxMax = (int) max/voxelShape.getBoundingBoxes().size();
+			Supplier<Boolean> r = () -> {
+				c[0]++;
+				if(c[0] >= perBoxMax) {
+					c[0] = 0;
+					return true;
+				}
+				return false;
+			};
+			Vec3d v = Vec3d.of(pos);
 			voxelShape.forEachBox(
 					(x1, y1, z1, x2, y2, z2) -> {
-						if(bl[0]) {
-							return;
-						}
-						Vec3d v = Vec3d.of(pos);
-						Vec3d b = Vec3d.of(pos).add(x1, y1, z1);
-						Vec3d e = Vec3d.of(pos).add(x2, y2, z2);
-						Supplier<Boolean> r = () -> {
-							c[0]++;
-							if(c[0] >= max) {
-								return true;
-							}
-							return false;
-						};
+						Vec3d b = v.add(x1, y1, z1);
+						Vec3d e = v.add(x2, y2, z2);
 						List<Runnable> runs = new ArrayList<>();
 						runs.add(() -> spawnLine(level, b, v.add(x2, y1, z1)));
 						runs.add(() -> spawnLine(level, b, v.add(x1, y2, z1)));
@@ -393,12 +390,8 @@ public class ParticleBuilders {
 						for(Runnable runnable : runs) {
 							runnable.run();
 							if(r.get()) {
-								bl[0] = true;
 								break;
 							}
-						}
-						if(bl[0]) {
-							return;
 						}
 					}
 			);
