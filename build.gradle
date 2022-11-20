@@ -35,7 +35,8 @@ dependencies {
 	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${project.quilted_fabric_api_version}-${project.minecraft_version}"
 	modImplementation include("io.github.ladysnake:satin:${project.satin_version}")
 	modImplementation include("maven.modrinth:midnightlib:$midnightlib_version")
-	modImplementation ("dev.emi:emi:${project.emi_version}")
+	modCompileOnly ("dev.emi:emi:${project.emi_version}")
+	modRuntimeOnly ("dev.emi:emi:${project.emi_version}")
 
 	//ease of multiplayer testing & game control
 	modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"
