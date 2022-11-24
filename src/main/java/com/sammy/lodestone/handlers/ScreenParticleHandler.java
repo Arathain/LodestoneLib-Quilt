@@ -5,6 +5,7 @@ package com.sammy.lodestone.handlers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.datafixers.util.Pair;
+import com.sammy.lodestone.LodestoneLib;
 import com.sammy.lodestone.systems.rendering.particle.screen.GenericScreenParticle;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
@@ -98,22 +99,26 @@ public class ScreenParticleHandler {
 	@SuppressWarnings("WhileLoopReplaceableByForEach")
 	public static void renderParticles(ScreenParticle.RenderOrder... renderOrders) {
 		final MinecraftClient client = MinecraftClient.getInstance();
-		Iterator<Map.Entry<Pair<ParticleTextureSheet, ScreenParticle.RenderOrder>, ArrayList<ScreenParticle>>> itater = PARTICLES.entrySet().iterator();
-		while(itater.hasNext()) {
-			Map.Entry<Pair<ParticleTextureSheet, ScreenParticle.RenderOrder>, ArrayList<ScreenParticle>> next = itater.next();
-			ParticleTextureSheet type = next.getKey().getFirst();
-			if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(next.getKey().getSecond()))) {
-				type.begin(TESSELATOR.getBufferBuilder(), client.getTextureManager());
-				Iterator<ScreenParticle> itetater = next.getValue().iterator();
-				while (itetater.hasNext()) {
-					ScreenParticle nex = itetater.next();
-					if (nex instanceof GenericScreenParticle genericScreenParticle) {
-						genericScreenParticle.trackStack();
+		try {
+			Iterator<Map.Entry<Pair<ParticleTextureSheet, ScreenParticle.RenderOrder>, ArrayList<ScreenParticle>>> itater = PARTICLES.entrySet().iterator();
+			while (itater.hasNext()) {
+				Map.Entry<Pair<ParticleTextureSheet, ScreenParticle.RenderOrder>, ArrayList<ScreenParticle>> next = itater.next();
+				ParticleTextureSheet type = next.getKey().getFirst();
+				if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(next.getKey().getSecond()))) {
+					type.begin(TESSELATOR.getBufferBuilder(), client.getTextureManager());
+					Iterator<ScreenParticle> itetater = next.getValue().iterator();
+					while (itetater.hasNext()) {
+						ScreenParticle nex = itetater.next();
+						if (nex instanceof GenericScreenParticle genericScreenParticle) {
+							genericScreenParticle.trackStack();
+						}
+						nex.render(TESSELATOR.getBufferBuilder());
 					}
-					nex.render(TESSELATOR.getBufferBuilder());
+					type.draw(TESSELATOR);
 				}
-				type.draw(TESSELATOR);
 			}
+		} catch (Exception e) {
+			LodestoneLib.LOGGER.info("What is this\n" + e.getMessage());
 		}
 	}
 
