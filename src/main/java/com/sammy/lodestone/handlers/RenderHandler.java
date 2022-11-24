@@ -7,7 +7,9 @@ import com.sammy.lodestone.helpers.RenderHelper;
 import com.sammy.lodestone.setup.LodestoneRenderLayers;
 import com.sammy.lodestone.systems.rendering.ExtendedShader;
 import com.sammy.lodestone.systems.rendering.ShaderUniformHandler;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.ShaderProgram;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
 import org.quiltmc.loader.api.QuiltLoader;
@@ -22,12 +24,11 @@ public class RenderHandler {
 	public static VertexConsumerProvider.Immediate EARLY_DELAYED_RENDER;
 	public static VertexConsumerProvider.Immediate DELAYED_RENDER;
 	public static VertexConsumerProvider.Immediate LATE_DELAYED_RENDER;
-	public static VertexConsumerProvider.Immediate BLOOM_BUFFER;
 	public static Matrix4f PARTICLE_MATRIX = null;
 
 	public static void init() {
 		EARLY_DELAYED_RENDER = VertexConsumerProvider.immediate(EARLY_BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 262144 : 256));
-		DELAYED_RENDER = VertexConsumerProvider.immediate(BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 262144 : 256));
+		DELAYED_RENDER = VertexConsumerProvider.immediate(BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 2097152 : 256));
 		LATE_DELAYED_RENDER = VertexConsumerProvider.immediate(LATE_BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 262144 : 256));
 	}
 	public static void renderLast(MatrixStack stack) {
@@ -39,8 +40,8 @@ public class RenderHandler {
 				RenderSystem.getModelViewStack().multiplyMatrix(PARTICLE_MATRIX);
 			}
 			RenderSystem.applyModelViewMatrix();
-			DELAYED_RENDER.draw(LodestoneRenderLayers.ADDITIVE_PARTICLE);
 			DELAYED_RENDER.draw(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
+			DELAYED_RENDER.draw(LodestoneRenderLayers.ADDITIVE_PARTICLE);
 			RenderSystem.getModelViewStack().pop();
 			RenderSystem.applyModelViewMatrix();
 		}
