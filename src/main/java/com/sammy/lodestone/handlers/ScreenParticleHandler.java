@@ -104,7 +104,9 @@ public class ScreenParticleHandler {
 			ParticleTextureSheet type = next.getKey().getFirst();
 			if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(next.getKey().getSecond()))) {
 				type.begin(TESSELATOR.getBufferBuilder(), client.getTextureManager());
-				for (ScreenParticle nex : next.getValue()) {
+				Iterator<ScreenParticle> itetater = next.getValue().iterator();
+				while (itetater.hasNext()) {
+					ScreenParticle nex = itetater.next();
 					if (nex instanceof GenericScreenParticle genericScreenParticle) {
 						genericScreenParticle.trackStack();
 					}
