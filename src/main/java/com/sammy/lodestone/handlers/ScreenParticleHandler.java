@@ -5,6 +5,7 @@ package com.sammy.lodestone.handlers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.datafixers.util.Pair;
+import com.sammy.lodestone.LodestoneLib;
 import com.sammy.lodestone.systems.rendering.particle.screen.GenericScreenParticle;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
@@ -12,6 +13,7 @@ import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle
 import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ParticleEmitter;
 //import dev.emi.emi.screen.RecipeScreen;
+import dev.emi.emi.screen.RecipeScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;
@@ -62,7 +64,7 @@ public class ScreenParticleHandler {
 					ScreenParticle.RenderOrder renderOrder = AFTER_EVERYTHING;
 					Screen screen = minecraft.currentScreen;
 					if (screen != null) {
-						if (!QuiltLoader.isModLoaded("emi") /*|| !(screen instanceof RecipeScreen)*/) {
+						if (!QuiltLoader.isModLoaded("emi") || !(screen instanceof RecipeScreen)) {
 							renderOrder = BEFORE_TOOLTIPS;
 						}
 						if (renderingHotbar) {
@@ -84,9 +86,9 @@ public class ScreenParticleHandler {
 	public static void renderParticles() {
 		final MinecraftClient client = MinecraftClient.getInstance();
 		Screen screen = client.currentScreen;
-//		if (QuiltLoader.isModLoaded("emi") && screen instanceof RecipeScreen) {
-//			renderParticles(AFTER_EVERYTHING);
-//		}
+		if (QuiltLoader.isModLoaded("emi") && screen instanceof RecipeScreen) {
+			renderParticles(AFTER_EVERYTHING);
+		}
 		if (screen == null || screen instanceof ChatScreen || screen instanceof GameModeSelectionScreen) {
 			renderParticles(AFTER_EVERYTHING, BEFORE_UI);
 		}
@@ -94,21 +96,30 @@ public class ScreenParticleHandler {
 		canSpawnParticles = false;
 	}
 
+	@SuppressWarnings("WhileLoopReplaceableByForEach")
 	public static void renderParticles(ScreenParticle.RenderOrder... renderOrders) {
 		final MinecraftClient client = MinecraftClient.getInstance();
-		PARTICLES.forEach((pair, particles) -> {
-			ParticleTextureSheet type = pair.getFirst();
-			if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(pair.getSecond()))) {
-				type.begin(TESSELATOR.getBufferBuilder(), client.getTextureManager());
-				for (ScreenParticle next : particles) {
-					if (next instanceof GenericScreenParticle genericScreenParticle) {
-						genericScreenParticle.trackStack();
+		try {
+			Iterator<Map.Entry<Pair<ParticleTextureSheet, ScreenParticle.RenderOrder>, ArrayList<ScreenParticle>>> itater = PARTICLES.entrySet().iterator();
+			while (itater.hasNext()) {
+				Map.Entry<Pair<ParticleTextureSheet, ScreenParticle.RenderOrder>, ArrayList<ScreenParticle>> next = itater.next();
+				ParticleTextureSheet type = next.getKey().getFirst();
+				if (Arrays.stream(renderOrders).anyMatch(o -> o.equals(next.getKey().getSecond()))) {
+					type.begin(TESSELATOR.getBufferBuilder(), client.getTextureManager());
+					Iterator<ScreenParticle> itetater = next.getValue().iterator();
+					while (itetater.hasNext()) {
+						ScreenParticle nex = itetater.next();
+						if (nex instanceof GenericScreenParticle genericScreenParticle) {
+							genericScreenParticle.trackStack();
+						}
+						nex.render(TESSELATOR.getBufferBuilder());
 					}
-					next.render(TESSELATOR.getBufferBuilder());
+					type.draw(TESSELATOR);
 				}
-				type.draw(TESSELATOR);
 			}
-		});
+		} catch (Exception e) {
+			LodestoneLib.LOGGER.info("What is this\n" + e.getMessage());
+		}
 	}
 
 	@SuppressWarnings("ALL")
