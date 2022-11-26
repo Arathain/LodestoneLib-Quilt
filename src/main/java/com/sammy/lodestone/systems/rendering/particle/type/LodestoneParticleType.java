@@ -15,6 +15,10 @@ public class LodestoneParticleType extends ParticleType<WorldParticleEffect> {
 		super(false, WorldParticleEffect.DESERIALIZER);
 	}
 
+	@Override
+	public boolean shouldAlwaysSpawn() {
+		return true;
+	}
 
 	@Override
 	public Codec<WorldParticleEffect> getCodec() {
