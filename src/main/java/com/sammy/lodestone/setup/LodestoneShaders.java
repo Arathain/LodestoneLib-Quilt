@@ -6,6 +6,7 @@ import com.sammy.lodestone.LodestoneLib;
 import com.sammy.lodestone.systems.rendering.ExtendedShader;
 import com.sammy.lodestone.systems.rendering.ShaderHolder;
 import net.minecraft.client.render.ShaderProgram;
+import net.minecraft.resource.ResourceFactory;
 import net.minecraft.resource.ResourceManager;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class LodestoneShaders {
 	public static ShaderHolder COLOR_GRADIENT_TEXTURE = new ShaderHolder("DarkColor");
 	public static ShaderHolder SCROLLING_TRIANGLE_TEXTURE = new ShaderHolder("Speed");
 
-	public static void init(ResourceManager manager) throws IOException {
+	public static void init(ResourceFactory manager) throws IOException {
 		shaderList = new ArrayList<>();
 		registerShader(ExtendedShader.createShaderInstance(LODESTONE_PARTICLE, manager, LodestoneLib.id("particle"), VertexFormats.POSITION_TEXTURE_COLOR_LIGHT));
 		registerShader(ExtendedShader.createShaderInstance(ADDITIVE_TEXTURE, manager, LodestoneLib.id("additive_texture"), VertexFormats.POSITION_COLOR_TEXTURE_LIGHT));

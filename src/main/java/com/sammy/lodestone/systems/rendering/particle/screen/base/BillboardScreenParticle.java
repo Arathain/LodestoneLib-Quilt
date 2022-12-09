@@ -3,9 +3,9 @@ package com.sammy.lodestone.systems.rendering.particle.screen.base;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Quaternion;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.world.World;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import static com.sammy.lodestone.helpers.RenderHelper.FULL_BRIGHT;
 
@@ -30,12 +30,12 @@ public abstract class BillboardScreenParticle extends ScreenParticle {
         float v0 = getMinV();
         float v1 = getMaxV();
         float roll = MathHelper.lerp(tickDelta, this.prevAngle, this.angle);
-        Vec3f[] vectors = new Vec3f[]{new Vec3f(-1.0F, -1.0F, 0.0F), new Vec3f(-1.0F, 1.0F, 0.0F), new Vec3f(1.0F, 1.0F, 0.0F), new Vec3f(1.0F, -1.0F, 0.0F)};
-        Quaternion rotation = Vec3f.POSITIVE_Z.getRadialQuaternion(roll);
+        Vector3f[] vectors = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        Quaternionf rotation = new Quaternionf().rotationZ(roll);
         for (int i = 0; i < 4; ++i) {
-            Vec3f vector3f = vectors[i];
+            Vector3f vector3f = vectors[i];
             vector3f.rotate(rotation);
-            vector3f.scale(size);
+            vector3f.mul(size);
             vector3f.add((float) x, (float) y, 0);
         }
       /* todo, jei tooltips render at 400 z, while the held by mouse item stack renders at around 380, we need a value between to be above the stack, but below JEI tooltips.
@@ -43,10 +43,10 @@ public abstract class BillboardScreenParticle extends ScreenParticle {
          We're not even using JEI but fuck if I care
        */
         int z = 390;
-        bufferBuilder.vertex(vectors[0].getX(), vectors[0].getY(), z).uv(u1, v1).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
-        bufferBuilder.vertex(vectors[1].getX(), vectors[1].getY(), z).uv(u1, v0).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
-        bufferBuilder.vertex(vectors[2].getX(), vectors[2].getY(), z).uv(u0, v0).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
-        bufferBuilder.vertex(vectors[3].getX(), vectors[3].getY(), z).uv(u0, v1).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
+        bufferBuilder.vertex(vectors[0].x, vectors[0].y, z).uv(u1, v1).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
+        bufferBuilder.vertex(vectors[1].x, vectors[1].y, z).uv(u1, v0).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
+        bufferBuilder.vertex(vectors[2].x, vectors[2].y, z).uv(u0, v0).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
+        bufferBuilder.vertex(vectors[3].x, vectors[3].y, z).uv(u0, v1).color(this.red, this.green, this.blue, this.alpha).light(FULL_BRIGHT).next();
     }
 
     public float getQuadSize(float tickDelta) {

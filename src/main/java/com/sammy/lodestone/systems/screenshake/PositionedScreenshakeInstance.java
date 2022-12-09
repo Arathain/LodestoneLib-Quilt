@@ -3,8 +3,8 @@ package com.sammy.lodestone.systems.screenshake;
 import com.sammy.lodestone.systems.rendering.particle.Easing;
 import net.minecraft.client.render.Camera;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.random.RandomGenerator;
+import org.joml.Vector3f;
 
 public class PositionedScreenshakeInstance extends ScreenshakeInstance{
 	public Vec3d position;
@@ -36,9 +36,9 @@ public class PositionedScreenshakeInstance extends ScreenshakeInstance{
 			distanceMultiplier = 1-current/remaining;
 		}
 
-		Vec3f lookDirection = camera.getHorizontalPlane();
+		Vector3f lookDirection = camera.getHorizontalPlane();
 		Vec3d directionToScreenshake = position.subtract(camera.getPos()).normalize();
-		float angle = Math.max(minDot, lookDirection.dot(new Vec3f(directionToScreenshake)));
+		float angle = Math.max(minDot, lookDirection.dot(directionToScreenshake.m_sruzucpd()));
 		return intensity * distanceMultiplier * angle;
 	}
 }

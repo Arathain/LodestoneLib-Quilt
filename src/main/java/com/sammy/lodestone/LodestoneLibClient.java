@@ -19,7 +19,6 @@ public class LodestoneLibClient implements ClientModInitializer {
 
 		LodestoneRenderLayers.yea();
 		RenderHandler.init();
-//		OrtusParticles.init();
 
 		ClientPlayNetworking.registerGlobalReceiver(ScreenshakePacket.ID, (client, handler, buf, responseSender) -> new ScreenshakePacket(buf).apply(client.getNetworkHandler()));
 		ClientPlayNetworking.registerGlobalReceiver(PositionedScreenshakePacket.ID, (client, handler, buf, responseSender) -> PositionedScreenshakePacket.fromBuf(buf).apply(client.getNetworkHandler()));

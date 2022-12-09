@@ -22,7 +22,7 @@ public class OrtTestItem extends Item {
 	public ActionResult useOnBlock(ItemUsageContext context) {
 		if(context.getWorld() instanceof ServerWorld s) {
 			PlayerEntity user = context.getPlayer();
-			s.getPlayers(players -> players.getWorld().isChunkLoaded(new ChunkPos(user.getBlockPos()).x, new ChunkPos(user.getBlockPos()).z)).forEach(players -> {
+			s.getPlayers().stream().filter(player -> player.getWorld().isChunkLoaded(new ChunkPos(user.getBlockPos()).x, new ChunkPos(user.getBlockPos()).z)).forEach(players -> {
 				PacketByteBuf buf = new PacketByteBuf(Unpooled.buffer());
 				new PositionedScreenshakePacket(70, Vec3d.ofCenter(context.getBlockPos()),20f, 0.3f, 25f, Easing.CIRC_IN).setIntensity(0f, 1f, 0f).setEasing(Easing.CIRC_OUT, Easing.CIRC_IN).write(buf);
 				ServerPlayNetworking.send(players, PositionedScreenshakePacket.ID, buf);

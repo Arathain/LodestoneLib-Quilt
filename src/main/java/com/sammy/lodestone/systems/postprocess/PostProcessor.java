@@ -15,8 +15,8 @@ import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,19 +30,19 @@ public abstract class PostProcessor {
 	protected static final MinecraftClient MC = MinecraftClient.getInstance();
 
 	public static final Collection<Pair<String, Consumer<GlUniform>>> COMMON_UNIFORMS = Lists.newArrayList(
-			Pair.of("cameraPos", u -> u.setVec3(new Vec3f(MC.gameRenderer.getCamera().getPos()))),
-			Pair.of("lookVector", u -> u.setVec3(MC.gameRenderer.getCamera().getHorizontalPlane())),
-			Pair.of("upVector", u -> u.setVec3(MC.gameRenderer.getCamera().getVerticalPlane())),
-			Pair.of("leftVector", u -> u.setVec3(MC.gameRenderer.getCamera().getDiagonalPlane())),
+			Pair.of("cameraPos", u -> u.m_rqrbbnht(new Vector3f((float) MC.gameRenderer.getCamera().getPos().x, (float) MC.gameRenderer.getCamera().getPos().y, (float) MC.gameRenderer.getCamera().getPos().z))),
+			Pair.of("lookVector", u -> u.m_rqrbbnht(MC.gameRenderer.getCamera().getHorizontalPlane())),
+			Pair.of("upVector", u -> u.m_rqrbbnht(MC.gameRenderer.getCamera().getVerticalPlane())),
+			Pair.of("leftVector", u -> u.m_rqrbbnht(MC.gameRenderer.getCamera().getDiagonalPlane())),
 			Pair.of("invViewMat", u -> {
 				Matrix4f invertedViewMatrix = new Matrix4f(PostProcessor.viewModelStack.peek().getModel());
 				invertedViewMatrix.invert();
-				u.setMat4x4(invertedViewMatrix);
+				u.m_gxmbyckl(invertedViewMatrix);
 			}),
 			Pair.of("invProjMat", u -> {
 				Matrix4f invertedProjectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
 				invertedProjectionMatrix.invert();
-				u.setMat4x4(invertedProjectionMatrix);
+				u.m_gxmbyckl(invertedProjectionMatrix);
 			}),
 			Pair.of("nearPlaneDistance", u -> u.setFloat(GameRenderer.CAMERA_DEPTH)),
 			Pair.of("farPlaneDistance", u -> u.setFloat(MC.gameRenderer.getFarDepth())),

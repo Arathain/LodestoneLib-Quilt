@@ -90,7 +90,7 @@ public class LodestoneRenderLayers extends RenderPhase {
 	 */
 	public static RenderLayer createGenericRenderLayer(String name, VertexFormat format, VertexFormat.DrawMode mode, Shader shader, Transparency transparency, TextureBase texture) {
 		RenderLayer type = RenderLayer.of(
-				name, format, mode, QuiltLoader.isModLoaded("sodium") ? 2097152 : 256, false, false, RenderLayer.MultiPhaseParameters.builder()
+				name, format, mode, QuiltLoader.isModLoaded("sodium") ? 4194304 : 256, false, false, RenderLayer.MultiPhaseParameters.builder()
 						.shader(shader)
 						.writeMaskState(new WriteMaskState(true, true))
 						.lightmap(new Lightmap(false))

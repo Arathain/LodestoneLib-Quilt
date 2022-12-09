@@ -8,6 +8,7 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.*;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -22,8 +23,8 @@ public final class DataHelper {
 		return new Vec3d(pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static Vec3f fromBlockPosVec3f(BlockPos pos) {
-		return new Vec3f(pos.getX(), pos.getY(), pos.getZ());
+	public static Vector3f fromBlockPosVec3f(BlockPos pos) {
+		return new Vector3f(pos.getX(), pos.getY(), pos.getZ());
 	}
 
 	public static Vec3d randPos(BlockPos pos, RandomGenerator rand, double min, double max) {

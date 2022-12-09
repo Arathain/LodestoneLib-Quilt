@@ -14,6 +14,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.Collections;
@@ -263,7 +264,7 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public WorldParticleBuilder setForcedMotion(Vec3f startingVelocity, Vec3f endingMotion) {
+		public WorldParticleBuilder setForcedMotion(Vector3f startingVelocity, Vector3f endingMotion) {
 			data.forcedMotion = true;
 			data.motionStyle = SimpleParticleEffect.MotionStyle.START_TO_END;
 			data.startingVelocity = startingVelocity;
@@ -271,7 +272,7 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public WorldParticleBuilder setForcedMotion(Vec3f endingMotion) {
+		public WorldParticleBuilder setForcedMotion(Vector3f endingMotion) {
 			data.forcedMotion = true;
 			data.motionStyle = SimpleParticleEffect.MotionStyle.CURRENT_TO_END;
 			data.endingMotion = endingMotion;

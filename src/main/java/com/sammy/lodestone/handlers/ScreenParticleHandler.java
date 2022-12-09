@@ -12,7 +12,6 @@ import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
 import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ParticleEmitter;
-//import dev.emi.emi.screen.RecipeScreen;
 import dev.emi.emi.screen.RecipeScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
@@ -22,7 +21,7 @@ import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.*;
@@ -72,8 +71,8 @@ public class ScreenParticleHandler {
 						}
 					}
 					Matrix4f last = matrixStack.peek().getModel();
-					float x = last.a03;
-					float y = last.a13;
+					float x = last.m03();
+					float y = last.m13();
 					if (canSpawnParticles) {
 						emitter.tick(stack, x, y, renderOrder);
 					}

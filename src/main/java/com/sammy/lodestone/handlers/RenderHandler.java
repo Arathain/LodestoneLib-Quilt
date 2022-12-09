@@ -11,7 +11,7 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
 import org.quiltmc.loader.api.QuiltLoader;
 
 import java.util.HashMap;
