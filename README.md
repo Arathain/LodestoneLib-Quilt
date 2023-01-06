@@ -1,13 +1,10 @@
-## **Ortus:** /ˈor·tus/, [ˈɔrt̪ʊs̠]<br>
-*1. beginning / dawning*<br>
-*2. rising (sun/star)*<br>
-*3. sunrise, daybreak, dawn, east*<br>
-#
-<br>
+# **Lodestone Quilt** is a rendering library, ported from the Forge [Lodestone](https://github.com/LodestarMC/Lodestone) mod.
 
-**OrtusLib** is a library used by all mods under the Ortus team, containing important backend code mostly used for rendering.
+### No Fabric ports allowed by default :)
+### The license is presented in good faith, if you *really* want to make a fabric port, do contact the Lodestar team first.
+[LGPL](./LICENSE.md) for code, [ARR](./LICENSE_ASSETS.md) for all assets.
 
 **Used by:**<br>
-Fundamental Forces<br>
-Malum<br>
-Magnum Opus<br>
+Effective<br>
+Arcpocalypse<br>
+and *at least one* in-development mod
