@@ -3,15 +3,14 @@ accessWidener   v2        named
 accessible      class     net/minecraft/client/render/RenderLayer$MultiPhase
 accessible      class     net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
 accessible      class     net/minecraft/client/particle/ParticleManager$SimpleSpriteProvider
-accessible      class     net/minecraft/util/registry/Registry$RegistryBootstrap
+
 accessible      class     net/minecraft/network/NetworkState$PacketHandler
 
 accessible      field     net/minecraft/client/gl/ShaderEffect                                     passes                       Ljava/util/List;
 accessible      field     net/minecraft/client/render/RenderPhase                                  name                         Ljava/lang/String;
 accessible      field     net/minecraft/client/render/ShaderProgram                                uniforms                     Ljava/util/List;
 accessible      field     net/minecraft/client/particle/ParticleManager                            spriteAwareFactories         Ljava/util/Map;
-accessible      field     net/minecraft/util/math/Matrix4f                                         a03                          F
-accessible      field     net/minecraft/util/math/Matrix4f                                         a13                          F
+
 accessible      field     net/minecraft/entity/player/PlayerInventory                              combinedInventory            Ljava/util/List;
 accessible      field     net/minecraft/client/particle/ParticleManager$SimpleSpriteProvider       sprites                      Ljava/util/List;
 accessible      field     net/minecraft/client/render/RenderLayer$MultiPhase                       phases                       Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
@@ -56,10 +55,26 @@ accessible      method    net/minecraft/recipe/ShapedRecipe                     
 accessible      method    net/minecraft/recipe/ShapedRecipe                                        getPattern                   (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
 accessible      method    net/minecraft/recipe/ShapedRecipe                                        createPatternMatrix          ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
 accessible      method    net/minecraft/block/TallPlantBlock                                       onBreakInCreative            (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V
-accessible      method    net/minecraft/util/registry/Registry                                     registerSimple               (Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/util/registry/Registry$RegistryBootstrap;)Lnet/minecraft/util/registry/Registry;
 accessible      method    net/minecraft/entity/effect/StatusEffect                                 <init>                       (Lnet/minecraft/entity/effect/StatusEffectType;I)V
 accessible      method    net/minecraft/util/hit/BlockHitResult                                    <init>                       (ZLnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/BlockPos;Z)V
 accessible      method    net/minecraft/recipe/Ingredient                                          ofEntries                    (Ljava/util/stream/Stream;)Lnet/minecraft/recipe/Ingredient;
-accessible      method    net/minecraft/recipe/Ingredient$TagEntry                                 <init>                       (Lnet/minecraft/tag/TagKey;)V
+
 accessible      method    net/minecraft/recipe/Ingredient$StackEntry                               <init>                       (Lnet/minecraft/item/ItemStack;)V
 accessible      method    net/minecraft/item/ItemStack                                             <init>                       (Lnet/minecraft/item/ItemConvertible;ILjava/util/Optional;)V
+
+accessible field net/minecraft/item/MiningToolItem attributeModifiers Lcom/google/common/collect/Multimap;
+accessible field net/minecraft/item/ArmorItem attributeModifiers Lcom/google/common/collect/Multimap;
+accessible field net/minecraft/entity/LivingEntity effectsChanged Z
+accessible field net/minecraft/entity/effect/StatusEffectInstance amplifier I
+accessible method net/minecraft/entity/LivingEntity onStatusEffectUpgraded (Lnet/minecraft/entity/effect/StatusEffectInstance;ZLnet/minecraft/entity/Entity;)V
+accessible field net/minecraft/entity/ai/goal/EatGrassGoal GRASS_PREDICATE Ljava/util/function/Predicate;
+accessible field net/minecraft/entity/passive/SheepEntity eatGrassGoal Lnet/minecraft/entity/ai/goal/EatGrassGoal;
+accessible field net/minecraft/entity/passive/BeeEntity pollinateGoal Lnet/minecraft/entity/passive/BeeEntity$PollinateGoal;
+accessible method net/minecraft/block/PointedDripstoneBlock isHeldByPointedDripstone (Lnet/minecraft/block/BlockState;Lnet/minecraft/world/WorldView;Lnet/minecraft/util/math/BlockPos;)Z
+accessible method net/minecraft/entity/mob/ZombieEntity setTicksUntilWaterConversion (I)V
+accessible method net/minecraft/block/entity/AbstractFurnaceBlockEntity isBurning ()Z
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTime I
+accessible field net/minecraft/block/entity/AbstractFurnaceBlockEntity cookTimeTotal I
+accessible class net/minecraft/entity/passive/BeeEntity$PollinateGoal
+accessible field net/minecraft/entity/passive/BeeEntity$PollinateGoal pollinationTicks I
+accessible field net/minecraft/entity/effect/StatusEffectInstance duration I

@@ -1,11 +1,12 @@
 package com.sammy.lodestone.helpers;
 
+
 import com.sammy.lodestone.systems.rendering.particle.Easing;
 import net.minecraft.client.util.ColorUtil;
 import net.minecraft.util.math.MathHelper;
-import java.util.List;
 
 import java.awt.*;
+import java.util.List;
 
 public class ColorHelper {
 	public static Color getColor(int decimal) {
