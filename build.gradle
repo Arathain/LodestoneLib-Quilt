@@ -38,6 +38,8 @@ dependencies {
 	modCompileOnly ("dev.emi:emi:${project.emi_version}")
 	modRuntimeOnly ("dev.emi:emi:${project.emi_version}")
 
+	modImplementation("dev.emi:trinkets:$trinkets")
+
 	//ease of multiplayer testing & game control
 	//modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"
 

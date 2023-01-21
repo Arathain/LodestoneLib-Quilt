@@ -48,7 +48,7 @@ public class BlockHelper {
 	/**
 	 * Copies BlockState properties from a BlockState already in the world, and replaces it with a newState with matching property values.
 	 */
-	public static BlockState setBlockStateStateWithExistingProperties(World world, BlockPos pos, BlockState newState, int flags) {
+	public static BlockState setBlockStateWithExistingProperties(World world, BlockPos pos, BlockState newState, int flags) {
 		BlockState oldState = world.getBlockState(pos);
 		BlockState finalState = getBlockStateWithExistingProperties(oldState, newState);
 		world.updateListeners(pos, oldState, finalState, flags);

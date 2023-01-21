@@ -1,6 +1,5 @@
 package com.sammy.lodestone;
 
-import com.sammy.lodestone.helpers.OrtTestItem;
 import com.sammy.lodestone.setup.LodestoneBlockEntityRegistry;
 import com.sammy.lodestone.setup.LodestoneParticles;
 import net.minecraft.registry.Registries;
@@ -28,9 +27,7 @@ public class LodestoneLib implements ModInitializer {
 		LOGGER.info("jesser where is the cocainer");
 		LodestoneParticles.init();
 		LodestoneBlockEntityRegistry.init();
-		if(QuiltLoader.isDevelopmentEnvironment()) {
-			Registry.register(Registries.ITEM, id("ort"), new OrtTestItem(new QuiltItemSettings().rarity(Rarity.EPIC)));
-		}
+
 	}
 	public static Identifier id(String path) {
 		return new Identifier(MODID, path);
