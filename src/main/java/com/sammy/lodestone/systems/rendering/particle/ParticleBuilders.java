@@ -1,6 +1,7 @@
 package com.sammy.lodestone.systems.rendering.particle;
 
 import com.sammy.lodestone.handlers.ScreenParticleHandler;
+import com.sammy.lodestone.helpers.BlockHelper;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.*;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.World;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 
 import java.awt.*;
@@ -21,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("ALL")
@@ -49,15 +52,16 @@ public class ParticleBuilders {
 			this.data = new WorldParticleEffect(type);
 		}
 
-		public WorldParticleBuilder overrideAnimator(SimpleParticleEffect.Animator animator) {
+		//TODO: I just realized these methods are all named 'overwrite' and not 'override', if anyone feels like it do me a favor and fix it, preferably updating it in malum too
+		public WorldParticleBuilder overwriteAnimator(SimpleParticleEffect.Animator animator) {
 			data.animator = animator;
 			return this;
 		}
-		public WorldParticleBuilder overrideRenderType(ParticleTextureSheet renderType) {
+		public WorldParticleBuilder overwriteRenderType(ParticleTextureSheet renderType) {
 			data.textureSheet = renderType;
 			return this;
 		}
-		public WorldParticleBuilder overrideRemovalProtocol(SimpleParticleEffect.SpecialRemovalProtocol removalProtocol) {
+		public WorldParticleBuilder overwriteRemovalProtocol(SimpleParticleEffect.SpecialRemovalProtocol removalProtocol) {
 			data.removalProtocol = removalProtocol;
 			return this;
 		}
@@ -264,10 +268,10 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public WorldParticleBuilder setForcedMotion(Vector3f startingVelocity, Vector3f endingMotion) {
+		public WorldParticleBuilder setForcedMotion(Vector3f startingMotion, Vector3f endingMotion) {
 			data.forcedMotion = true;
 			data.motionStyle = SimpleParticleEffect.MotionStyle.START_TO_END;
-			data.startingVelocity = startingVelocity;
+			data.startingVelocity = startingMotion;
 			data.endingMotion = endingMotion;
 			return this;
 		}
@@ -299,22 +303,8 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public WorldParticleBuilder spawnCircle(World level, double x, double y, double z, double distance, double currentCount, double totalCount) {
-			double xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
-			double theta = (Math.PI * 2) / totalCount;
-			double finalAngle = (currentCount / totalCount) + (theta * currentCount);
-			double dx2 = (distance * Math.cos(finalAngle));
-			double dz2 = (distance * Math.sin(finalAngle));
-
-			Vec3d vector2f = new Vec3d(dx2, 0, dz2);
-			this.vx = vector2f.x * xSpeed;
-			this.vz = vector2f.z * zSpeed;
-
-			double yaw2 = random.nextFloat() * Math.PI * 2, pitch2 = random.nextFloat() * Math.PI - Math.PI / 2, xDist = random.nextFloat() * maxXDist, yDist = random.nextFloat() * maxYDist, zDist = random.nextFloat() * maxZDist;
-			this.dx = Math.sin(yaw2) * Math.cos(pitch2) * xDist;
-			this.dy = Math.sin(pitch2) * yDist;
-			this.dz = Math.cos(yaw2) * Math.cos(pitch2) * zDist;
-			level.addParticle(data, x + dx + dx2, y + dy, z + dz + dz2, vx, ySpeed, vz);
+		public WorldParticleBuilder consume(Consumer<WorldParticleBuilder> particleBuilderConsumer) {
+			particleBuilderConsumer.accept(this);
 			return this;
 		}
 
@@ -332,12 +322,15 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public WorldParticleBuilder evenlySpawnAtEdges(World level, BlockPos pos) {
-			evenlySpawnAtEdges(level, pos, Direction.values());
+		public WorldParticleBuilder repeat(World level, double x, double y, double z, int n) {
+			for (int i = 0; i < n; i++) spawn(level, x, y, z);
 			return this;
 		}
 
-		public WorldParticleBuilder evenlySpawnAtEdges(World level, BlockPos pos, Direction... directions) {
+		public WorldParticleBuilder surroundBlock(World level, BlockPos pos, Direction... directions) {
+			if (directions.length == 0) {
+				directions = Direction.values();
+			}
 			for (Direction direction : directions) {
 				double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
 				this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
@@ -355,16 +348,19 @@ public class ParticleBuilders {
 			}
 			return this;
 		}
-		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state) {
-			return evenlySpawnAtAlignedEdges(level, pos, state, 100);
+		public WorldParticleBuilder repeatSurroundBlock(World level, BlockPos pos, int n) {
+			for (int i = 0; i < n; i++) surroundBlock(level, pos);
+			return this;
 		}
-		public WorldParticleBuilder evenlySpawnAtAlignedEdges(World level, BlockPos pos, BlockState state, int max) {
-			VoxelShape voxelShape = state.getOutlineShape(level, pos);
-			if(voxelShape.isEmpty()) {
-				voxelShape = VoxelShapes.fullCube();
-			}
+
+		public WorldParticleBuilder repeatSurroundBlock(World level, BlockPos pos, int n, Direction... directions) {
+			for (int i = 0; i < n; i++) surroundBlock(level, pos, directions);
+			return this;
+		}
+
+		public WorldParticleBuilder surroundVoxelShape(World level, BlockPos pos, VoxelShape voxelShape, int max) {
 			int[] c = new int[1];
-			int perBoxMax = (int) max/voxelShape.getBoundingBoxes().size();
+			int perBoxMax = max/voxelShape.getBoundingBoxes().size();
 			Supplier<Boolean> r = () -> {
 				c[0]++;
 				if(c[0] >= perBoxMax) {
@@ -373,7 +369,7 @@ public class ParticleBuilders {
 				}
 				return false;
 			};
-			Vec3d v = Vec3d.of(pos);
+			Vec3d v = BlockHelper.fromBlockPos(pos);
 			voxelShape.forEachBox(
 					(x1, y1, z1, x2, y2, z2) -> {
 						Vec3d b = v.add(x1, y1, z1);
@@ -402,21 +398,15 @@ public class ParticleBuilders {
 			);
 			return this;
 		}
-		public WorldParticleBuilder spawnLine(World world, Vec3d one, Vec3d two) {
-			double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
-			this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
-			this.vy += Math.sin(pitch) * ySpeed;
-			this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
-			double yaw2 = random.nextFloat() * Math.PI * 2, pitch2 = random.nextFloat() * Math.PI - Math.PI / 2, xDist = random.nextFloat() * maxXDist, yDist = random.nextFloat() * maxYDist, zDist = random.nextFloat() * maxZDist;
-			this.dx = Math.sin(yaw2) * Math.cos(pitch2) * xDist;
-			this.dy = Math.sin(pitch2) * yDist;
-			this.dz = Math.cos(yaw2) * Math.cos(pitch2) * zDist;
-			Vec3d pos = one.lerp(two, random.nextDouble());
-			world.addParticle(data, pos.x + dx, pos.y + dy, pos.z + dz, vx, vy, vz);
-			return this;
+		public WorldParticleBuilder surroundVoxelShape(World level, BlockPos pos, BlockState state, int max) {
+			VoxelShape voxelShape = state.getOutlineShape(level, pos);
+			if(voxelShape.isEmpty()) {
+				voxelShape = VoxelShapes.fullCube();
+			}
+			return surroundVoxelShape(level, pos, voxelShape, max);
 		}
 
-		public WorldParticleBuilder spawnAtEdges(World level, BlockPos pos) {
+		public WorldParticleBuilder spawnAtRandomFace(World level, BlockPos pos) {
 			Direction direction = Direction.values()[level.random.nextInt(Direction.values().length)];
 			double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
 			this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
@@ -433,49 +423,67 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public WorldParticleBuilder spawnAtAABBBoundaries(World level, Box aabb) { //TODO: test if this works as intended
-			Direction direction = Direction.values()[level.random.nextInt(Direction.values().length)];
-			double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
-			this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
-			this.vy += Math.sin(pitch) * ySpeed;
-			this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
-
-			Direction.Axis direction$axis = direction.getAxis();
-			double xSize = aabb.getXLength();
-			double ySize = aabb.getYLength();
-			double zSize = aabb.getZLength();
-			double d0 = 0.5;
-			this.dx = direction$axis == Direction.Axis.X ? d0 * xSize : random.nextDouble();
-			this.dy = direction$axis == Direction.Axis.Y ? d0 * ySize : random.nextDouble();
-			this.dz = direction$axis == Direction.Axis.Z ? d0 * zSize : random.nextDouble();
-			Vec3d pos = aabb.getCenter();
-			level.addParticle(data, pos.x + dx, pos.y + dy, pos.z + dz, vx, vy, vz);
-//            PostProcessing.BLOOM_UNREAL.postParticle(data, pos.getX() + dx, pos.getY() + dy, pos.getZ() + dz, vx, vy, vz);
+		public WorldParticleBuilder repeatRandomFace(World level, BlockPos pos, int n) {
+			for (int i = 0; i < n; i++) spawnAtRandomFace(level, pos);
 			return this;
 		}
 
-		public WorldParticleBuilder repeat(World level, double x, double y, double z, int n) {
-			for (int i = 0; i < n; i++) spawn(level, x, y, z);
-			return this;
-		}
+		public WorldParticleBuilder createCircle(World level, double x, double y, double z, double distance, double currentCount, double totalCount) {
+			double xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
+			double theta = (Math.PI * 2) / totalCount;
+			double finalAngle = (currentCount / totalCount) + (theta * currentCount);
+			double dx2 = (distance * Math.cos(finalAngle));
+			double dz2 = (distance * Math.sin(finalAngle));
 
-		public WorldParticleBuilder repeatEdges(World level, BlockPos pos, int n) {
-			for (int i = 0; i < n; i++) spawnAtEdges(level, pos);
-			return this;
-		}
+			Vector3d vector2f = new Vector3d(dx2, 0, dz2);
+			this.vx = vector2f.x * xSpeed;
+			this.vz = vector2f.z * zSpeed;
 
-		public WorldParticleBuilder evenlyRepeatEdges(World level, BlockPos pos, int n) {
-			for (int i = 0; i < n; i++) evenlySpawnAtEdges(level, pos);
-			return this;
-		}
-
-		public WorldParticleBuilder evenlyRepeatEdges(World level, BlockPos pos, int n, Direction... directions) {
-			for (int i = 0; i < n; i++) evenlySpawnAtEdges(level, pos, directions);
+			double yaw2 = random.nextFloat() * Math.PI * 2, pitch2 = random.nextFloat() * Math.PI - Math.PI / 2, xDist = random.nextFloat() * maxXDist, yDist = random.nextFloat() * maxYDist, zDist = random.nextFloat() * maxZDist;
+			this.dx = Math.sin(yaw2) * Math.cos(pitch2) * xDist;
+			this.dy = Math.sin(pitch2) * yDist;
+			this.dz = Math.cos(yaw2) * Math.cos(pitch2) * zDist;
+			level.addParticle(data, x + dx + dx2, y + dy, z + dz + dz2, vx, ySpeed, vz);
 			return this;
 		}
 
 		public WorldParticleBuilder repeatCircle(World level, double x, double y, double z, double distance, int times) {
-			for (int i = 0; i < times; i++) spawnCircle(level, x, y, z, distance, i, times);
+			for (int i = 0; i < times; i++) createCircle(level, x, y, z, distance, i, times);
+			return this;
+		}
+
+		public WorldParticleBuilder createBlockOutline(World level, BlockPos pos, BlockState state) {
+			VoxelShape voxelShape = state.getOutlineShape(level, pos);
+			double d = 0.25;
+			voxelShape.forEachBox(
+					(x1, y1, z1, x2, y2, z2) -> {
+						Vec3d v = BlockHelper.fromBlockPos(pos);
+						Vec3d b = BlockHelper.fromBlockPos(pos).add(x1, y1, z1);
+						Vec3d e = BlockHelper.fromBlockPos(pos).add(x2, y2, z2);
+						spawnLine(level, b, v.add(x2, y1, z1));
+						spawnLine(level, b, v.add(x1, y2, z1));
+						spawnLine(level, b, v.add(x1, y1, z2));
+						spawnLine(level, v.add(x1, y2, z1), v.add(x2, y2, z1));
+						spawnLine(level, v.add(x1, y2, z1), v.add(x1, y2, z2));
+						spawnLine(level, e, v.add(x2, y2, z1));
+						spawnLine(level, e, v.add(x1, y2, z2));
+						spawnLine(level, e, v.add(x2, y1, z2));
+						spawnLine(level, v.add(x2, y1, z1), v.add(x2, y1, z2));
+						spawnLine(level, v.add(x1, y1, z2), v.add(x2, y1, z2));
+						spawnLine(level, v.add(x2, y1, z1), v.add(x2, y2, z1));
+						spawnLine(level, v.add(x1, y1, z2), v.add(x1, y2, z2));
+					}
+			);
+			return this;
+		}
+
+		public WorldParticleBuilder spawnLine(World level, Vec3d one, Vec3d two) {
+			double yaw = random.nextFloat() * Math.PI * 2, pitch = random.nextFloat() * Math.PI - Math.PI / 2, xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed, zSpeed = random.nextFloat() * maxZSpeed;
+			this.vx += Math.sin(yaw) * Math.cos(pitch) * xSpeed;
+			this.vy += Math.sin(pitch) * ySpeed;
+			this.vz += Math.cos(yaw) * Math.cos(pitch) * zSpeed;
+			Vec3d pos = one.lerp(two, random.nextDouble());
+			level.addParticle(data, pos.x, pos.y, pos.z, vx, vy, vz);
 			return this;
 		}
 	}
@@ -498,19 +506,19 @@ public class ParticleBuilders {
 			this.type = type;
 			this.data = new ScreenParticleEffect(type);
 		}
-		public ScreenParticleBuilder overrideAnimator(SimpleParticleEffect.Animator animator) {
+		public ScreenParticleBuilder overwriteAnimator(SimpleParticleEffect.Animator animator) {
 			data.animator = animator;
 			return this;
 		}
-		public ScreenParticleBuilder overrideRenderType(ParticleTextureSheet renderType) {
+		public ScreenParticleBuilder overwriteRenderType(ParticleTextureSheet renderType) {
 			data.textureSheet = renderType;
 			return this;
 		}
-		public ScreenParticleBuilder overrideRemovalProtocol(SimpleParticleEffect.SpecialRemovalProtocol removalProtocol) {
+		public ScreenParticleBuilder overwriteRemovalProtocol(SimpleParticleEffect.SpecialRemovalProtocol removalProtocol) {
 			data.removalProtocol = removalProtocol;
 			return this;
 		}
-		public ScreenParticleBuilder overrideRenderOrder(ScreenParticle.RenderOrder renderOrder) {
+		public ScreenParticleBuilder overwriteRenderOrder(ScreenParticle.RenderOrder renderOrder) {
 			data.renderOrder = renderOrder;
 			return this;
 		}
@@ -720,10 +728,10 @@ public class ParticleBuilders {
 			return this;
 		}
 
-		public ScreenParticleBuilder setForcedMotion(Vec2f startingVelocity, Vec2f endingMotion) {
+		public ScreenParticleBuilder setForcedMotion(Vec2f startingMotion, Vec2f endingMotion) {
 			data.forcedMotion = true;
 			data.motionStyle = SimpleParticleEffect.MotionStyle.START_TO_END;
-			data.startingVelocity = startingVelocity;
+			data.startingVelocity = startingMotion;
 			data.endingMotion = endingMotion;
 			return this;
 		}
@@ -750,6 +758,11 @@ public class ParticleBuilders {
 			return this;
 		}
 
+		public ScreenParticleBuilder consume(Consumer<ScreenParticleBuilder> particleBuilderConsumer) {
+			particleBuilderConsumer.accept(this);
+			return this;
+		}
+
 		public ScreenParticleBuilder spawnCircle(double x, double y, double distance, double currentCount, double totalCount) {
 			double xSpeed = random.nextFloat() * maxXSpeed, ySpeed = random.nextFloat() * maxYSpeed;
 			double theta = (Math.PI * 2) / totalCount;
@@ -757,7 +770,7 @@ public class ParticleBuilders {
 			double dx2 = (distance * Math.cos(finalAngle));
 			double dz2 = (distance * Math.sin(finalAngle));
 
-			Vec3d vector2f = new Vec3d(dx2, 0, dz2);
+			Vector3d vector2f = new Vector3d(dx2, 0, dz2);
 			this.vx = vector2f.x * xSpeed;
 
 			double yaw2 = random.nextFloat() * Math.PI * 2, pitch2 = random.nextFloat() * Math.PI - Math.PI / 2, xDist = random.nextFloat() * maxXDist, yDist = random.nextFloat() * maxYDist;
