@@ -24,6 +24,7 @@ public class LodestoneLibClient implements ClientModInitializer {
 
 		LodestoneRenderLayers.yea();
 		RenderHandler.init();
+		ScreenParticleHandler.registerParticleEmitters();
 
 
 		ClientPlayNetworking.registerGlobalReceiver(ScreenshakePacket.ID, (client, handler, buf, responseSender) -> new ScreenshakePacket(buf).apply(client.getNetworkHandler()));
