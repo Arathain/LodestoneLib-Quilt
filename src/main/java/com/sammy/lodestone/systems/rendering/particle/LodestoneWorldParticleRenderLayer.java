@@ -15,8 +15,13 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.texture.TextureManager;
 import org.lwjgl.opengl.GL11;
 
-public class ParticleTextureSheets {
-	public static final ParticleTextureSheet ADDITIVE = new ParticleTextureSheet() {
+public interface LodestoneWorldParticleRenderLayer extends ParticleTextureSheet{
+	LodestoneWorldParticleRenderLayer ADDITIVE = new LodestoneWorldParticleRenderLayer() {
+		@Override
+		public RenderLayer getRenderType() {
+			return LodestoneRenderLayers.ADDITIVE_PARTICLE;
+		}
+
 		@Override
 		public void begin(BufferBuilder builder, TextureManager manager) {
 			RenderSystem.depthMask(false);
@@ -24,7 +29,6 @@ public class ParticleTextureSheets {
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			RenderSystem.setShader(LodestoneShaders.LODESTONE_PARTICLE.getInstance());
 			RenderSystem.setShaderTexture(0, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
-			RenderHandler.PARTICLE_MATRIX = RenderSystem.getModelViewMatrix();
 			builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 		}
 
@@ -35,16 +39,20 @@ public class ParticleTextureSheets {
 			RenderSystem.disableBlend();
 			RenderSystem.defaultBlendFunc();
 		}
-
 	};
-	public static final ParticleTextureSheet TRANSPARENT = new ParticleTextureSheet() {
+	LodestoneWorldParticleRenderLayer TRANSPARENT = new LodestoneWorldParticleRenderLayer() {
+		@Override
+		public RenderLayer getRenderType() {
+			return LodestoneRenderLayers.TRANSPARENT_PARTICLE;
+		}
+
 		@Override
 		public void begin(BufferBuilder builder, TextureManager manager) {
 			RenderSystem.depthMask(false);
 			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			RenderSystem.setShader(LodestoneShaders.LODESTONE_PARTICLE.getInstance());
 			RenderSystem.setShaderTexture(0, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
-			RenderHandler.PARTICLE_MATRIX = RenderSystem.getModelViewMatrix();
 			builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 		}
 
@@ -56,4 +64,9 @@ public class ParticleTextureSheets {
 			RenderSystem.defaultBlendFunc();
 		}
 	};
+
+	default boolean shouldBuffer() {
+		return true;
+	}
+	RenderLayer getRenderType();
 }
