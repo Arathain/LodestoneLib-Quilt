@@ -3,7 +3,11 @@
   "minVersion": "0.8",
   "package": "com.sammy.lodestone.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [],
+  "mixins": [
+    "BlockEntityMixin",
+    "WorldChunkMixin",
+    "WorldMixin"
+  ],
   "client": [
     "CameraMixin",
     "EffectShaderMixin",

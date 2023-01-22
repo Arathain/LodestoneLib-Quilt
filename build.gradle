@@ -16,12 +16,13 @@ repositories {
 	}
 	maven { url 'https://masa.dy.fi/maven' }
 	maven { url 'https://maven.terraformersmc.com' }
-	maven { url = "https://jitpack.io" }
+	//maven { url = "https://jitpack.io" }
 	maven {
 		name = "Modrinth"
 		url = "https://api.modrinth.com/maven"
 		content { includeGroup "maven.modrinth" }
 	}
+	maven { url = "https://mvn.devos.one/snapshots/" }
 }
 
 // All the default dependencies are declared at gradle/libs.version.toml and referenced with "libs.<id>"
@@ -42,6 +43,7 @@ dependencies {
 
 	//ease of multiplayer testing & game control
 	//modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"
+	//modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:2.1.701"))
 
 }
 
