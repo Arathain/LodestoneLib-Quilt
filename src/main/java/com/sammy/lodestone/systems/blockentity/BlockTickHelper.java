@@ -13,7 +13,7 @@ public class BlockTickHelper {
 		if (world.isClient()) {
 			blockEntity.clientTick();
 		} else {
-			blockEntity.tick();
+			blockEntity.serverTick();
 		}
 	}
 }

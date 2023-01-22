@@ -5,6 +5,7 @@ import com.sammy.lodestone.helpers.BlockHelper;
 import com.sammy.lodestone.setup.LodestoneBlockEntityRegistry;
 import com.sammy.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.ActionResult;
@@ -14,6 +15,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class MultiBlockComponentEntity extends LodestoneBlockEntity {
 	public BlockPos corePos;
+
+	public MultiBlockComponentEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
+	}
 
 	public MultiBlockComponentEntity(BlockPos pos, BlockState state) {
 		super(LodestoneBlockEntityRegistry.MULTIBLOCK_COMPONENT, pos, state);

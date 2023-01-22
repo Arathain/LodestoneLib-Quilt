@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.setup.LodestoneRenderLayers;
-import com.sammy.lodestone.systems.rendering.particle.LodestoneWorldParticleRenderLayer;
+import com.sammy.lodestone.systems.rendering.particle.ParticleTextureSheets;
 import com.sammy.lodestone.systems.rendering.particle.SimpleParticleEffect;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -150,10 +150,10 @@ public class GenericParticle extends SpriteBillboardParticle {
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
 		VertexConsumer consumer = vertexConsumer;
 		if (ClientConfig.DELAYED_RENDERING) {
-			if (getType().equals(LodestoneWorldParticleRenderLayer.ADDITIVE)) {
+			if (getType().equals(ParticleTextureSheets.ADDITIVE)) {
 				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.ADDITIVE_PARTICLE);
 			}
-			if (getType().equals(LodestoneWorldParticleRenderLayer.TRANSPARENT)) {
+			if (getType().equals(ParticleTextureSheets.TRANSPARENT)) {
 				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
 			}
 		}
