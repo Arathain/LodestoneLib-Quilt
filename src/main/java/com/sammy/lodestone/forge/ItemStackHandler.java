@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.collection.DefaultedList;
 import org.jetbrains.annotations.NotNull;
 
-public class ItemStackHandler implements ItemHandler , ItemHandlerModifiable{
+public class ItemStackHandler implements ItemHandler , ItemHandlerModifiable, INBTSerializable<NbtCompound>{
 
     protected DefaultedList<ItemStack> inventory;
 
@@ -164,7 +164,8 @@ public class ItemStackHandler implements ItemHandler , ItemHandlerModifiable{
         return Math.min(getMaxCountForSlot(slot), stack.getMaxCount());
     }
 
-    public NbtCompound writeNbt(NbtCompound nbtCompound) {
+	@Override
+    public NbtCompound serializeNBT() {
         NbtList itemListTag = new NbtList();
         for (int i = 0; i < inventory.size(); i++) {
             if (!inventory.get(i).isEmpty()) {
@@ -174,14 +175,15 @@ public class ItemStackHandler implements ItemHandler , ItemHandlerModifiable{
                 itemListTag.add(itemTag);
             }
         }
-
+		NbtCompound nbtCompound = new NbtCompound();
         nbtCompound.put("TagKeyItemList", itemListTag);
         nbtCompound.putInt("TagKeySize", inventory.size());
 
         return nbtCompound;
     }
 
-    public void readNbt(NbtCompound tag) {
+	@Override
+    public void deserializeNBT(NbtCompound tag) {
         setSize(tag.contains("TagKeySize", NbtElement.INT_TYPE) ? tag.getInt("TagKeySize") : inventory.size());
         NbtList itemListTag = tag.getList("TagKeyItemList", NbtElement.COMPOUND_TYPE);
         for (int i = 0; i < itemListTag.size(); i++) {

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class LodestoneBlockEntityInventory extends ItemStackHandler implements INBTSerializable {
+public class LodestoneBlockEntityInventory extends ItemStackHandler {
 	public final int slotCount;
 	public final int allowedItemSize;
 	public Predicate<ItemStack> inputPredicate;
@@ -112,6 +112,7 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler implements I
 	public void save(NbtCompound compound) {
 		save(compound, "inventory");
 	}
+
 
 	public void save(NbtCompound compound, String name) {
 		compound.put(name, serializeNBT());
