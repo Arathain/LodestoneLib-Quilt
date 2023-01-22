@@ -1,5 +1,6 @@
 package com.sammy.lodestone;
 
+import com.sammy.lodestone.setup.LodestoneAttributeRegistry;
 import com.sammy.lodestone.setup.LodestoneBlockEntityRegistry;
 import com.sammy.lodestone.setup.LodestoneParticles;
 import net.minecraft.registry.Registries;
@@ -25,6 +26,7 @@ public class LodestoneLib implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("jesser where is the cocainer");
+		LodestoneAttributeRegistry.init();
 		LodestoneParticles.init();
 		LodestoneBlockEntityRegistry.init();
 

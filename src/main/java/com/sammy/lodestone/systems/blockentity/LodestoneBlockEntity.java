@@ -1,5 +1,6 @@
 package com.sammy.lodestone.systems.blockentity;
 
+import com.sammy.lodestone.forge.BlockEntityExtensions;
 import com.sammy.lodestone.forge.CustomDataPacketHandlingBlockEntity;
 import com.sammy.lodestone.forge.CustomUpdateTagHandlingBlockEntity;
 import net.minecraft.block.BlockState;
@@ -19,7 +20,7 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class LodestoneBlockEntity extends BlockEntity implements CustomDataPacketHandlingBlockEntity, CustomUpdateTagHandlingBlockEntity {
+public class LodestoneBlockEntity extends BlockEntity implements BlockEntityExtensions {
 	public boolean needsSync;
 
 	public LodestoneBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -27,7 +28,7 @@ public class LodestoneBlockEntity extends BlockEntity implements CustomDataPacke
 	}
 
 	public void onBreak(@Nullable PlayerEntity player) {
-		//TODO invalidateCaps();
+		invalidateCaps();
 	}
 
 	public void onPlace(LivingEntity placer, ItemStack stack) {
@@ -60,13 +61,6 @@ public class LodestoneBlockEntity extends BlockEntity implements CustomDataPacke
 	public BlockEntityUpdateS2CPacket toUpdatePacket() {
 		return BlockEntityUpdateS2CPacket.of(this);
 	}
-	@Override
-	public void onDataPacket(ClientConnection connection, BlockEntityUpdateS2CPacket packet) {
-		handleUpdateTag(toUpdatePacket().getNbt());
-	}
-
-
-
 
 	/**
 	 * Called on both sides to tick the block entity as part of the ticker
