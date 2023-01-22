@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import java.util.function.Supplier;
 
 public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block implements BlockEntityProvider {
-	protected Supplier<BlockEntityType<T>> blockEntityType = null;
+	protected BlockEntityType<T> blockEntityType = null;
 	protected BlockEntityTicker<T> ticker = null;
 
 	public LodestoneEntityBlock(Settings properties) {
@@ -36,14 +36,14 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 	/**
 	 * Sets the block entity with a ticker enabled
 	 */
-	public <Y extends LodestoneEntityBlock<T>> Y setBlockEntity(Supplier<BlockEntityType<T>> type) {
+	public <Y extends LodestoneEntityBlock<T>> Y setBlockEntity(BlockEntityType<T> type) {
 		return setBlockEntity(type, true);
 	}
 
 	/**
 	 * Sets the block entity with an optional ticker
 	 */
-	public <Y extends LodestoneEntityBlock<T>> Y setBlockEntity(Supplier<BlockEntityType<T>> type, boolean shouldTick) {
+	public <Y extends LodestoneEntityBlock<T>> Y setBlockEntity(BlockEntityType<T> type, boolean shouldTick) {
 		this.blockEntityType = type;
 		if (shouldTick) {
 			this.ticker = BlockTickHelper::tickSided;
@@ -53,7 +53,7 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 
 	@Override
 	public BlockEntity createBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
-		return hasTileEntity(state) ? blockEntityType.get().instantiate(pos, state) : null;
+		return hasTileEntity(state) ? blockEntityType.instantiate(pos, state) : null;
 	}
 
 	public boolean hasTileEntity(BlockState state) {
