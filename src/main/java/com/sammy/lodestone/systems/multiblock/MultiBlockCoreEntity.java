@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
-public class MultiBlockCoreEntity extends LodestoneBlockEntity implements IMultiBlockCore {
+public abstract class MultiBlockCoreEntity extends LodestoneBlockEntity implements IMultiBlockCore {
 	ArrayList<BlockPos> componentPositions = new ArrayList<>();
 
 	public final MultiBlockStructure structure;

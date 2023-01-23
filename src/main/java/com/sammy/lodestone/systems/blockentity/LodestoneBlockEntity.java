@@ -3,6 +3,7 @@ package com.sammy.lodestone.systems.blockentity;
 import com.sammy.lodestone.forge.BlockEntityExtensions;
 import com.sammy.lodestone.forge.CustomDataPacketHandlingBlockEntity;
 import com.sammy.lodestone.forge.CustomUpdateTagHandlingBlockEntity;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -49,12 +50,32 @@ public class LodestoneBlockEntity extends BlockEntity implements BlockEntityExte
 
 	}
 
+	@Override
+	public NbtCompound toSyncedNbt() {
+		NbtCompound tag = super.toSyncedNbt();
+		this.writeNbt(tag);
+		return tag;
+	}
 
 	@Override
 	public void readNbt(NbtCompound pTag) {
 		needsSync = true;
 		super.readNbt(pTag);
 	}
+
+	public void sync(World world, BlockPos pos) {
+		if (world != null && !world.isClient) {
+			world.updateListeners(pos, getCachedState(), getCachedState(), Block.NOTIFY_LISTENERS);
+			toUpdatePacket();
+		}
+	}
+
+	@Override
+	public void markDirty() {
+		super.markDirty();
+		sync(world, pos);
+	}
+
 
 
 	@Override
