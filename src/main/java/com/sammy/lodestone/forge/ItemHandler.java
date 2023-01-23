@@ -3,18 +3,20 @@ package com.sammy.lodestone.forge;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public interface ItemHandler  {
+public interface ItemHandler {
 
-    int size();
+	int getSlots();
 
-    @NotNull
-    ItemStack getStack(int slot);
+	@NotNull
+	ItemStack getStackInSlot(int slot);
 
-    ItemStack insertItemStack(int slot, ItemStack itemStack, boolean simulate);
+	@NotNull
+	ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate);
 
-    ItemStack extractItemStack(int slot, int amount, boolean simulate);
+	@NotNull
+	ItemStack extractItem(int slot, int amount, boolean simulate);
 
-    int getMaxCountForSlot(int slot);
+	int getSlotLimit(int slot);
 
-    boolean isItemValid(int slot, @NotNull ItemStack stack);
+	boolean isItemValid(int slot, @NotNull ItemStack stack);
 }
