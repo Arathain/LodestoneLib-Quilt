@@ -34,20 +34,20 @@ public class ItemStackHandler implements ItemHandler, ItemHandlerModifiable, INB
 	}
 
 	@Override
-	public int getSlots() {
+	public int size() {
 		return stacks.size();
 	}
 
 	@Override
 	@NotNull
-	public ItemStack getStackInSlot(int slot) {
+	public ItemStack getStack(int slot) {
 		validateSlotIndex(slot);
 		return this.stacks.get(slot);
 	}
 
 	@Override
 	@NotNull
-	public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+	public ItemStack insertItemStack(int slot, @NotNull ItemStack stack, boolean simulate) {
 		if (stack.isEmpty())
 			return ItemStack.EMPTY;
 
@@ -91,7 +91,7 @@ public class ItemStackHandler implements ItemHandler, ItemHandlerModifiable, INB
 
 	@Override
 	@NotNull
-	public ItemStack extractItem(int slot, int amount, boolean simulate)
+	public ItemStack extractItemStack(int slot, int amount, boolean simulate)
 	{
 		if (amount == 0)
 			return ItemStack.EMPTY;

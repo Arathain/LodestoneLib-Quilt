@@ -5,16 +5,16 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ItemHandler {
 
-	int getSlots();
+	int size();
 
 	@NotNull
-	ItemStack getStackInSlot(int slot);
+	ItemStack getStack(int slot);
 
 	@NotNull
-	ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate);
+	ItemStack insertItemStack(int slot, @NotNull ItemStack stack, boolean simulate);
 
 	@NotNull
-	ItemStack extractItem(int slot, int amount, boolean simulate);
+	ItemStack extractItemStack(int slot, int amount, boolean simulate);
 
 	int getSlotLimit(int slot);
 

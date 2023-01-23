@@ -93,11 +93,11 @@ public class CombinedInvWrapper implements ItemHandlerModifiable {
     }
 
     @Override
-    public int getMaxCountForSlot(int slot) {
+    public int getSlotLimit(int slot) {
         int index = getIndexForSlot(slot);
         ItemHandlerModifiable handler = getHandlerFromIndex(index);
         int localSlot = getSlotFromIndex(slot, index);
-        return handler.getMaxCountForSlot(localSlot);
+        return handler.getSlotLimit(localSlot);
     }
 
     @Override
@@ -107,16 +107,4 @@ public class CombinedInvWrapper implements ItemHandlerModifiable {
         int localSlot = getSlotFromIndex(slot, index);
         return handler.isItemValid(localSlot, stack);
     }
-
-    /*
-
-    @Override
-    public boolean isValid(int slot, @NotNull ItemStack stack) {
-        int index = getIndexForSlot(slot);
-        ItemHandlerModifiable handler = getHandlerFromIndex(index);
-        int localSlot = getSlotFromIndex(slot, index);
-        return handler.isValid(localSlot, stack);
-    }
-
-     */
 }

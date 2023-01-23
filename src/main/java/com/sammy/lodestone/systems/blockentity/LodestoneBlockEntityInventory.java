@@ -1,10 +1,9 @@
 package com.sammy.lodestone.systems.blockentity;
 
 
-import com.sammy.lodestone.forge.INBTSerializable;
-import com.sammy.lodestone.forge.ItemHandlerHelper;
-import com.sammy.lodestone.forge.ItemStackHandler;
+import com.sammy.lodestone.forge.*;
 import com.sammy.lodestone.helpers.BlockHelper;
+import com.sammy.lodestone.helpers.VecHelper;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -16,6 +15,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -26,6 +26,7 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 	public final int allowedItemSize;
 	public Predicate<ItemStack> inputPredicate;
 	public Predicate<ItemStack> outputPredicate;
+	public final LazyOptional<ItemHandler> inventoryOptional = LazyOptional.of(() -> this);
 
 	public ArrayList<ItemStack> nonEmptyItemStacks = new ArrayList<>();
 
@@ -51,7 +52,7 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 	}
 
 	@Override
-	protected void onInventorySlotChanged(int slot) {
+	public void onContentsChanged(int slot) {
 		updateData();
 	}
 
@@ -61,12 +62,12 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 	}
 
 	@Override
-	public int getMaxCountForSlot(int slot) {
+	public int getSlotLimit(int slot) {
 		return allowedItemSize;
 	}
 
 	@Override
-	public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
 		if (inputPredicate != null) {
 			if (!inputPredicate.test(stack)) {
 				return false;
@@ -75,6 +76,7 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 		return super.isItemValid(slot, stack);
 	}
 
+	@Nonnull
 	@Override
 	public ItemStack extractItemStack(int slot, int amount, boolean simulate) {
 		if (outputPredicate != null) {
@@ -85,25 +87,24 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 		return super.extractItemStack(slot, amount, simulate);
 	}
 
-
 	public void updateData() {
 		DefaultedList<ItemStack> stacks = getStacks();
 		nonEmptyItemStacks = stacks.stream().filter(s -> !s.isEmpty()).collect(Collectors.toCollection(ArrayList::new));
 		nonEmptyItemAmount = nonEmptyItemStacks.size();
 		emptyItemAmount = (int) stacks.stream().filter(ItemStack::isEmpty).count();
-		firstEmptyItemIndex = this.inventory.indexOf(ItemStack.EMPTY);
+		firstEmptyItemIndex = this.stacks.indexOf(ItemStack.EMPTY);
 	}
 
-	public void readNbt(NbtCompound compound) {
-		readNbt(compound, "inventory");
+	public void load(NbtCompound compound) {
+		load(compound, "inventory");
 	}
 
-	public void readNbt(NbtCompound compound, String name) {
+	public void load(NbtCompound compound, String name) {
 		deserializeNBT(compound.getCompound(name));
-		if (inventory.size() != slotCount) {
-			int missing = slotCount - inventory.size();
+		if (stacks.size() != slotCount) {
+			int missing = slotCount - stacks.size();
 			for (int i = 0; i < missing; i++) {
-				inventory.add(ItemStack.EMPTY);
+				stacks.add(ItemStack.EMPTY);
 			}
 		}
 		updateData();
@@ -113,13 +114,12 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 		save(compound, "inventory");
 	}
 
-
 	public void save(NbtCompound compound, String name) {
 		compound.put(name, serializeNBT());
 	}
 
 	public DefaultedList<ItemStack> getStacks() {
-		return inventory;
+		return stacks;
 	}
 
 	public boolean isEmpty() {
@@ -132,63 +132,63 @@ public class LodestoneBlockEntityInventory extends ItemStackHandler {
 		}
 	}
 
-	public void dumpItems(World world, BlockPos pos) {
-		dumpItems(world, BlockHelper.fromBlockPos(pos).add(0.5, 0.5, 0.5));
+	public void dumpItems(World level, BlockPos pos) {
+		dumpItems(level, VecHelper.fromBlockPos(pos).add(0.5, 0.5, 0.5));
 	}
 
-	public void dumpItems(World world, Vec3d pos) {
+	public void dumpItems(World level, Vec3d pos) {
 		for (int i = 0; i < slotCount; i++) {
 			if (!getStack(i).isEmpty()) {
-				world.spawnEntity(new ItemEntity(world, pos.getX(), pos.getY(), pos.getZ(), getStack(i)));
+				level.spawnEntity(new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), getStack(i)));
 			}
 			setStackInSlot(i, ItemStack.EMPTY);
 		}
 	}
 
-	public ItemStack interact(World world, PlayerEntity player, Hand handIn) {
+	public ItemStack interact(World level, PlayerEntity player, Hand handIn) {
 		ItemStack held = player.getStackInHand(handIn);
 		player.swingHand(handIn, true);
 		int size = nonEmptyItemStacks.size() - 1;
 		if ((held.isEmpty() || firstEmptyItemIndex == -1) && size != -1) {
 			ItemStack takeOutStack = nonEmptyItemStacks.get(size);
 			if (takeOutStack.getItem().equals(held.getItem())) {
-				return insertItem(world, held);
+				return insertItem(level, held);
 			}
-			ItemStack extractedStack = extractItemStack(world, held, player);
+			ItemStack extractedStack = extractItem(level, held, player);
 			boolean success = !extractedStack.isEmpty();
 			if (success) {
-				insertItem(world, held);
+				insertItem(level, held);
 			}
 			return extractedStack;
 		} else {
-			return insertItem(world, held);
+			return insertItem(level, held);
 		}
 	}
 
-	public ItemStack extractItemStack(World world, ItemStack heldStack, PlayerEntity player) {
-		if (!world.isClient()) {
+	public ItemStack extractItem(World level, ItemStack heldStack, PlayerEntity player) {
+		if (!level.isClient) {
 			List<ItemStack> nonEmptyStacks = this.nonEmptyItemStacks;
 			if (nonEmptyStacks.isEmpty()) {
 				return heldStack;
 			}
 			ItemStack takeOutStack = nonEmptyStacks.get(nonEmptyStacks.size() - 1);
-			int slot = inventory.indexOf(takeOutStack);
+			int slot = stacks.indexOf(takeOutStack);
 			if (extractItemStack(slot, takeOutStack.getCount(), true).equals(ItemStack.EMPTY)) {
 				return heldStack;
 			}
-			extractItemStack(player, takeOutStack, slot);
+			extractItem(player, takeOutStack, slot);
 			return takeOutStack;
 		}
 		return ItemStack.EMPTY;
 	}
 
-	public void extractItemStack(PlayerEntity playerEntity, ItemStack stack, int slot) {
+	public void extractItem(PlayerEntity playerEntity, ItemStack stack, int slot) {
 		ItemHandlerHelper.giveItemToPlayer(playerEntity, stack, playerEntity.getInventory().selectedSlot);
 		setStackInSlot(slot, ItemStack.EMPTY);
 	}
 
-	public ItemStack insertItem(World world, ItemStack stack) {
-		if (!world.isClient()) {
+	public ItemStack insertItem(World level, ItemStack stack) {
+		if (!level.isClient) {
 			if (!stack.isEmpty()) {
 				ItemStack simulate = insertItem(stack, true);
 				if (simulate.equals(stack)) {

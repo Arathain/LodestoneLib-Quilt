@@ -35,7 +35,7 @@ public abstract class ItemHolderBlockEntity extends LodestoneBlockEntity {
 
 	@Override
 	public void readNbt(NbtCompound compound) {
-		inventory.readNbt(compound);
+		inventory.deserializeNBT(compound);
 		super.readNbt(compound);
 	}
 }

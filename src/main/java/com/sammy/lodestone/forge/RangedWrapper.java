@@ -54,9 +54,9 @@ public class RangedWrapper implements ItemHandlerModifiable {
     }
 
     @Override
-    public int getMaxCountForSlot(int slot) {
+    public int getSlotLimit(int slot) {
         if (checkSlot(slot)) {
-            return compose.getMaxCountForSlot(slot + minSlot);
+            return compose.getSlotLimit(slot + minSlot);
         }
         return 0;
     }

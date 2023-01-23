@@ -37,7 +37,7 @@ public class EmptyHandler implements ItemHandlerModifiable {
     }
 
     @Override
-    public int getMaxCountForSlot(int slot) {
+    public int getSlotLimit(int slot) {
         return 0;
     }
 
