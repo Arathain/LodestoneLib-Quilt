@@ -5,9 +5,11 @@ import com.google.gson.JsonObject;
 import com.sammy.lodestone.helpers.ItemHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.util.JsonHelper;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +25,12 @@ public class IngredientWithCount implements IRecipeComponent{
 
 	@Override
 	public ItemStack getStack() {
-		return new ItemStack(getItem(), getCount(), Optional.of(ingredient.getMatchingStacks()[0].getNbt()));
+		if(ingredient.getMatchingStacks()[0].hasNbt()){
+			return new ItemStack(getItem(), getCount(), Optional.ofNullable(ingredient.getMatchingStacks()[0].getNbt()));
+		}
+		return new ItemStack(getItem(), getCount());
 	}
+
 
 	@Override
 	public List<ItemStack> getStacks() {
