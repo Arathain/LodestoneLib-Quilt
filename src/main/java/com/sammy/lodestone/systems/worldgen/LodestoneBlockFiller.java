@@ -7,69 +7,65 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Function;
 
 public class LodestoneBlockFiller {
-	public ArrayList<BlockStateEntry> entries = new ArrayList<>();
-	public final boolean careful;
+	protected final HashMap<BlockPos, BlockStateEntry> entries = new HashMap<>();
+	protected final boolean careful;
 
-	/**
-	 * @param careful - a careful block filler will avoid replacing existing worlds into the world, replaceable blocks such as foliage are still replaced.
-	 */
 	public LodestoneBlockFiller(boolean careful) {
 		this.careful = careful;
 	}
 
-	/**
-	 * Places all the cached blockstate entries into the world.
-	 */
-	public void fill(WorldAccess accessor) {
-		for (BlockStateEntry entry : entries) {
-			if (accessor.isOutOfHeightLimit(entry.pos)) {
-				continue;
+	public void fill(WorldAccess level) {
+		getEntries().forEach((pos, entry) -> {
+			if (!isCareful() || entry.canPlace(level, pos)) {
+				entry.place(level, pos);
 			}
-			if (careful && !entry.canPlace(accessor)) {
-				continue;
-			}
-			entry.place(accessor);
-		}
+		});
 	}
 
-	public void replace(int index, Function<BlockStateEntry, BlockStateEntry> function) {
-		entries.set(index, function.apply(entries.get(index)));
+	public void replace(BlockPos pos, Function<BlockStateEntry, BlockStateEntry> entryFunction) {
+		getEntries().replace(pos, entryFunction.apply(getEntries().get(pos)));
 	}
+
+	public HashMap<BlockPos, BlockStateEntry> getEntries() {
+		return entries;
+	}
+
+	public boolean isCareful() {
+		return careful;
+	}
+
 
 	/**
 	 * A blockstate entry, contains a blockstate to place and a pos to place it at.
 	 * Can be extended to implement further functionality, such as custom placement checks or placing additional blocks.
 	 */
 	public static class BlockStateEntry {
-		public BlockState state;
-		public final BlockPos pos;
+		protected final BlockState state;
 
-		public BlockStateEntry(BlockState state, BlockPos pos) {
+		public BlockStateEntry(BlockState state) {
 			this.state = state;
-			this.pos = pos;
 		}
 
-		public BlockStateEntry replaceState(BlockState state) {
-			this.state = state;
-			return this;
+		public BlockState getState() {
+			return state;
 		}
 
-		public boolean canPlace(WorldAccess accessor) {
-			return canPlace(accessor, pos);
+		public boolean canPlace(WorldAccess level, BlockPos pos) {
+			if (level.isOutOfHeightLimit(pos)) {
+				return false;
+			}
+			BlockState state = level.getBlockState(pos);
+			return level.isAir(pos) || state.getMaterial().isReplaceable();
 		}
 
-		public boolean canPlace(WorldAccess accessor, BlockPos pos) {
-			BlockState state = accessor.getBlockState(pos);
-			return accessor.isAir(pos) || state.getMaterial().isReplaceable();
-		}
-
-		public void place(WorldAccess accessor) {
-			accessor.setBlockState(pos, state, 19);
-			if (accessor instanceof World world) {
-				BlockHelper.updateState(world, pos);
+		public void place(WorldAccess level, BlockPos pos) {
+			level.setBlockState(pos, state, 19);
+			if (level instanceof World) {
+				BlockHelper.updateState((World) level, pos);
 			}
 		}
 	}

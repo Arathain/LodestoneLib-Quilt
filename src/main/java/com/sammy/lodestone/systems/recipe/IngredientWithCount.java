@@ -25,10 +25,7 @@ public class IngredientWithCount implements IRecipeComponent{
 
 	@Override
 	public ItemStack getStack() {
-		if(ingredient.getMatchingStacks()[0].hasNbt()){
-			return new ItemStack(getItem(), getCount(), Optional.ofNullable(ingredient.getMatchingStacks()[0].getNbt()));
-		}
-		return new ItemStack(getItem(), getCount());
+		return new ItemStack(getItem(), getCount(), Optional.ofNullable(ingredient.getMatchingStacks()[0].getNbt()));
 	}
 
 
