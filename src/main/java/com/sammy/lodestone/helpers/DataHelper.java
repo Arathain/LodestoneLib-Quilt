@@ -1,52 +1,39 @@
 package com.sammy.lodestone.helpers;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
+
 import net.minecraft.util.Identifier;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
-import org.joml.Vector3f;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.sammy.lodestone.LodestoneLib.MODID;
-import static net.minecraft.util.math.MathHelper.sqrt;
 
-public final class DataHelper {
-	public static Vec3d fromBlockPos(BlockPos pos) {
-		return new Vec3d(pos.getX(), pos.getY(), pos.getZ());
+public class DataHelper {
+	/**
+	 * Reverses the order of any K collection of T entries
+	 */
+	public static <T, K extends Collection<T>> K reverseOrder(K reversed, Collection<T> items) {
+		ArrayList<T> original = new ArrayList<>(items);
+		for (int i = items.size() - 1; i >= 0; i--) {
+			reversed.add(original.get(i));
+		}
+		return reversed;
 	}
-
-	public static Vector3f fromBlockPosVec3f(BlockPos pos) {
-		return new Vector3f(pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public static Vec3d randPos(BlockPos pos, RandomGenerator rand, double min, double max) {
-		double x = MathHelper.nextDouble(rand, min, max) + pos.getX();
-		double y = MathHelper.nextDouble(rand, min, max) + pos.getY();
-		double z = MathHelper.nextDouble(rand, min, max) + pos.getZ();
-		return new Vec3d(x, y, z);
-	}
-
 	public static Identifier prefix(String path) {
 		return new Identifier(MODID, path);
 	}
 
-	public static <T, K extends Collection<T>> K reverseOrder(Supplier<K> reversed, Collection<T> items) {
-		ArrayList<T> original = new ArrayList<>(items);
-		K newCollection = reversed.get();
-		for (int i = items.size() - 1; i >= 0; i--) {
-			newCollection.add(original.get(i));
-		}
-		return newCollection;
-	}
 
+	/**
+	 * Capitalizes the first character in each word and replaces [regex] with space
+	 */
 	public static String toTitleCase(String givenString, String regex) {
 		String[] stringArray = givenString.split(regex);
 		StringBuilder stringBuilder = new StringBuilder();
@@ -56,35 +43,13 @@ public final class DataHelper {
 		return stringBuilder.toString().trim().replaceAll(regex, " ").substring(0, stringBuilder.length() - 1);
 	}
 
-	public static void writeNbt(NbtCompound nbt, DefaultedList<ItemStack> stacks, String key) {
-		NbtList nbtList = new NbtList();
-
-		for(int i = 0; i < stacks.size(); ++i) {
-			ItemStack itemStack = stacks.get(i);
-			if (!itemStack.isEmpty()) {
-				NbtCompound nbtCompound = new NbtCompound();
-				nbtCompound.putByte("Slot", (byte)i);
-				itemStack.writeNbt(nbtCompound);
-				nbtList.add(nbtCompound);
-			}
-		}
-		nbt.put(key, nbtList);
-	}
-
-	public static void readNbt(NbtCompound nbt, DefaultedList<ItemStack> stacks, String key) {
-		NbtList nbtList = nbt.getList(key, 10);
-
-		for(int i = 0; i < nbtList.size(); ++i) {
-			NbtCompound nbtCompound = nbtList.getCompound(i);
-			int j = nbtCompound.getByte("Slot") & 255;
-			if (j < stacks.size()) {
-				stacks.set(j, ItemStack.fromNbt(nbtCompound));
-			}
-		}
-
-	}
-
-	public static int[] nextInts(Random rand, int count, int range) {
+	/**
+	 * returns an integer array of random ints
+	 * @param count the amount of integers
+	 * @param range the range the random function uses
+	 */
+	public static int[] nextInts(int count, int range) {
+		Random rand = new Random();
 		int[] ints = new int[count];
 		for (int i = 0; i < count; i++) {
 			while (true) {
@@ -98,11 +63,26 @@ public final class DataHelper {
 		return ints;
 	}
 
+	/**
+	 * returns whether an array of items has any duplicates
+	 */
 	public static <T> boolean hasDuplicate(T[] things) {
 		Set<T> thingSet = new HashSet<>();
 		return !Arrays.stream(things).allMatch(thingSet::add);
 	}
 
+	/**
+	 * removes an entry from a collection and returns it if removed
+	 */
+	@SuppressWarnings("varargs")
+	public static <T> T take(Collection<? extends T> src, T item) {
+		src.remove(item);
+		return item;
+	}
+
+	/**
+	 * removes all entry from a collection and returns all items removed in a new collection
+	 */
 	@SafeVarargs
 	@SuppressWarnings("varargs")
 	public static <T> Collection<T> takeAll(Collection<? extends T> src, T... items) {
@@ -118,14 +98,17 @@ public final class DataHelper {
 		return ret;
 	}
 
+	/**
+	 * removes all entry from a collection based off of a predicate and returns all items removed in a new collection
+	 */
 	public static <T> Collection<T> takeAll(Collection<T> src, Predicate<T> pred) {
 		List<T> ret = new ArrayList<>();
 
-		Iterator<T> iterable = src.iterator();
-		while (iterable.hasNext()) {
-			T item = iterable.next();
+		Iterator<T> iter = src.iterator();
+		while (iter.hasNext()) {
+			T item = iter.next();
 			if (pred.test(item)) {
-				iterable.remove();
+				iter.remove();
 				ret.add(item);
 			}
 		}
@@ -135,17 +118,22 @@ public final class DataHelper {
 		}
 		return ret;
 	}
-
+	/**
+	 * create a copy of all items in a list that match from another list of items
+	 * */
 	@SafeVarargs
 	public static <T> Collection<T> getAll(Collection<? extends T> src, T... items) {
 		return List.copyOf(getAll(src, t -> Arrays.stream(items).anyMatch(tAgain -> tAgain.getClass().isInstance(t))));
 	}
 
+	/**
+	 * create a copy of all items in a list that match from a predicate
+	 * */
 	public static <T> Collection<T> getAll(Collection<T> src, Predicate<T> pred) {
 		return src.stream().filter(pred).collect(Collectors.toList());
 	}
 
-	public static Vec3d circlePosition(Vec3d pos, float distance, float current, float total) {
+	public static Vec3d radialOffset(Vec3d pos, float distance, float current, float total) {
 		double angle = current / total * (Math.PI * 2);
 		double dx2 = (distance * Math.cos(angle));
 		double dz2 = (distance * Math.sin(angle));
@@ -156,13 +144,25 @@ public final class DataHelper {
 		return pos.add(new Vec3d(x, 0, z));
 	}
 
-	public static Vec3d rotatedCirclePosition(Vec3d pos, float distance, float current, float total, long gameTime, float time, float tickDelta) {
-		return rotatedCirclePosition(pos, distance, distance, current, total, gameTime, time, tickDelta);
+	public static ArrayList<Vec3d> rotatingRadialOffsets(Vec3d pos, float distance, float total, long gameTime, float time) {
+		return rotatingRadialOffsets(pos, distance, distance, total, gameTime, time);
 	}
 
-	public static Vec3d rotatedCirclePosition(Vec3d pos, float distanceX, float distanceZ, float current, float total, long gameTime, float time, float tickDelta) {
+	public static ArrayList<Vec3d> rotatingRadialOffsets(Vec3d pos, float distanceX, float distanceZ, float total, long gameTime, float time) {
+		ArrayList<Vec3d> positions = new ArrayList<>();
+		for (int i = 0; i <= total; i++) {
+			positions.add(rotatingRadialOffset(pos, distanceX, distanceZ, i, total, gameTime, time));
+		}
+		return positions;
+	}
+
+	public static Vec3d rotatingRadialOffset(Vec3d pos, float distance, float current, float total, long gameTime, float time) {
+		return rotatingRadialOffset(pos, distance, distance, current, total, gameTime, time);
+	}
+
+	public static Vec3d rotatingRadialOffset(Vec3d pos, float distanceX, float distanceZ, float current, float total, long gameTime, float time) {
 		double angle = current / total * (Math.PI * 2);
-		angle += (((gameTime % time) + tickDelta) / time) * (Math.PI * 2);
+		angle += ((gameTime % time) / time) * (Math.PI * 2);
 		double dx2 = (distanceX * Math.cos(angle));
 		double dz2 = (distanceZ * Math.sin(angle));
 
@@ -188,6 +188,7 @@ public final class DataHelper {
 		}
 		return arrayList;
 	}
+
 	public static float distSqr(float... a) {
 		float d = 0.0F;
 		for (float f : a) {
@@ -197,6 +198,6 @@ public final class DataHelper {
 	}
 
 	public static float distance(float... a) {
-		return sqrt(distSqr(a));
+		return MathHelper.sqrt(distSqr(a));
 	}
 }

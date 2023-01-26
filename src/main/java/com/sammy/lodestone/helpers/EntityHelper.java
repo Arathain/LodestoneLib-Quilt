@@ -1,10 +1,45 @@
 package com.sammy.lodestone.helpers;
 
+
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 
 public class EntityHelper {
+
+	public static void amplifyEffect(StatusEffectInstance instance, LivingEntity target, int addedAmplifier, int cap) {
+		target.effectsChanged = true;
+		instance.amplifier = Math.max(Math.min(cap, instance.getAmplifier() + addedAmplifier), instance.getAmplifier());
+		target.onStatusEffectUpgraded(instance, true, target);
+	}
+
+	public static void amplifyEffect(StatusEffectInstance instance, LivingEntity target, int addedAmplifier) {
+		target.effectsChanged = true;
+		instance.amplifier = instance.getAmplifier() + addedAmplifier;
+		target.onStatusEffectUpgraded(instance, true, target);
+	}
+
+	public static void extendEffect(StatusEffectInstance instance, LivingEntity target, int addedDuration, int cap) {
+		target.effectsChanged = true;
+		instance.duration = Math.max(Math.min(cap, instance.getDuration() + addedDuration), instance.getDuration());
+		target.onStatusEffectUpgraded(instance, true, target);
+	}
+
+	public static void extendEffect(StatusEffectInstance instance, LivingEntity target, int addedDuration) {
+		target.effectsChanged = true;
+		instance.duration = instance.getDuration() + addedDuration;
+		target.onStatusEffectUpgraded(instance, true, target);
+	}
+
+	public static void shortenEffect(StatusEffectInstance instance, LivingEntity target, int removedDuration) {
+		target.effectsChanged = true;
+		instance.duration = instance.getDuration() - removedDuration;
+		target.onStatusEffectUpgraded(instance, true, target);
+	}
+
+
 	/**
 	 * Tracks the travel path of an entity or other object
 	 *

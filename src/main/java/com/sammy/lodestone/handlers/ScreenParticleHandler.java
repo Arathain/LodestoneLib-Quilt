@@ -6,6 +6,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.datafixers.util.Pair;
 import com.sammy.lodestone.LodestoneLib;
+import com.sammy.lodestone.helpers.DataHelper;
 import com.sammy.lodestone.systems.rendering.particle.screen.GenericScreenParticle;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
@@ -21,6 +22,7 @@ import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.Registries;
 import org.joml.Matrix4f;
 import org.quiltmc.loader.api.QuiltLoader;
 
@@ -35,6 +37,14 @@ public class ScreenParticleHandler {
 	public static final Tessellator TESSELATOR = new Tessellator();
 	public static boolean canSpawnParticles;
 	public static boolean renderingHotbar;
+
+	public static void registerParticleEmitters() {
+		DataHelper.takeAll(new ArrayList<>(Registries.ITEM.stream().toList()), i -> i instanceof ItemParticleEmitter).forEach(i -> {
+					ItemParticleEmitter emitter = (ItemParticleEmitter) i;
+					ScreenParticleHandler.registerItemParticleEmitter(i, emitter::particleTick);
+				}
+		);
+	}
 
 	public static void clientTick() {
 		PARTICLES.forEach((pair, particles) -> {
