@@ -26,6 +26,7 @@ import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -79,9 +80,10 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 			if(optionalRegistryKey.isPresent()){
 				System.out.println("BlockRegGet");
 				Identifier blockIdentifier = optionalRegistryKey.get().getValue();
-				Optional<BlockEntityType<?>> optionalBlockEntityType = Registries.BLOCK_ENTITY_TYPE.stream().findFirst().filter(bet -> Registries.BLOCK_ENTITY_TYPE.getId(bet) != null && Registries.BLOCK_ENTITY_TYPE.getId(bet).equals(blockIdentifier));
-				if(optionalRegistryKey.isPresent()){
-					setBlockEntity((BlockEntityType<T>) optionalBlockEntityType.get());
+				List<BlockEntityType<?>> optionalBlockEntityType =
+						Registries.BLOCK_ENTITY_TYPE.stream().filter(bet -> Registries.BLOCK_ENTITY_TYPE.getId(bet) != null && Registries.BLOCK_ENTITY_TYPE.getId(bet).equals(blockIdentifier)).toList();
+				if(!optionalBlockEntityType.isEmpty()){
+					setBlockEntity((BlockEntityType<T>) optionalBlockEntityType.get(0));
 					System.out.println("SetBlockEntity");
 				}
 			}
