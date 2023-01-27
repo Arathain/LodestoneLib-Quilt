@@ -16,29 +16,12 @@ public abstract class ItemHolderBlockEntity extends LodestoneBlockEntity {
 
 	public ItemHolderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		inventory = new LodestoneBlockEntityInventory(1, 64) {
-			@Override
-			public void onContentsChanged(int slot) {
-				super.onContentsChanged(slot);
-				needsSync = true;
-				BlockHelper.updateAndNotifyState(world, pos);
-			}
-		};
 	}
 
 	@Override
 	public ActionResult onUse(PlayerEntity player, Hand hand) {
 		inventory.interact(player.world, player, hand);
-		notifyListeners();
 		return ActionResult.SUCCESS;
-	}
-
-	private void notifyListeners() {
-		markDirty();
-
-		if (getWorld() != null && !getWorld().isClient) {
-			getWorld().updateListeners(getPos(), getCachedState(), getCachedState(), Block.NOTIFY_ALL);
-		}
 	}
 
 	@Override
