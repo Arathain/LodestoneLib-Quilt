@@ -7,11 +7,7 @@ import com.sammy.lodestone.network.screenshake.PositionedScreenshakePacket;
 import com.sammy.lodestone.network.screenshake.ScreenshakePacket;
 import com.sammy.lodestone.setup.LodestoneRenderLayers;
 import eu.midnightdust.lib.config.MidnightConfig;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.util.Pair;
 import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
 import org.quiltmc.qsl.networking.api.client.ClientPlayNetworking;
 

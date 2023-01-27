@@ -1,8 +1,6 @@
 package com.sammy.lodestone.systems.blockentity;
 
 import com.sammy.lodestone.forge.BlockEntityExtensions;
-import com.sammy.lodestone.forge.CustomDataPacketHandlingBlockEntity;
-import com.sammy.lodestone.forge.CustomUpdateTagHandlingBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -12,7 +10,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.ClientConnection;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;

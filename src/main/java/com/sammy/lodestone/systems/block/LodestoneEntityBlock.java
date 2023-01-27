@@ -12,23 +12,15 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Supplier;
 
 public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block implements BlockEntityProvider {
 	protected BlockEntityType<T> blockEntityType = null;
@@ -57,6 +49,7 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 		return this;
 	}
 
+
 	@Override
 	public BlockEntity createBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {
 		return hasTileEntity(state) ? blockEntityType.instantiate(pos, state) : null;
@@ -74,21 +67,6 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 
 	@Override
 	public void onPlaced(@Nonnull World pLevel, @Nonnull BlockPos pPos, @Nonnull BlockState pState, @Nullable LivingEntity pPlacer, @Nonnull ItemStack pStack) {
-		if(!hasTileEntity(pState)){
-			System.out.println("HasNoTile");
-			Optional<RegistryKey<Block>> optionalRegistryKey = this.getBuiltInRegistryHolder().getKey();
-			if(optionalRegistryKey.isPresent()){
-				System.out.println("BlockRegGet");
-				Identifier blockIdentifier = optionalRegistryKey.get().getValue();
-				List<BlockEntityType<?>> optionalBlockEntityType =
-						Registries.BLOCK_ENTITY_TYPE.stream().filter(bet -> Registries.BLOCK_ENTITY_TYPE.getId(bet) != null && Registries.BLOCK_ENTITY_TYPE.getId(bet).equals(blockIdentifier)).toList();
-				if(!optionalBlockEntityType.isEmpty()){
-					setBlockEntity((BlockEntityType<T>) optionalBlockEntityType.get(0));
-					System.out.println("SetBlockEntity");
-				}
-			}
-
-		}
 		if (hasTileEntity(pState)) {
 			if (pLevel.getBlockEntity(pPos) instanceof LodestoneBlockEntity simpleBlockEntity) {
 				simpleBlockEntity.onPlace(pPlacer, pStack);

@@ -1,5 +1,6 @@
 package com.sammy.lodestone.systems.blockentity;
 
+import com.sammy.lodestone.helpers.BlockHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -14,6 +15,14 @@ public abstract class ItemHolderBlockEntity extends LodestoneBlockEntity {
 
 	public ItemHolderBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+		inventory = new LodestoneBlockEntityInventory(1, 64) {
+			@Override
+			public void onContentsChanged(int slot) {
+				super.onContentsChanged(slot);
+				needsSync = true;
+				BlockHelper.updateAndNotifyState(world, pos);
+			}
+		};
 	}
 
 	@Override
