@@ -31,13 +31,21 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 
 	}
 
+	/**
+	 * Sets the block entity with a ticker enabled
+	 */
+	public LodestoneEntityBlock<T> setBlockEntity(BlockEntityType<T> type) {
+		return setBlockEntity(type, true);
+	}
 
 	/**
 	 * Sets the block entity with an optional ticker
 	 */
-	public LodestoneEntityBlock<T> setBlockEntity(BlockEntityType<T> type) {
+	public LodestoneEntityBlock<T> setBlockEntity(BlockEntityType<T> type, boolean shouldTick) {
 		this.blockEntityType = type;
-		this.ticker = (l, p, s, t) -> t.tick();
+		if (shouldTick) {
+			this.ticker = BlockTickHelper::tickSided;
+		}
 		return this;
 	}
 
