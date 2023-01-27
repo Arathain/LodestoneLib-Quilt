@@ -2,7 +2,6 @@ package com.sammy.lodestone.systems.blockentity;
 
 
 import com.sammy.lodestone.forge.*;
-import com.sammy.lodestone.helpers.BlockHelper;
 import com.sammy.lodestone.helpers.VecHelper;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -13,7 +12,6 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

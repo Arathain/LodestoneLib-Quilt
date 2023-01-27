@@ -1,5 +1,7 @@
 package com.sammy.lodestone.systems.blockentity;
 
+import com.sammy.lodestone.helpers.BlockHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -35,7 +37,7 @@ public abstract class ItemHolderBlockEntity extends LodestoneBlockEntity {
 
 	@Override
 	public void readNbt(NbtCompound compound) {
-		inventory.deserializeNBT(compound);
+		inventory.load(compound);
 		super.readNbt(compound);
 	}
 }

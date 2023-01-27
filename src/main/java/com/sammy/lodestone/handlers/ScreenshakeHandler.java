@@ -4,7 +4,6 @@ import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.systems.screenshake.ScreenshakeInstance;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.noise.PerlinNoiseSampler;
 import net.minecraft.util.random.RandomGenerator;
 

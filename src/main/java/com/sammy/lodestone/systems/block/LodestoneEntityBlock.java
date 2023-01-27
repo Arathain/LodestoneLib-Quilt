@@ -15,15 +15,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
 
 public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block implements BlockEntityProvider {
 	protected BlockEntityType<T> blockEntityType = null;
@@ -31,6 +28,7 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 
 	public LodestoneEntityBlock(Settings properties) {
 		super(properties);
+
 	}
 
 	/**
@@ -50,6 +48,7 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block 
 		}
 		return this;
 	}
+
 
 	@Override
 	public BlockEntity createBlockEntity(@Nonnull BlockPos pos, @Nonnull BlockState state) {

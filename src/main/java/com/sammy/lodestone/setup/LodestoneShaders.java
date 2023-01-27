@@ -7,7 +7,6 @@ import com.sammy.lodestone.systems.rendering.ExtendedShader;
 import com.sammy.lodestone.systems.rendering.ShaderHolder;
 import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.resource.ResourceFactory;
-import net.minecraft.resource.ResourceManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
