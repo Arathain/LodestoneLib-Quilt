@@ -2,10 +2,7 @@ package com.sammy.lodestone.systems.block;
 
 import com.sammy.lodestone.systems.blockentity.BlockTickHelper;
 import com.sammy.lodestone.systems.blockentity.LodestoneBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockEntityProvider;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -31,6 +28,12 @@ public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends BlockW
 		super(properties);
 
 	}
+
+	@Override
+	public BlockRenderType getRenderType(BlockState state) {
+		return BlockRenderType.MODEL;
+	}
+
 
 	/**
 	 * Sets the block entity with a ticker enabled

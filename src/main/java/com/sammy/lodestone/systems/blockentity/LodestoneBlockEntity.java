@@ -2,6 +2,7 @@ package com.sammy.lodestone.systems.blockentity;
 
 import com.sammy.lodestone.forge.BlockEntityExtensions;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
