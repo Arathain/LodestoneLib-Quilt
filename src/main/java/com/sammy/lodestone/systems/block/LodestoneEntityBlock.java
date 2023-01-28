@@ -5,6 +5,7 @@ import com.sammy.lodestone.systems.blockentity.LodestoneBlockEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Nonnull;
 
-public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends Block implements BlockEntityProvider {
+public class LodestoneEntityBlock<T extends LodestoneBlockEntity> extends BlockWithEntity {
 	protected BlockEntityType<T> blockEntityType = null;
 	protected BlockEntityTicker<T> ticker = null;
 
