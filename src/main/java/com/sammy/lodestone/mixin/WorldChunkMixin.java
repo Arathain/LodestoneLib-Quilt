@@ -23,7 +23,7 @@ public abstract class WorldChunkMixin extends Chunk {
 	}
 
 	@Inject(method = "clearBlockEntities", at = @At("HEAD"))
-	private void malum$blockEntityClear(CallbackInfo ci) {
+	private void lodestone$blockEntityClear(CallbackInfo ci) {
 		blockEntities.values().forEach(be -> {
 			if (be instanceof ChunkUnloadListeningBlockEntity listener) {
 				listener.onChunkUnloaded();

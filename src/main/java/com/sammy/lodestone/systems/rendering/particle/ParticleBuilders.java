@@ -52,7 +52,7 @@ public class ParticleBuilders {
 			this.data = new WorldParticleEffect(type);
 		}
 
-		//TODO: I just realized these methods are all named 'overwrite' and not 'override', if anyone feels like it do me a favor and fix it, preferably updating it in malum too
+		//TODO: I just realized these methods are all named 'overwrite' and not 'override', if anyone feels like it do me a favor and fix it, preferably updating it in lodestone too
 		public WorldParticleBuilder overwriteAnimator(SimpleParticleEffect.Animator animator) {
 			data.animator = animator;
 			return this;

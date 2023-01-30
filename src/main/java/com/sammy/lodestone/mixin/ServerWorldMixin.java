@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ServerWorldMixin {
 
 	@Inject(method = "addPlayer", at = @At("HEAD"))
-	private void malum$eventInject(ServerPlayerEntity player, CallbackInfo ci){
+	private void lodestone$eventInject(ServerPlayerEntity player, CallbackInfo ci){
 		WorldEventHandler.playerJoin(player);
 	}
 }
