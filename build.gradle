@@ -41,6 +41,9 @@ dependencies {
 
 	modImplementation("dev.emi:trinkets:$trinkets")
 
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca}"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca}"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-world:${project.cca}"
 	//ease of multiplayer testing & game control
 	//modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"
 	//modImplementation(include("io.github.fabricators_of_create.Porting-Lib:porting-lib:2.1.701"))

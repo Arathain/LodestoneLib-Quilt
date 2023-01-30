@@ -21,7 +21,9 @@
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
 			"init": "com.sammy.lodestone.LodestoneLib",
-			"client_init": "com.sammy.lodestone.LodestoneLibClient"
+			"client_init": "com.sammy.lodestone.LodestoneLibClient",
+			"cardinal-components-world": "com.sammy.lodestone.component.LodestoneComponents",
+			"cardinal-components-entity": "com.sammy.lodestone.component.LodestoneComponents"
 		},
 		"depends": [
 			{
@@ -39,5 +41,9 @@
 		]
 	},
 	"access_widener": "lodestone.accesswidener",
-	"mixin": "lodestone.mixins.json"
+	"mixin": "lodestone.mixins.json",
+	"cardinal-components": [
+		"lodestone:world_event",
+		"lodestone:player"
+	]
 }

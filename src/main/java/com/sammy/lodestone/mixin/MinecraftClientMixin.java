@@ -2,6 +2,7 @@ package com.sammy.lodestone.mixin;
 
 import com.sammy.lodestone.handlers.ScreenParticleHandler;
 import com.sammy.lodestone.handlers.ScreenshakeHandler;
+import com.sammy.lodestone.handlers.WorldEventHandler;
 import com.sammy.lodestone.setup.LodestoneParticles;
 import com.sammy.lodestone.setup.LodestoneScreenParticles;
 import net.minecraft.client.MinecraftClient;
@@ -25,6 +26,7 @@ final class MinecraftClientMixin {
 	private void lodestone$clientTick(CallbackInfo ci) {
 		ScreenParticleHandler.clientTick();
 		ScreenshakeHandler.clientTick(MinecraftClient.getInstance().gameRenderer.getCamera(), RANDOM);
+		WorldEventHandler.tick(MinecraftClient.getInstance().world);
 	}
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/profiler/Profiler;pop()V", ordinal = 4, shift = At.Shift.AFTER))
