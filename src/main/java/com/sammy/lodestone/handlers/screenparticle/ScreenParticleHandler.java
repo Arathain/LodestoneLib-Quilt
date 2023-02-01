@@ -4,8 +4,7 @@ package com.sammy.lodestone.handlers.screenparticle;
 
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.datafixers.util.Pair;
-import com.sammy.lodestone.LodestoneLib;
-import com.sammy.lodestone.LodestoneLibConfig;
+import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.systems.particle.screen.LodestoneScreenParticleTextureSheet;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleType;
@@ -47,7 +46,7 @@ public class ScreenParticleHandler {
 
 
 	public static void tickParticles() {
-		if (!LodestoneLibConfig.ENABLE_SCREEN_PARTICLES) {
+		if (!ClientConfig.ENABLE_SCREEN_PARTICLES) {
 			return;
 		}
 		tickParticles(EARLIEST_PARTICLES);
@@ -73,7 +72,7 @@ public class ScreenParticleHandler {
 	}
 
 	public static void renderItemStackEarly(ItemStack stack, int x, int y) {
-		if (!LodestoneLibConfig.ENABLE_SCREEN_PARTICLES) {
+		if (!ClientConfig.ENABLE_SCREEN_PARTICLES) {
 			return;
 		}
 		MinecraftClient minecraft = MinecraftClient.getInstance();
@@ -102,7 +101,7 @@ public class ScreenParticleHandler {
 	}
 
 	public static void renderParticles() {
-		if (!LodestoneLibConfig.ENABLE_SCREEN_PARTICLES) {
+		if (!ClientConfig.ENABLE_SCREEN_PARTICLES) {
 			return;
 		}
 		Screen screen = MinecraftClient.getInstance().currentScreen;
@@ -127,7 +126,7 @@ public class ScreenParticleHandler {
 	}
 
 	private static void renderParticles(HashMap<LodestoneScreenParticleTextureSheet, ArrayList<ScreenParticle>> screenParticleTarget) {
-		if (!LodestoneLibConfig.ENABLE_SCREEN_PARTICLES) {
+		if (!ClientConfig.ENABLE_SCREEN_PARTICLES) {
 			return;
 		}
 		screenParticleTarget.forEach((renderType, particles) -> {

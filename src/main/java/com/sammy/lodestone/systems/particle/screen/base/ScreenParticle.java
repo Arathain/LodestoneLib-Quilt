@@ -2,7 +2,6 @@ package com.sammy.lodestone.systems.particle.screen.base;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.sammy.lodestone.systems.particle.screen.LodestoneScreenParticleTextureSheet;
-import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.World;
 

@@ -2,13 +2,10 @@ package com.sammy.lodestone.systems.particle.screen.base;
 
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-
-import static com.sammy.lodestone.helpers.RenderHelper.FULL_BRIGHT;
 
 public abstract class BillboardScreenParticle extends ScreenParticle {
 	protected float quadSize = 0.1F * (this.random.nextFloat() * 0.5F + 0.5F) * 2.0F;

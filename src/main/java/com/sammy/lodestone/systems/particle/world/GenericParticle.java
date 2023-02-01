@@ -1,7 +1,7 @@
 package com.sammy.lodestone.systems.particle.world;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.sammy.lodestone.LodestoneLibConfig;
+import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.helpers.RenderHelper;
 import com.sammy.lodestone.systems.particle.data.ColorParticleData;
@@ -16,7 +16,6 @@ import net.minecraft.client.util.ColorUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Vector3f;
 
 import java.awt.*;
 import java.util.function.Consumer;
@@ -97,7 +96,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 	@Override
 	public void buildGeometry(VertexConsumer consumer, Camera camera, float partialTicks) {
 		VertexConsumer consumerToUse = consumer;
-		if (LodestoneLibConfig.DELAYED_PARTICLE_RENDERING && textureSheet instanceof LodestoneWorldParticleTextureSheet textureSheet) {
+		if (ClientConfig.DELAYED_PARTICLE_RENDERING && textureSheet instanceof LodestoneWorldParticleTextureSheet textureSheet) {
 			if (textureSheet.shouldBuffer()) {
 				consumerToUse = RenderHandler.DELAYED_PARTICLE_RENDER.getBuffer(textureSheet.getRenderLayer());
 			}

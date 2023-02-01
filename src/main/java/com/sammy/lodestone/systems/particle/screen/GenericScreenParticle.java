@@ -7,7 +7,6 @@ import com.sammy.lodestone.systems.particle.data.SpinParticleData;
 import com.sammy.lodestone.systems.particle.screen.base.SpriteBillboardScreenParticle;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.util.ColorUtil;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.joml.Vector3d;

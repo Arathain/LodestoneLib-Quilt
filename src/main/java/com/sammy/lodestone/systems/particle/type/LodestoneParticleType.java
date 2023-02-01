@@ -3,7 +3,6 @@ package com.sammy.lodestone.systems.particle.type;
 import com.mojang.serialization.Codec;
 import com.sammy.lodestone.systems.particle.world.GenericParticle;
 import com.sammy.lodestone.systems.particle.world.WorldParticleEffect;
-import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleFactory;
 import net.minecraft.client.particle.ParticleManager;

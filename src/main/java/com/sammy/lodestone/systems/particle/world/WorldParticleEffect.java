@@ -7,11 +7,8 @@ import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
-import org.joml.Vector3f;
 
 import java.util.function.Consumer;
-
-import static com.sammy.lodestone.LodestoneLib.VEC3F_ZERO;
 
 public class WorldParticleEffect extends SimpleParticleEffect implements ParticleEffect {
 

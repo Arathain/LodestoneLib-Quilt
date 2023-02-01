@@ -8,8 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.sammy.lodestone.systems.particle.screen.base.ScreenParticle.RenderOrder.BEFORE_UI;
-
 @Mixin(Screen.class)
 final class ScreenMixin {
 	@Inject(at = @At("HEAD"), method = "renderBackground(Lnet/minecraft/client/util/math/MatrixStack;I)V")

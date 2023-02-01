@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.sammy.lodestone.handlers.PostProcessHandler;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.handlers.WorldEventHandler;
-import com.sammy.lodestone.helpers.RenderHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.Camera;

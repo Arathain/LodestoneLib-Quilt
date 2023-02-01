@@ -1,8 +1,5 @@
 package com.sammy.lodestone.systems.particle.screen;
 import com.sammy.lodestone.systems.particle.SimpleParticleEffect;
-import com.sammy.lodestone.systems.particle.screen.base.ScreenParticle;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.Vec2f;
 
 import java.util.function.Consumer;
 

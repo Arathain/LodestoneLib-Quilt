@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ParticleEmitterHandler {
 	public static final Map<Item, ItemParticleSupplier> EMITTERS = new HashMap<>();

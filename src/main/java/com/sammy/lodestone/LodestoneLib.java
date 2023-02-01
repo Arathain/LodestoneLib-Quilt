@@ -1,5 +1,6 @@
 package com.sammy.lodestone;
 
+import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.setup.LodestoneAttributeRegistry;
 import com.sammy.lodestone.setup.LodestoneBlockEntityRegistry;
 import com.sammy.lodestone.setup.LodestoneParticleRegistry;
@@ -22,7 +23,7 @@ public class LodestoneLib implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("jesser where is the cocainer");
-		MidnightConfig.init(MODID, LodestoneLibConfig.class);
+		MidnightConfig.init(MODID, ClientConfig.class);
 
 		LodestoneAttributeRegistry.init();
 		LodestoneParticleRegistry.init();

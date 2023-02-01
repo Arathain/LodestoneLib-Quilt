@@ -8,8 +8,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static com.sammy.lodestone.systems.particle.screen.base.ScreenParticle.RenderOrder.BEFORE_TOOLTIPS;
-
 @Mixin(HandledScreen.class)
 final class HandledScreenMixin {
 	@Inject(at = @At("RETURN"), method = "render")
