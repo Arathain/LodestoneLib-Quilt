@@ -74,6 +74,7 @@ public class WorldEventInstance implements AutoSyncedComponent {
 		return tag;
 	}
 
+	//TODO this is not needed and can be replaced with cca's own sync instead of a whole new packet
 	public static <T extends WorldEventInstance> void sync(T instance, ServerPlayerEntity player) {
 		PlayerLookup.tracking(player).forEach(track -> SyncWorldEventPacket.send(track, instance.type.id, false, instance.writeToNbtInstance(new NbtCompound())));
 	}

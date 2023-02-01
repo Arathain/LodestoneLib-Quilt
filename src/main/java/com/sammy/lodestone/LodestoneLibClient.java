@@ -1,8 +1,8 @@
 package com.sammy.lodestone;
 
 import com.sammy.lodestone.config.ClientConfig;
+import com.sammy.lodestone.handlers.screenparticle.ParticleEmitterHandler;
 import com.sammy.lodestone.handlers.RenderHandler;
-import com.sammy.lodestone.handlers.ScreenParticleHandler;
 import com.sammy.lodestone.network.SyncWorldEventPacket;
 import com.sammy.lodestone.network.screenshake.PositionedScreenshakePacket;
 import com.sammy.lodestone.network.screenshake.ScreenshakePacket;
@@ -21,7 +21,7 @@ public class LodestoneLibClient implements ClientModInitializer {
 
 		LodestoneRenderLayers.yea();
 		RenderHandler.init();
-		ScreenParticleHandler.registerParticleEmitters();
+		ParticleEmitterHandler.registerParticleEmitters();
 
 
 		ClientPlayNetworking.registerGlobalReceiver(ScreenshakePacket.ID, (client, handler, buf, responseSender) -> new ScreenshakePacket(buf).apply(client.getNetworkHandler()));

@@ -1,7 +1,7 @@
 package com.sammy.lodestone.helpers;
 
 
-import com.sammy.lodestone.systems.rendering.particle.Easing;
+import com.sammy.lodestone.systems.easing.Easing;
 import net.minecraft.client.util.ColorUtil;
 import net.minecraft.util.math.MathHelper;
 

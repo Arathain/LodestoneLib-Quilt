@@ -2,7 +2,8 @@ package com.sammy.lodestone;
 
 import com.sammy.lodestone.setup.LodestoneAttributeRegistry;
 import com.sammy.lodestone.setup.LodestoneBlockEntityRegistry;
-import com.sammy.lodestone.setup.LodestoneParticles;
+import com.sammy.lodestone.setup.LodestoneParticleRegistry;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.random.RandomGenerator;
 import org.apache.logging.log4j.LogManager;
@@ -21,8 +22,10 @@ public class LodestoneLib implements ModInitializer {
 	@Override
 	public void onInitialize(ModContainer mod) {
 		LOGGER.info("jesser where is the cocainer");
+		MidnightConfig.init(MODID, LodestoneLibConfig.class);
+
 		LodestoneAttributeRegistry.init();
-		LodestoneParticles.init();
+		LodestoneParticleRegistry.init();
 		LodestoneBlockEntityRegistry.init();
 
 	}

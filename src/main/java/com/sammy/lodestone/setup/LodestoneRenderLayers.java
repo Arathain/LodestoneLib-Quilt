@@ -33,17 +33,16 @@ public class LodestoneRenderLayers extends RenderPhase {
 	 */
 	public static final HashMap<Pair<Integer, RenderLayer>, RenderLayer> COPIES = new HashMap<>();
 
-	public static final RenderLayer ADDITIVE_PARTICLE = createGenericRenderLayer(MODID, "additive_particle", POSITION_TEXTURE_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.LODESTONE_PARTICLE.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
-	public static final RenderLayer ADDITIVE_BLOCK = createGenericRenderLayer(MODID, "block", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.LODESTONE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
+	public static final RenderLayer ADDITIVE_PARTICLE = createGenericRenderLayer(MODID, "additive_particle", POSITION_TEXTURE_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.PARTICLE.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
+	public static final RenderLayer ADDITIVE_BLOCK = createGenericRenderLayer(MODID, "block", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.ADDITIVE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
 	public static final RenderLayer ADDITIVE_SOLID = createGenericRenderLayer(MODID, "additive_solid", POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, RenderPhase.POSITION_COLOR_LIGHTMAP_SHADER, Phases.ADDITIVE_TRANSPARENCY);
 
-	public static final RenderLayer TRANSPARENT_PARTICLE = createGenericRenderLayer(MODID, "transparent_particle", POSITION_TEXTURE_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.LODESTONE_PARTICLE.phase, Phases.NORMAL_TRANSPARENCY, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
+	public static final RenderLayer TRANSPARENT_PARTICLE = createGenericRenderLayer(MODID, "transparent_particle", POSITION_TEXTURE_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.PARTICLE.phase, Phases.NORMAL_TRANSPARENCY, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
 	public static final RenderLayer TRANSPARENT_BLOCK = createGenericRenderLayer(MODID, "transparent_block", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, RenderPhase.POSITION_COLOR_LIGHTMAP_SHADER, Phases.NORMAL_TRANSPARENCY, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
 	public static final RenderLayer TRANSPARENT_SOLID = createGenericRenderLayer(MODID, "transparent_solid", POSITION_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, RenderPhase.POSITION_COLOR_LIGHTMAP_SHADER, Phases.NORMAL_TRANSPARENCY);
 
-	public static final RenderLayer OUTLINE_SOLID = createGenericRenderLayer(MODID, "outline_solid", POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, LodestoneShaders.LODESTONE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
+	public static final RenderLayer OUTLINE_SOLID = createGenericRenderLayer(MODID, "outline_solid", POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.ADDITIVE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE);
 
-	public static final RenderLayer VERTEX_DISTORTION = createGenericRenderLayer(MODID, "vertex_distortion", POSITION_TEXTURE_COLOR_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.VERTEX_DISTORTION.phase, Phases.ADDITIVE_TRANSPARENCY, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
 	/**
 	 * Render Functions. You can create Render Types by statically applying these to your texture. Alternatively, use {@link #GENERIC} if none of the presets suit your needs.
 	 */
@@ -52,20 +51,15 @@ public class LodestoneRenderLayers extends RenderPhase {
 	public static final RenderLayerProvider TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, RenderPhase.POSITION_COLOR_LIGHTMAP_SHADER, Phases.NO_TRANSPARENCY, texture));
 
 	public static final RenderLayerProvider TRANSPARENT_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "transparent_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, RenderPhase.POSITION_COLOR_TEXTURE_LIGHTMAP_SHADER, Phases.NORMAL_TRANSPARENCY, texture));
-	public static final RenderLayerProvider TRANSPARENT_TEXTURE_TRIANGLE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "transparent_texture_triangle", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.TRIANGLE_TEXTURE.phase, Phases.NORMAL_TRANSPARENCY, texture));
-	public static final RenderLayerProvider TRANSPARENT_SILHOUETTE_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "transparent_silhouette_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.SILHOUETTE.phase, Phases.NORMAL_TRANSPARENCY, texture));
+	public static final RenderLayerProvider TRANSPARENT_TEXTURE_TRIANGLE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "transparent_texture_triangle", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.TRIANGLE_TEXTURE.phase, Phases.NORMAL_TRANSPARENCY, texture));
 
+	public static final RenderLayerProvider ADDITIVE_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "additive_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.ADDITIVE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
+	public static final RenderLayerProvider ADDITIVE_TEXTURE_TRIANGLE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "additive_texture_triangle", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.TRIANGLE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
 
-	public static final RenderLayerProvider ADDITIVE_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "additive_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.LODESTONE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
-	public static final RenderLayerProvider ADDITIVE_TEXTURE_TRIANGLE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "additive_texture_triangle", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.TRIANGLE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
-	public static final RenderLayerProvider ADDITIVE_SILHOUETTE_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "additive_silhouette_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.SILHOUETTE.phase, Phases.NO_TRANSPARENCY, texture));
-
-
-	public static final RenderLayerProvider VERTEX_DISTORTION_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "vertex_distortion_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.VERTEX_DISTORTION.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
-	public static final RenderLayerProvider RADIAL_NOISE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "radial_noise", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.RADIAL_NOISE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
-	public static final RenderLayerProvider RADIAL_SCATTER_NOISE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "radial_scatter_noise", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.RADIAL_SCATTER_NOISE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
-	public static final RenderLayerProvider SCROLLING_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "scrolling_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.SCROLLING_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
-	public static final RenderLayerProvider SCROLLING_TEXTURE_TRIANGLE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "scrolling_texture_triangle", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaders.SCROLLING_TRIANGLE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
+	public static final RenderLayerProvider RADIAL_NOISE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "radial_noise", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.RADIAL_NOISE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
+	public static final RenderLayerProvider RADIAL_SCATTER_NOISE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "radial_scatter_noise", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.RADIAL_SCATTER_NOISE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
+	public static final RenderLayerProvider SCROLLING_TEXTURE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "scrolling_texture", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.SCROLLING_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
+	public static final RenderLayerProvider SCROLLING_TEXTURE_TRIANGLE = new RenderLayerProvider((texture) -> createGenericRenderLayer(texture.getNamespace(), "scrolling_texture_triangle", POSITION_COLOR_TEXTURE_LIGHT, VertexFormat.DrawMode.QUADS, LodestoneShaderRegistry.SCROLLING_TRIANGLE_TEXTURE.phase, Phases.ADDITIVE_TRANSPARENCY, texture));
 
 
 	public static final Function<RenderLayerData, RenderLayer> GENERIC = (data) -> createGenericRenderLayer(data.name, data.format, data.mode, data.shader, data.transparency, data.texture);
@@ -107,11 +101,11 @@ public class LodestoneRenderLayers extends RenderPhase {
 	}
 
 	/**
-	 * Queues shader uniform changes for a render layer. When we end batches in {@link RenderHandler#renderLast(net.minecraft.client.util.math.MatrixStack)}, we do so one render layer at a time.
-	 * Prior to ending a batch, we run {@link ShaderUniformHandler#updateShaderData(net.minecraft.client.render.ShaderProgram)} if one is present for a given render layer.
+	 * Queues shader uniform changes for a render type. When we end batches in {@link RenderHandler}}, we do so one render type at a time.
+	 * Prior to ending a batch, we run {@link ShaderUniformHandler#updateShaderData(net.minecraft.client.render.ShaderProgram)} if one is present for a given render type.
 	 */
 	public static RenderLayer queueUniformChanges(RenderLayer type, ShaderUniformHandler handler) {
-		RenderHandler.HANDLERS.put(type, handler);
+		RenderHandler.UNIFORM_HANDLERS.put(type, handler);
 		return type;
 	}
 

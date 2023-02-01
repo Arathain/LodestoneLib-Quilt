@@ -79,3 +79,5 @@ accessible class net/minecraft/entity/passive/BeeEntity$PollinateGoal
 accessible field net/minecraft/entity/passive/BeeEntity$PollinateGoal pollinationTicks I
 accessible field net/minecraft/entity/effect/StatusEffectInstance duration I
 accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
+accessible class net/minecraft/client/render/BackgroundRenderer$FogParameters
+
