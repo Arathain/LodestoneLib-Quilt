@@ -1,6 +1,7 @@
 package com.sammy.lodestone.systems.particle.world;
 
 import com.sammy.lodestone.systems.particle.SimpleParticleEffect;
+import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.world.ClientWorld;
 
@@ -10,7 +11,7 @@ import static com.sammy.lodestone.systems.particle.SimpleParticleEffect.Particle
 
 public class FrameSetParticle extends GenericParticle {
     public ArrayList<Integer> frameSet = new ArrayList<>();
-    public FrameSetParticle(ClientWorld world, WorldParticleEffect data, ParticleManager.SimpleSpriteProvider spriteSet, double x, double y, double z, double xd, double yd, double zd) {
+    public FrameSetParticle(ClientWorld world, WorldParticleEffect data, FabricSpriteProviderImpl spriteSet, double x, double y, double z, double xd, double yd, double zd) {
         super(world, data, spriteSet, x, y, z, xd, yd, zd);
     }
 

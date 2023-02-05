@@ -5,6 +5,7 @@ import com.sammy.lodestone.systems.particle.data.ColorParticleData;
 import com.sammy.lodestone.systems.particle.data.GenericParticleData;
 import com.sammy.lodestone.systems.particle.data.SpinParticleData;
 import com.sammy.lodestone.systems.particle.screen.base.SpriteBillboardScreenParticle;
+import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.util.ColorUtil;
 import net.minecraft.util.math.MathHelper;
@@ -19,7 +20,7 @@ import static com.sammy.lodestone.systems.particle.SimpleParticleEffect.Particle
 
 public class GenericScreenParticle extends SpriteBillboardScreenParticle {
 	private final LodestoneScreenParticleTextureSheet renderType;
-	protected final ParticleManager.SimpleSpriteProvider spriteSet;
+	protected final FabricSpriteProviderImpl spriteSet;
 	protected final SimpleParticleEffect.ParticleSpritePicker spritePicker;
 	protected final SimpleParticleEffect.ParticleDiscardFunctionType discardFunctionType;
 	protected final ColorParticleData colorData;
@@ -33,7 +34,7 @@ public class GenericScreenParticle extends SpriteBillboardScreenParticle {
 
 	float[] hsv1 = new float[3], hsv2 = new float[3];
 
-	public GenericScreenParticle(World world, ScreenParticleEffect options, ParticleManager.SimpleSpriteProvider spriteSet, double x, double y, double xMotion, double yMotion) {
+	public GenericScreenParticle(World world, ScreenParticleEffect options, FabricSpriteProviderImpl spriteSet, double x, double y, double xMotion, double yMotion) {
 		super(world, x, y);
 		this.renderType = options.renderType;
 		this.spriteSet = spriteSet;
@@ -61,7 +62,7 @@ public class GenericScreenParticle extends SpriteBillboardScreenParticle {
 			setSprite(0);
 		}
 		if (getSpritePicker().equals(LAST_INDEX)) {
-			setSprite(spriteSet.sprites.size() - 1);
+			setSprite(spriteSet.getSprites().size() - 1);
 		}
 		updateTraits();
 	}
@@ -71,8 +72,8 @@ public class GenericScreenParticle extends SpriteBillboardScreenParticle {
 	}
 
 	public void setSprite(int spriteIndex) {
-		if (spriteIndex < spriteSet.sprites.size() && spriteIndex >= 0) {
-			setSprite(spriteSet.sprites.get(spriteIndex));
+		if (spriteIndex < spriteSet.getSprites().size() && spriteIndex >= 0) {
+			setSprite(spriteSet.getSprites().get(spriteIndex));
 		}
 	}
 

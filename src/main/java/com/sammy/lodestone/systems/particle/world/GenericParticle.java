@@ -8,6 +8,7 @@ import com.sammy.lodestone.systems.particle.data.ColorParticleData;
 import com.sammy.lodestone.systems.particle.data.GenericParticleData;
 import com.sammy.lodestone.systems.particle.data.SpinParticleData;
 import com.sammy.lodestone.systems.particle.SimpleParticleEffect;
+import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteBillboardParticle;
@@ -25,7 +26,7 @@ import static com.sammy.lodestone.systems.particle.SimpleParticleEffect.Particle
 public class GenericParticle extends SpriteBillboardParticle {
     protected WorldParticleEffect data;
     private final ParticleTextureSheet textureSheet;
-    protected final ParticleManager.SimpleSpriteProvider spriteSet;
+    protected final FabricSpriteProviderImpl spriteSet;
 
 	protected final SimpleParticleEffect.ParticleSpritePicker spritePicker;
 	protected final SimpleParticleEffect.ParticleDiscardFunctionType discardFunctionType;
@@ -40,7 +41,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 
     float[] hsv1 = new float[3], hsv2 = new float[3];
 
-	public GenericParticle(ClientWorld world, WorldParticleEffect options, ParticleManager.SimpleSpriteProvider spriteSet, double x, double y, double z, double xd, double yd, double zd) {
+	public GenericParticle(ClientWorld world, WorldParticleEffect options, FabricSpriteProviderImpl spriteSet, double x, double y, double z, double xd, double yd, double zd) {
 		super(world, x, y, z);
 		this.textureSheet = options.textureSheet == null ? LodestoneWorldParticleTextureSheet.ADDITIVE : options.textureSheet;
 		this.spriteSet = spriteSet;
@@ -71,7 +72,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 				setSprite(0);
 			}
 			if (getSpritePicker().equals(SimpleParticleEffect.ParticleSpritePicker.LAST_INDEX)) {
-				setSprite(spriteSet.sprites.size() - 1);
+				setSprite(spriteSet.getSprites().size() - 1);
 			}
 		}
 		updateTraits();
@@ -114,8 +115,8 @@ public class GenericParticle extends SpriteBillboardParticle {
 	}
 
 	public void setSprite(int spriteIndex) {
-		if (spriteIndex < spriteSet.sprites.size() && spriteIndex >= 0) {
-			setSprite(spriteSet.sprites.get(spriteIndex));
+		if (spriteIndex < spriteSet.getSprites().size() && spriteIndex >= 0) {
+			setSprite(spriteSet.getSprites().get(spriteIndex));
 		}
 	}
 

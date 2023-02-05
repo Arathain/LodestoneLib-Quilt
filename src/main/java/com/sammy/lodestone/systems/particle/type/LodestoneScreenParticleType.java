@@ -4,6 +4,7 @@ import com.sammy.lodestone.systems.particle.screen.GenericScreenParticle;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.particle.screen.base.ScreenParticle;
+import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.world.World;
@@ -23,7 +24,7 @@ public class LodestoneScreenParticleType extends ScreenParticleType<ScreenPartic
 
 		@Override
 		public ScreenParticle createParticle(World clientWorld, ScreenParticleEffect options, double pX, double pY, double pXSpeed, double pYSpeed) {
-			return new GenericScreenParticle(clientWorld, options, (ParticleManager.SimpleSpriteProvider) sprite, pX, pY, pXSpeed, pYSpeed);
+			return new GenericScreenParticle(clientWorld, options, (FabricSpriteProviderImpl) sprite, pX, pY, pXSpeed, pYSpeed);
 		}
 	}
 }
