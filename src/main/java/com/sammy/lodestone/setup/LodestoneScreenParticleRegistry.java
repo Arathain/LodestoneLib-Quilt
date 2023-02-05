@@ -1,7 +1,6 @@
 package com.sammy.lodestone.setup;
 
 import com.sammy.lodestone.helpers.DataHelper;
-import com.sammy.lodestone.mixin.FabricSpriteProviderImplAccessor;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.particle.type.LodestoneScreenParticleType;
@@ -38,7 +37,7 @@ public class LodestoneScreenParticleRegistry {
 
 	public static SpriteProvider getSpriteSet(Identifier resourceLocation) {
 		final MinecraftClient client = MinecraftClient.getInstance();
-		return FabricSpriteProviderImplAccessor.FabricSpriteProviderImpl(client.particleManager, client.particleManager.spriteAwareFactories.get(resourceLocation));
+		return client.particleManager.spriteAwareFactories.get(resourceLocation);
 	}
 
 }
