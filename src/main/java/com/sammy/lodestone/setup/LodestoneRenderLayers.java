@@ -87,7 +87,7 @@ public class LodestoneRenderLayers extends RenderPhase {
 	 */
 	public static RenderLayer createGenericRenderLayer(String name, VertexFormat format, VertexFormat.DrawMode mode, Shader shader, Transparency transparency, TextureBase texture) {
 		RenderLayer type = RenderLayer.of(
-				name, format, mode, 256, false, false, RenderLayer.MultiPhaseParameters.builder()
+				name, format, mode, QuiltLoader.isModLoaded("sodium") ? 262144 : 256, false, false, RenderLayer.MultiPhaseParameters.builder()
 						.shader(shader)
 						.writeMaskState(new WriteMaskState(true, true))
 						.lightmap(new Lightmap(false))
@@ -121,7 +121,7 @@ public class LodestoneRenderLayers extends RenderPhase {
 	 * */
 	public static RenderLayer getOutlineTranslucent(Identifier texture, boolean cull) {
 		return RenderLayer.of(MODID + ":outline_translucent",
-				VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, 256, false, true, RenderLayer.MultiPhaseParameters.builder()
+				VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL, VertexFormat.DrawMode.QUADS, QuiltLoader.isModLoaded("sodium") ? 262144 : 256, false, true, RenderLayer.MultiPhaseParameters.builder()
 						.shader(cull ? ENTITY_TRANSLUCENT_CULL_SHADER : ENTITY_TRANSLUCENT_SHADER)
 						.texture(new RenderPhase.Texture(texture, false, false))
 						.transparency(TRANSLUCENT_TRANSPARENCY)
