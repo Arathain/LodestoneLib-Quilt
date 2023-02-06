@@ -35,6 +35,7 @@ public class LodestoneShaderRegistry {
 		shaderList = new ArrayList<>();
 		registerShader(ExtendedShader.createShaderInstance(ADDITIVE_TEXTURE, manager, LodestoneLib.id("texture"), VertexFormats.POSITION_COLOR_TEXTURE_LIGHT));
 		registerShader(ExtendedShader.createShaderInstance(PARTICLE, manager, LodestoneLib.id("particle"), VertexFormats.POSITION_TEXTURE_COLOR_LIGHT));
+		registerShader(ExtendedShader.createShaderInstance(SCREEN_PARTICLE, manager, LodestoneLib.id("screen_particle"), VertexFormats.POSITION_TEXTURE_COLOR));
 
 		registerShader(ExtendedShader.createShaderInstance(MASKED_TEXTURE, manager, LodestoneLib.id("masked_texture"), VertexFormats.POSITION_COLOR_TEXTURE_LIGHT));
 		registerShader(ExtendedShader.createShaderInstance(DISTORTED_TEXTURE, manager, LodestoneLib.id("noise/distorted_texture"), VertexFormats.POSITION_COLOR_TEXTURE_LIGHT));
