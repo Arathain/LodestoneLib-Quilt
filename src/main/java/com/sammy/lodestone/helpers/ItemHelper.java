@@ -1,7 +1,6 @@
 package com.sammy.lodestone.helpers;
 
 
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
@@ -38,13 +37,6 @@ public final class ItemHelper {
 		ItemStack newStack = stack.copy();
 		newStack.setCount(newCount);
 		return newStack;
-	}
-
-	public static boolean hasTrinket(PlayerEntity player, Item item) {
-		boolean bl = false;
-		if(TrinketsApi.getTrinketComponent(player).isPresent())
-			bl = TrinketsApi.getTrinketComponent(player).get().isEquipped(item);
-		return bl;
 	}
 
 	public static void giveItemToEntity(ItemStack item, LivingEntity entity) {

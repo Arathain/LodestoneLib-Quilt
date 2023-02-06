@@ -81,3 +81,5 @@ accessible field net/minecraft/entity/effect/StatusEffectInstance duration I
 accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
 accessible class net/minecraft/client/render/BackgroundRenderer$FogParameters
 
+accessible method net/minecraft/client/particle/ParticleManager registerFactory (Lnet/minecraft/particle/ParticleType;Lnet/minecraft/client/particle/ParticleManager$SpriteAwareFactory;)V
+accessible class net/minecraft/client/particle/ParticleManager$SpriteAwareFactory

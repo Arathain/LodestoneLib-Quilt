@@ -36,10 +36,6 @@ dependencies {
 	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${project.quilted_fabric_api_version}-${project.minecraft_version}"
 	modImplementation include("io.github.ladysnake:satin:${project.satin_version}")
 	modImplementation include("maven.modrinth:midnightlib:${project.midnightlib_version}-fabric")
-	modCompileOnly ("dev.emi:emi:${project.emi_version}")
-	modRuntimeOnly ("dev.emi:emi:${project.emi_version}")
-
-	modImplementation("dev.emi:trinkets:$trinkets")
 
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca}"
 	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca}"
