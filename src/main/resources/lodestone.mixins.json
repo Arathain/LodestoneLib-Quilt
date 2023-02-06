@@ -15,6 +15,7 @@
     "CameraMixin",
     "EffectShaderMixin",
     "EntityRendererMixin",
+    "FabricSpriteProviderImplAccessor",
     "GameRendererMixin",
     "HandledScreenMixin",
     "InGameHudMixin",
