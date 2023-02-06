@@ -1,9 +1,11 @@
 package com.sammy.lodestone.systems.particle.world;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.sammy.lodestone.LodestoneLib;
 import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.helpers.RenderHelper;
+import com.sammy.lodestone.setup.LodestoneRenderLayers;
 import com.sammy.lodestone.systems.particle.data.ColorParticleData;
 import com.sammy.lodestone.systems.particle.data.GenericParticleData;
 import com.sammy.lodestone.systems.particle.data.SpinParticleData;
@@ -95,14 +97,14 @@ public class GenericParticle extends SpriteBillboardParticle {
 	}
 
 	@Override
-	public void buildGeometry(VertexConsumer consumer, Camera camera, float partialTicks) {
-		VertexConsumer consumerToUse = consumer;
-		if (ClientConfig.DELAYED_PARTICLE_RENDERING && textureSheet instanceof LodestoneWorldParticleTextureSheet textureSheet) {
-			if (textureSheet.shouldBuffer()) {
-				consumerToUse = RenderHandler.DELAYED_PARTICLE_RENDER.getBuffer(textureSheet.getRenderLayer());
+	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
+		VertexConsumer consumer = vertexConsumer;
+		if (ClientConfig.DELAYED_PARTICLE_RENDERING && textureSheet instanceof LodestoneWorldParticleTextureSheet sheet) {
+			if (sheet.shouldBuffer()) {
+				consumer = RenderHandler.DELAYED_PARTICLE_RENDER.getBuffer(sheet.getRenderLayer());
 			}
 		}
-		super.buildGeometry(consumerToUse, camera, partialTicks);
+		super.buildGeometry(consumer, camera, partialTicks);
 	}
 
 	@Override
