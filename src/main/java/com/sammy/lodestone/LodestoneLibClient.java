@@ -30,7 +30,12 @@ public class LodestoneLibClient implements ClientModInitializer {
 		ParticleEmitterHandler.registerParticleEmitters();
 
 		WorldRenderEvents.AFTER_TRANSLUCENT.register(context -> {
+			MatrixStack matrixStack = context.matrixStack();
+			Vec3d cameraPos = context.camera().getPos();
+			matrixStack.push();
+			matrixStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 			RenderHandler.MATRIX4F =  new Matrix4f(RenderSystem.getModelViewMatrix());
+			matrixStack.pop();
 		});
 
 		WorldRenderEvents.LAST.register(context -> {
@@ -45,7 +50,7 @@ public class LodestoneLibClient implements ClientModInitializer {
 
 			RenderHandler.renderBufferedParticles(matrixStack);
 			if (RenderHandler.MATRIX4F != null) {
-				RenderSystem.getModelViewMatrix().mul(RenderHandler.MATRIX4F);
+				RenderSystem.getModelViewMatrix().set(RenderHandler.MATRIX4F);
 			}
 			RenderHandler.renderBufferedBatches(matrixStack);
 			RenderHandler.endBufferedRendering(matrixStack);
