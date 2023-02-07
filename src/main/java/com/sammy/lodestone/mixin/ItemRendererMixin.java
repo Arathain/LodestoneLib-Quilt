@@ -1,6 +1,6 @@
 package com.sammy.lodestone.mixin;
 
-import com.sammy.lodestone.handlers.ScreenParticleHandler;
+import com.sammy.lodestone.handlers.screenparticle.ScreenParticleHandler;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.item.ItemStack;
@@ -12,8 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemRenderer.class)
 final class ItemRendererMixin {
 
-	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;"), method = "renderGuiItemModel")
-	private void lodestone$itemParticleEmitter(ItemStack stack, int x, int y, BakedModel model, CallbackInfo ci) {
-		ScreenParticleHandler.renderItem(stack);
+	@Inject(method = "renderGuiItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;scale(FFF)V", ordinal = 0))
+	private void lodestone$renderGuiItem(ItemStack pStack, int pX, int pY, BakedModel pBakedmodel, CallbackInfo ci) {
+		ScreenParticleHandler.renderItemStackEarly(pStack, pX, pY);
+	}
+	@Inject(method = "renderGuiItemModel", at = @At(value = "TAIL"))
+	private void lodestone$renderGuiItemLate(ItemStack pStack, int pX, int pY, BakedModel pBakedmodel, CallbackInfo ci) {
+		ScreenParticleHandler.renderItemStackLate();
 	}
 }

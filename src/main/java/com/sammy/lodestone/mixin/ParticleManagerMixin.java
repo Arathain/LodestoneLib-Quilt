@@ -1,7 +1,7 @@
 package com.sammy.lodestone.mixin;
 
 import com.google.common.collect.ImmutableList;
-import com.sammy.lodestone.systems.rendering.particle.ParticleTextureSheets;
+import com.sammy.lodestone.systems.particle.world.LodestoneWorldParticleTextureSheet;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import org.spongepowered.asm.mixin.Final;
@@ -24,7 +24,7 @@ final class ParticleManagerMixin {
 	@Inject(at = @At("RETURN"), method = "<clinit>")
 	private static void lodestone$addTypes(CallbackInfo ci) {
 		PARTICLE_TEXTURE_SHEETS = ImmutableList.<ParticleTextureSheet>builder().addAll(PARTICLE_TEXTURE_SHEETS)
-				.add(ParticleTextureSheets.ADDITIVE, ParticleTextureSheets.TRANSPARENT)
+				.add(LodestoneWorldParticleTextureSheet.ADDITIVE, LodestoneWorldParticleTextureSheet.TRANSPARENT)
 				.build();
 	}
 }

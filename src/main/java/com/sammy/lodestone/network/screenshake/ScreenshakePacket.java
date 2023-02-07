@@ -2,7 +2,7 @@ package com.sammy.lodestone.network.screenshake;
 
 import com.sammy.lodestone.LodestoneLib;
 import com.sammy.lodestone.handlers.ScreenshakeHandler;
-import com.sammy.lodestone.systems.rendering.particle.Easing;
+import com.sammy.lodestone.systems.easing.Easing;
 import com.sammy.lodestone.systems.screenshake.ScreenshakeInstance;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;

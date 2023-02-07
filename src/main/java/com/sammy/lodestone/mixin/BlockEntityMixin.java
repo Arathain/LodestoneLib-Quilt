@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin implements BlockEntityExtensions, INBTSerializableCompound {
 	@Unique
-	private NbtCompound malum$extraData = null;
+	private NbtCompound lodestone$extraData = null;
 
 	@Shadow
 	public abstract void readNbt(NbtCompound tag);
@@ -25,17 +25,17 @@ public abstract class BlockEntityMixin implements BlockEntityExtensions, INBTSer
 
 	@Inject(at = @At("RETURN"), method = "writeIndentifyingLocatingData")
 	private void port_lib$saveMetadata(NbtCompound nbt, CallbackInfo ci) {
-		if (malum$extraData != null && !malum$extraData.isEmpty()) {
-			nbt.put("ForgeData", malum$extraData);
+		if (lodestone$extraData != null && !lodestone$extraData.isEmpty()) {
+			nbt.put("ForgeData", lodestone$extraData);
 		}
 	}
 
 	@Inject(at = @At("RETURN"), method = "readNbt")
 	private void port_lib$load(NbtCompound tag, CallbackInfo ci) {
 		if (tag.contains("ForgeData")) {
-			malum$extraData = tag.getCompound("ForgeData");
+			lodestone$extraData = tag.getCompound("ForgeData");
 		} else if (tag.contains("create_ExtraEntityData")) {
-			malum$extraData = tag.getCompound("create_ExtraEntityData");
+			lodestone$extraData = tag.getCompound("create_ExtraEntityData");
 		}
 	}
 
@@ -56,10 +56,10 @@ public abstract class BlockEntityMixin implements BlockEntityExtensions, INBTSer
 
 	@Override
 	public NbtCompound getExtraCustomData() {
-		if (malum$extraData == null) {
-			malum$extraData = new NbtCompound();
+		if (lodestone$extraData == null) {
+			lodestone$extraData = new NbtCompound();
 		}
-		return malum$extraData;
+		return lodestone$extraData;
 	}
 
 	public void deserializeNBT(BlockState state, NbtCompound nbt) {

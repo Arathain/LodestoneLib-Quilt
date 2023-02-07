@@ -1,6 +1,6 @@
 package com.sammy.lodestone.systems.screenshake;
 
-import com.sammy.lodestone.systems.rendering.particle.Easing;
+import com.sammy.lodestone.systems.easing.Easing;
 import net.minecraft.client.render.Camera;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.random.RandomGenerator;

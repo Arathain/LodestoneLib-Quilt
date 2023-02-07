@@ -6,12 +6,15 @@
   "mixins": [
     "BlockEntityMixin",
     "LivingEntityMixin",
+    "ServerWorldMixin",
     "WorldChunkMixin",
     "WorldMixin"
   ],
   "client": [
+    "BackgroundRendererMixin",
     "CameraMixin",
     "EffectShaderMixin",
+    "EntityRendererMixin",
     "FabricSpriteProviderImplAccessor",
     "GameRendererMixin",
     "HandledScreenMixin",

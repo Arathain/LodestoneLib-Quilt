@@ -1,38 +1,30 @@
 
 [versions]
 # The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
-minecraft = "1.19"
-quilt_mappings = "1.19+build.1"
-quilt_loader = "0.17.1-beta.1"
+minecraft = "1.19.3"
+quilt_mappings = "1.19.3+build.23"
+quilt_loader = "0.18.1-beta.68"
 
-isnrmn = "v1_03"
 fabric_asm = "v2.3"
 cca = "5.0.0-beta.1"
 mixin_extras = "0.0.11"
-trinkets = "3.4.0"
-satin = "1.8.0"
 quilt_loading_screen = "4.0.0+1.19"
 midnightlib = "0.5.2"
-emi = "0.2.0+1.19"
 annotations = "1.0"
-qsl = "2.0.0-beta.10+1.19"
-quilted_fabric_api = "2.0.0-beta.4+0.57.0-1.19"
+qsl = "4.0.0-beta.10+1.19.3"
+quilted_fabric_api = "5.0.0-beta.4+0.73.0-1.19.3"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
 quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
 
-isnrmn = { module = "maven.modrinth:isnrmn", version.ref = "isnrmn" }
 fabric_asm = { module = "com.github.Chocohead:Fabric-ASM", version.ref = "fabric_asm"}
 cardinal_components_base = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-base", version.ref = "cca" }
 cardinal_components_entity = { module = "dev.onyxstudios.cardinal-components-api:cardinal-components-entity", version.ref = "cca" }
 mixin_extras = { module = "com.github.LlamaLad7:MixinExtras", version.ref = "mixin_extras" }
-trinkets = { module = "dev.emi:trinkets", version.ref = "trinkets" }
 quilt_loading_screen = { module = "maven.modrinth:quilt-loading-screen", version.ref = "quilt_loading_screen" }
 midnightlib = { module = "maven.modrinth:midnightlib", version.ref = "midnightlib"}
-satin = { module = "io.github.ladysnake:satin", version.ref = "satin" }
-emi = { module = "dev.emi:emi", version.ref = "emi" }
 annotations = { module = "com.demonwav.mcdev:annotations", version.ref = "annotations" }
 qsl = { module = "org.quiltmc:qsl", version.ref = "qsl" }
 quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }

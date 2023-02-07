@@ -1,6 +1,6 @@
 package com.sammy.lodestone.mixin;
 
-import com.sammy.lodestone.handlers.ScreenParticleHandler;
+import com.sammy.lodestone.handlers.screenparticle.ScreenParticleHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;

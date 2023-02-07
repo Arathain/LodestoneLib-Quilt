@@ -1,5 +1,6 @@
 package com.sammy.lodestone.mixin;
 
+
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
 import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.SpriteProvider;

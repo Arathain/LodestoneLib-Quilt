@@ -1,7 +1,5 @@
 package com.sammy.lodestone.systems.blockentity;
 
-import com.sammy.lodestone.helpers.BlockHelper;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
