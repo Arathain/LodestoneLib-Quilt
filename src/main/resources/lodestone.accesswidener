@@ -83,3 +83,4 @@ accessible class net/minecraft/client/render/BackgroundRenderer$FogParameters
 
 accessible method net/minecraft/client/particle/ParticleManager registerFactory (Lnet/minecraft/particle/ParticleType;Lnet/minecraft/client/particle/ParticleManager$SpriteAwareFactory;)V
 accessible class net/minecraft/client/particle/ParticleManager$SpriteAwareFactory
+accessible field net/minecraft/client/render/WorldRenderer transparencyShader Lnet/minecraft/client/gl/ShaderEffect;

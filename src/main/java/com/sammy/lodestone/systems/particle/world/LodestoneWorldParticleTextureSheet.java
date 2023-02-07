@@ -1,6 +1,5 @@
 package com.sammy.lodestone.systems.particle.world;
 
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
@@ -30,6 +29,7 @@ public interface LodestoneWorldParticleTextureSheet extends ParticleTextureSheet
 			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			RenderSystem.setShader(LodestoneShaderRegistry.PARTICLE.getInstance());
 			RenderSystem.setShaderTexture(0, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
+			RenderHandler.MATRIX4F = RenderSystem.getModelViewMatrix();
 			builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 		}
 
@@ -52,9 +52,10 @@ public interface LodestoneWorldParticleTextureSheet extends ParticleTextureSheet
 		public void begin(BufferBuilder builder, TextureManager manager) {
 			RenderSystem.depthMask(false);
 			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+			RenderSystem.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			RenderSystem.setShader(LodestoneShaderRegistry.PARTICLE.getInstance());
 			RenderSystem.setShaderTexture(0, SpriteAtlasTexture.PARTICLE_ATLAS_TEXTURE);
+			RenderHandler.MATRIX4F = RenderSystem.getModelViewMatrix();
 			builder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR_LIGHT);
 		}
 

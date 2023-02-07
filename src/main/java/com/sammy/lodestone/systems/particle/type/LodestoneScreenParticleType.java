@@ -5,7 +5,6 @@ import com.sammy.lodestone.systems.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.particle.screen.base.ScreenParticle;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.particle.SpriteProvider;
 import net.minecraft.world.World;
 

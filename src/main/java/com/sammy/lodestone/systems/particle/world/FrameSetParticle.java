@@ -2,7 +2,6 @@ package com.sammy.lodestone.systems.particle.world;
 
 import com.sammy.lodestone.systems.particle.SimpleParticleEffect;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.world.ClientWorld;
 
 import java.util.ArrayList;

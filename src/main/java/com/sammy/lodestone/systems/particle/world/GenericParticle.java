@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.helpers.RenderHelper;
-import com.sammy.lodestone.setup.LodestoneRenderLayers;
 import com.sammy.lodestone.systems.particle.data.ColorParticleData;
 import com.sammy.lodestone.systems.particle.data.GenericParticleData;
 import com.sammy.lodestone.systems.particle.data.SpinParticleData;
@@ -41,7 +40,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 
 	public GenericParticle(ClientWorld world, WorldParticleEffect options, FabricSpriteProviderImpl spriteSet, double x, double y, double z, double xd, double yd, double zd) {
 		super(world, x, y, z);
-		this.renderType = options.textureSheet == null ? ParticleTextureSheet.PARTICLE_SHEET_OPAQUE : options.textureSheet;
+		this.renderType = options.textureSheet == null ? LodestoneWorldParticleTextureSheet.ADDITIVE : options.textureSheet;
 		this.spriteSet = spriteSet;
 
 		this.spritePicker = options.spritePicker;
@@ -95,12 +94,9 @@ public class GenericParticle extends SpriteBillboardParticle {
 	@Override
 	public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
 		VertexConsumer consumer = vertexConsumer;
-		if (ClientConfig.DELAYED_PARTICLE_RENDERING) {
-			if (getType().equals(LodestoneWorldParticleTextureSheet.ADDITIVE)) {
-				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.ADDITIVE_PARTICLE);
-			}
-			if (getType().equals(LodestoneWorldParticleTextureSheet.TRANSPARENT)) {
-				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
+		if (ClientConfig.DELAYED_PARTICLE_RENDERING && renderType instanceof LodestoneWorldParticleTextureSheet textureSheet) {
+			if (textureSheet.shouldBuffer()) {
+				consumer = RenderHandler.DELAYED_PARTICLE_RENDER.getBuffer(textureSheet.getType());
 			}
 		}
 		super.buildGeometry(consumer, camera, tickDelta);

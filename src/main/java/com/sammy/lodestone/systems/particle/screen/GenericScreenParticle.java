@@ -6,7 +6,6 @@ import com.sammy.lodestone.systems.particle.data.GenericParticleData;
 import com.sammy.lodestone.systems.particle.data.SpinParticleData;
 import com.sammy.lodestone.systems.particle.screen.base.SpriteBillboardScreenParticle;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
-import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.client.util.ColorUtil;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
