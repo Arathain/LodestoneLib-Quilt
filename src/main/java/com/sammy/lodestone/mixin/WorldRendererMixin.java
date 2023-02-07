@@ -46,6 +46,33 @@ public abstract class WorldRendererMixin {
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderWeather(Lnet/minecraft/client/render/LightmapTextureManager;FDDD)V", ordinal = 0))
 	private void lodestone$afterWeatherFirst(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
+		Vec3d cameraPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+		matrices.push();
+		matrices.translate(-cameraPos.getX(), -cameraPos.getY(), -cameraPos.getZ());
+		renderBuffered(matrices);
+		matrices.pop();
+	}
+
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderWeather(Lnet/minecraft/client/render/LightmapTextureManager;FDDD)V", ordinal = 0))
+	private void lodestone$afterWeatherSecond(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
+		Vec3d cameraPos = MinecraftClient.getInstance().gameRenderer.getCamera().getPos();
+		matrices.push();
+		matrices.translate(-cameraPos.getX(), -cameraPos.getY(), -cameraPos.getZ());
+		renderBuffered(matrices);
+		matrices.pop();
+	}
+
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleManager;renderParticles(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/client/render/Camera;F)V", ordinal = 0))
+	private void lodestone$afterParticlesFirst(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
+		RenderHandler.MATRIX4F = new Matrix4f(RenderSystem.getModelViewMatrix());
+	}
+
+	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleManager;renderParticles(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/client/render/Camera;F)V", ordinal = 1))
+	private void lodestone$afterParticlesSecond(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
+		RenderHandler.MATRIX4F =  new Matrix4f(RenderSystem.getModelViewMatrix());
+	}
+
+	private void renderBuffered(MatrixStack matrices){
 		if (this.transparencyShader != null) {
 			MinecraftClient.getInstance().getFramebuffer().beginWrite(false);
 		}
@@ -61,21 +88,4 @@ public abstract class WorldRendererMixin {
 			this.getCloudsFramebuffer().beginWrite(false);
 		}
 	}
-
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;renderWeather(Lnet/minecraft/client/render/LightmapTextureManager;FDDD)V", ordinal = 0))
-	private void lodestone$afterWeatherSecond(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
-
-	}
-
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleManager;renderParticles(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/client/render/Camera;F)V", ordinal = 0))
-	private void lodestone$afterParticlesFirst(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
-		RenderHandler.MATRIX4F = new Matrix4f(RenderSystem.getModelViewMatrix());
-	}
-
-	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/ParticleManager;renderParticles(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/render/LightmapTextureManager;Lnet/minecraft/client/render/Camera;F)V", ordinal = 1))
-	private void lodestone$afterParticlesSecond(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci){
-		RenderHandler.MATRIX4F =  new Matrix4f(RenderSystem.getModelViewMatrix());
-	}
-
-
 }

@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tessellator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormats;
+import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.setup.LodestoneRenderLayers;
 import com.sammy.lodestone.setup.LodestoneShaderRegistry;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -16,8 +17,9 @@ import org.lwjgl.opengl.GL11;
 
 public interface LodestoneWorldParticleTextureSheet extends ParticleTextureSheet {
 	LodestoneWorldParticleTextureSheet ADDITIVE = new LodestoneWorldParticleTextureSheet() {
+
 		@Override
-		public RenderLayer getRenderLayer() {
+		public RenderLayer getType() {
 			return LodestoneRenderLayers.ADDITIVE_PARTICLE;
 		}
 
@@ -40,8 +42,9 @@ public interface LodestoneWorldParticleTextureSheet extends ParticleTextureSheet
 		}
 	};
 	LodestoneWorldParticleTextureSheet TRANSPARENT = new LodestoneWorldParticleTextureSheet() {
+
 		@Override
-		public RenderLayer getRenderLayer() {
+		public RenderLayer getType() {
 			return LodestoneRenderLayers.TRANSPARENT_PARTICLE;
 		}
 
@@ -67,5 +70,6 @@ public interface LodestoneWorldParticleTextureSheet extends ParticleTextureSheet
 	default boolean shouldBuffer() {
 		return true;
 	}
-	RenderLayer getRenderLayer();
+
+	RenderLayer getType();
 }

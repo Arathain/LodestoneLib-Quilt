@@ -53,7 +53,7 @@ public class RenderHandler {
 
 	public static void beginBufferedRendering(MatrixStack matrixStack) {
 		matrixStack.push();
-		var lightTexture = MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager();
+		LightmapTextureManager lightTexture = MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager();
 		lightTexture.enable();
 		RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
 		RenderSystem.enableCull();
