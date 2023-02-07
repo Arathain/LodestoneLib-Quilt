@@ -12,6 +12,7 @@ import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix4f;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
@@ -34,7 +35,9 @@ public class LodestoneLibClient implements ClientModInitializer {
 
 		WorldRenderEvents.LAST.register(context -> {
 			MatrixStack matrixStack = context.matrixStack();
+			Vec3d cameraPos = context.camera().getPos();
 			matrixStack.push();
+			matrixStack.translate(-cameraPos.x, -cameraPos.y, -cameraPos.z);
 			if (context.worldRenderer().transparencyShader != null) {
 				MinecraftClient.getInstance().getFramebuffer().beginWrite(false);
 			}
