@@ -428,10 +428,10 @@ public class VFXBuilders {
 			for (Vec3f position : positions) {
 				position.multiplyComponentwise(width, height, width);
 			}
-			supplier.placeVertex(vertexConsumer, last, positions[0].getY(), positions[0].getY(), positions[0].getZ(), u0, v1);
-			supplier.placeVertex(vertexConsumer, last, positions[1].getY(), positions[1].getY(), positions[1].getZ(), u1, v1);
-			supplier.placeVertex(vertexConsumer, last, positions[2].getY(), positions[2].getY(), positions[2].getZ(), u1, v0);
-			supplier.placeVertex(vertexConsumer, last, positions[3].getY(), positions[3].getY(), positions[3].getZ(), u0, v0);
+			supplier.placeVertex(vertexConsumer, last, positions[0].getX(), positions[0].getY(), positions[0].getZ(), u0, v1);
+			supplier.placeVertex(vertexConsumer, last, positions[1].getX(), positions[1].getY(), positions[1].getZ(), u1, v1);
+			supplier.placeVertex(vertexConsumer, last, positions[2].getX(), positions[2].getY(), positions[2].getZ(), u1, v0);
+			supplier.placeVertex(vertexConsumer, last, positions[3].getX(), positions[3].getY(), positions[3].getZ(), u0, v0);
 			stack.translate(-xOffset, -yOffset, -zOffset);
 			return this;
 		}
@@ -455,10 +455,10 @@ public class VFXBuilders {
 				position.multiplyComponentwise(width, height, width);
 				position.transform(stack.peek().getNormal());
 			}
-			supplier.placeVertex(vertexConsumer, last, positions[0].getY(), positions[0].getY(), positions[0].getZ(), u0, v1);
-			supplier.placeVertex(vertexConsumer, last, positions[1].getY(), positions[1].getY(), positions[1].getZ(), u1, v1);
-			supplier.placeVertex(vertexConsumer, last, positions[2].getY(), positions[2].getY(), positions[2].getZ(), u1, v0);
-			supplier.placeVertex(vertexConsumer, last, positions[3].getY(), positions[3].getY(), positions[3].getZ(), u0, v0);
+			supplier.placeVertex(vertexConsumer, last, positions[0].getX(), positions[0].getY(), positions[0].getZ(), u0, v1);
+			supplier.placeVertex(vertexConsumer, last, positions[1].getX(), positions[1].getY(), positions[1].getZ(), u1, v1);
+			supplier.placeVertex(vertexConsumer, last, positions[2].getX(), positions[2].getY(), positions[2].getZ(), u1, v0);
+			supplier.placeVertex(vertexConsumer, last, positions[3].getX(), positions[3].getY(), positions[3].getZ(), u0, v0);
 			stack.translate(-xOffset, -yOffset, -zOffset);
 			return this;
 		}
