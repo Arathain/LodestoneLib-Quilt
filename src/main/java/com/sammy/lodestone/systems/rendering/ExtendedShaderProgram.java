@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.blaze3d.shader.GlUniform;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import net.fabricmc.fabric.impl.client.rendering.FabricShaderProgram;
 import net.minecraft.client.gl.ShaderParseException;
 import net.minecraft.client.render.ShaderProgram;
 import net.minecraft.resource.ResourceFactory;
@@ -14,12 +15,12 @@ import net.minecraft.util.JsonHelper;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class ExtendedShader extends ShaderProgram {
-	public ExtendedShader(ResourceFactory resourceFactory, String string, VertexFormat vertexFormat) throws IOException {
+public class ExtendedShaderProgram extends ShaderProgram {
+	public ExtendedShaderProgram(ResourceFactory resourceFactory, String string, VertexFormat vertexFormat) throws IOException {
 		super(resourceFactory, string, vertexFormat);
 	}
-	public static ExtendedShader createShaderInstance(ShaderHolder shaderHolder, ResourceFactory pResourceProvider, Identifier id, VertexFormat pVertexFormat) throws IOException {
-		return new ExtendedShader(pResourceProvider, id.toString(), pVertexFormat) {
+	public static ExtendedShaderProgram createShaderProgram(ShaderHolder shaderHolder, ResourceFactory pResourceProvider, Identifier id, VertexFormat pVertexFormat) throws IOException {
+		return new ExtendedShaderProgram(pResourceProvider, FabricShaderProgram.rewriteAsId(id.toString(), id.toString()), pVertexFormat) {
 			@Override
 			public ShaderHolder getHolder() {
 				return shaderHolder;

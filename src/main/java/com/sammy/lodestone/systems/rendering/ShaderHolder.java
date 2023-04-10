@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class ShaderHolder {
-	public ExtendedShader instance;
+	public ExtendedShaderProgram instance;
 	public ArrayList<String> uniforms;
 	public ArrayList<UniformData> defaultUniformData = new ArrayList<>();
 	public final RenderPhase.Shader phase = new RenderPhase.Shader(getInstance());
@@ -25,7 +25,7 @@ public class ShaderHolder {
 		defaultUniformData.forEach(u -> u.setUniformValue(instance.getUniformOrDefault(u.uniformName)));
 	}
 
-	public void setInstance(ExtendedShader instance) {
+	public void setInstance(ExtendedShaderProgram instance) {
 		this.instance = instance;
 	}
 

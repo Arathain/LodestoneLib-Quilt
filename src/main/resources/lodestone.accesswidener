@@ -3,15 +3,14 @@ accessWidener   v2        named
 accessible      class     net/minecraft/client/render/RenderLayer$MultiPhase
 accessible      class     net/minecraft/block/entity/BlockEntityType$BlockEntityFactory
 accessible      class     net/minecraft/client/particle/ParticleManager$SimpleSpriteProvider
-accessible      class     net/minecraft/util/registry/Registry$RegistryBootstrap
 accessible      class     net/minecraft/network/NetworkState$PacketHandler
+accessible      class     net/minecraft/client/render/RenderPhase$Transparency
+accessible      class     net/minecraft/client/render/BackgroundRenderer$FogParameters
 
 accessible      field     net/minecraft/client/gl/ShaderEffect                                     passes                       Ljava/util/List;
 accessible      field     net/minecraft/client/render/RenderPhase                                  name                         Ljava/lang/String;
 accessible      field     net/minecraft/client/render/ShaderProgram                                uniforms                     Ljava/util/List;
 accessible      field     net/minecraft/client/particle/ParticleManager                            spriteAwareFactories         Ljava/util/Map;
-accessible      field     net/minecraft/util/math/Matrix4f                                         a03                          F
-accessible      field     net/minecraft/util/math/Matrix4f                                         a13                          F
 accessible      field     net/minecraft/entity/player/PlayerInventory                              combinedInventory            Ljava/util/List;
 accessible      field     net/minecraft/client/particle/ParticleManager$SimpleSpriteProvider       sprites                      Ljava/util/List;
 accessible      field     net/minecraft/client/render/RenderLayer$MultiPhase                       phases                       Lnet/minecraft/client/render/RenderLayer$MultiPhaseParameters;
@@ -24,7 +23,7 @@ accessible      field     net/minecraft/inventory/SimpleInventory               
 accessible      field     net/minecraft/util/collection/DefaultedList                              delegate                     Ljava/util/List;
 accessible      field     net/minecraft/item/SwordItem                                             attackDamage                 F
 accessible      field     net/minecraft/item/SwordItem                                             attributeModifiers           Lcom/google/common/collect/Multimap;
-accessible      field     net/minecraft/item/ArmorItem                                             MODIFIERS                    [Ljava/util/UUID;
+
 accessible      field     net/minecraft/item/ArmorItem                                             attributeModifiers           Lcom/google/common/collect/Multimap;
 accessible      field     net/minecraft/entity/LivingEntity                                        lastDamageTaken              F
 accessible      field     net/minecraft/item/Item                                                  ATTACK_DAMAGE_MODIFIER_ID    Ljava/util/UUID;
@@ -36,8 +35,6 @@ mutable         field     net/minecraft/item/ArmorItem                          
 accessible      method    net/minecraft/client/render/GameRenderer                                 getFov                       (Lnet/minecraft/client/render/Camera;FZ)D
 accessible      method    net/minecraft/client/render/Camera                                       setRotation                  (FF)V
 extendable      method    net/minecraft/client/render/ShaderProgram                                addUniform                   (Lcom/google/gson/JsonElement;)V
-accessible      method    net/minecraft/entity/damage/DamageSource                                 setUnblockable               ()Lnet/minecraft/entity/damage/DamageSource;
-accessible      method    net/minecraft/entity/damage/DamageSource                                 <init>                       (Ljava/lang/String;)V
 accessible      method    net/minecraft/client/particle/ParticleManager                            registerFactory              (Lnet/minecraft/particle/ParticleType;Lnet/minecraft/client/particle/ParticleFactory;)V
 accessible      method    net/minecraft/enchantment/EnchantmentHelper                              forEachEnchantment           (Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;Lnet/minecraft/item/ItemStack;)V
 accessible      method    net/minecraft/enchantment/EnchantmentHelper                              forEachEnchantment           (Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;Ljava/lang/Iterable;)V
@@ -49,17 +46,13 @@ accessible      method    net/minecraft/block/entity/BlockEntityType            
 accessible      method    net/minecraft/entity/projectile/ProjectileEntity                         <init>                       (Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V
 accessible      method    net/minecraft/world/gen/feature/OrePlacedFeatures                        commonOrePlacementModifiers  (ILnet/minecraft/world/gen/feature/PlacementModifier;)Ljava/util/List;
 accessible      method    net/minecraft/recipe/RecipeManager                                       getAllOfType                 (Lnet/minecraft/recipe/RecipeType;)Ljava/util/Map;
-accessible      method    net/minecraft/util/SignType                                              register                     (Lnet/minecraft/util/SignType;)Lnet/minecraft/util/SignType;
-accessible      method    net/minecraft/util/SignType                                              <init>                       (Ljava/lang/String;)V
 accessible      method    net/minecraft/recipe/ShapedRecipe                                        readSymbols                  (Lcom/google/gson/JsonObject;)Ljava/util/Map;
 accessible      method    net/minecraft/recipe/ShapedRecipe                                        removePadding                ([Ljava/lang/String;)[Ljava/lang/String;
 accessible      method    net/minecraft/recipe/ShapedRecipe                                        getPattern                   (Lcom/google/gson/JsonArray;)[Ljava/lang/String;
 accessible      method    net/minecraft/recipe/ShapedRecipe                                        createPatternMatrix          ([Ljava/lang/String;Ljava/util/Map;II)Lnet/minecraft/util/collection/DefaultedList;
 accessible      method    net/minecraft/block/TallPlantBlock                                       onBreakInCreative            (Lnet/minecraft/world/World;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/BlockState;Lnet/minecraft/entity/player/PlayerEntity;)V
-accessible      method    net/minecraft/util/registry/Registry                                     registerSimple               (Lnet/minecraft/util/registry/RegistryKey;Lnet/minecraft/util/registry/Registry$RegistryBootstrap;)Lnet/minecraft/util/registry/Registry;
 accessible      method    net/minecraft/entity/effect/StatusEffect                                 <init>                       (Lnet/minecraft/entity/effect/StatusEffectType;I)V
 accessible      method    net/minecraft/util/hit/BlockHitResult                                    <init>                       (ZLnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Direction;Lnet/minecraft/util/math/BlockPos;Z)V
 accessible      method    net/minecraft/recipe/Ingredient                                          ofEntries                    (Ljava/util/stream/Stream;)Lnet/minecraft/recipe/Ingredient;
-accessible      method    net/minecraft/recipe/Ingredient$TagEntry                                 <init>                       (Lnet/minecraft/tag/TagKey;)V
 accessible      method    net/minecraft/recipe/Ingredient$StackEntry                               <init>                       (Lnet/minecraft/item/ItemStack;)V
 accessible      method    net/minecraft/item/ItemStack                                             <init>                       (Lnet/minecraft/item/ItemConvertible;ILjava/util/Optional;)V

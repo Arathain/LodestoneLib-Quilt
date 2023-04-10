@@ -12,8 +12,8 @@ import static com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenP
 
 @Mixin(Screen.class)
 final class ScreenMixin {
-	@Inject(at = @At("HEAD"), method = "renderBackground(Lnet/minecraft/client/util/math/MatrixStack;I)V")
-	private void lodestone$beforeBackgroundParticle(MatrixStack pPoseStack, int pVOffset, CallbackInfo ci) {
+	@Inject(at = @At("HEAD"), method = "renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V")
+	private void lodestone$beforeBackgroundParticle(MatrixStack matrices, CallbackInfo ci) {
 		ScreenParticleHandler.renderParticles(BEFORE_UI);
 	}
 }

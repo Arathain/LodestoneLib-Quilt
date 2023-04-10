@@ -30,19 +30,19 @@ public abstract class PostProcessor {
 	protected static final MinecraftClient MC = MinecraftClient.getInstance();
 
 	public static final Collection<Pair<String, Consumer<GlUniform>>> COMMON_UNIFORMS = Lists.newArrayList(
-			Pair.of("cameraPos", u -> u.m_rqrbbnht(new Vector3f((float) MC.gameRenderer.getCamera().getPos().x, (float) MC.gameRenderer.getCamera().getPos().y, (float) MC.gameRenderer.getCamera().getPos().z))),
-			Pair.of("lookVector", u -> u.m_rqrbbnht(MC.gameRenderer.getCamera().getHorizontalPlane())),
-			Pair.of("upVector", u -> u.m_rqrbbnht(MC.gameRenderer.getCamera().getVerticalPlane())),
-			Pair.of("leftVector", u -> u.m_rqrbbnht(MC.gameRenderer.getCamera().getDiagonalPlane())),
+			Pair.of("cameraPos", u -> u.setVec3(new Vector3f((float) MC.gameRenderer.getCamera().getPos().x, (float) MC.gameRenderer.getCamera().getPos().y, (float) MC.gameRenderer.getCamera().getPos().z))),
+			Pair.of("lookVector", u -> u.setVec3(MC.gameRenderer.getCamera().getHorizontalPlane())),
+			Pair.of("upVector", u -> u.setVec3(MC.gameRenderer.getCamera().getVerticalPlane())),
+			Pair.of("leftVector", u -> u.setVec3(MC.gameRenderer.getCamera().getDiagonalPlane())),
 			Pair.of("invViewMat", u -> {
 				Matrix4f invertedViewMatrix = new Matrix4f(PostProcessor.viewModelStack.peek().getModel());
 				invertedViewMatrix.invert();
-				u.m_gxmbyckl(invertedViewMatrix);
+				u.setMat4x4(invertedViewMatrix);
 			}),
 			Pair.of("invProjMat", u -> {
 				Matrix4f invertedProjectionMatrix = new Matrix4f(RenderSystem.getProjectionMatrix());
 				invertedProjectionMatrix.invert();
-				u.m_gxmbyckl(invertedProjectionMatrix);
+				u.setMat4x4(invertedProjectionMatrix);
 			}),
 			Pair.of("nearPlaneDistance", u -> u.setFloat(GameRenderer.CAMERA_DEPTH)),
 			Pair.of("farPlaneDistance", u -> u.setFloat(MC.gameRenderer.getFarDepth())),

@@ -13,6 +13,7 @@ import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle
 import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ParticleEmitter;
 import dev.emi.emi.screen.RecipeScreen;
+import net.fabricmc.fabric.impl.client.rendering.FabricShaderProgram;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.GameModeSelectionScreen;

@@ -1,73 +1,150 @@
 package com.sammy.lodestone.handlers;
 
+import com.mojang.blaze3d.shader.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.helpers.RenderHelper;
-import com.sammy.lodestone.setup.LodestoneRenderLayers;
-import com.sammy.lodestone.systems.rendering.ExtendedShader;
+import com.sammy.lodestone.systems.rendering.ExtendedShaderProgram;
 import com.sammy.lodestone.systems.rendering.ShaderUniformHandler;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.ShaderProgram;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import org.joml.Matrix4f;
 import org.quiltmc.loader.api.QuiltLoader;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
+import static com.sammy.lodestone.systems.rendering.Phases.NORMAL_TRANSPARENCY;
+
+/**
+ * A handler responsible for all the backend rendering processes.
+ * To have additive transparency work in a minecraft environment, we need to buffer our rendering till after clouds and water have rendered.
+ * This happens for particles, as well as all of our custom RenderLayers
+ */
 public class RenderHandler {
-	public static HashMap<RenderLayer, BufferBuilder> EARLY_BUFFERS = new HashMap<>();
 	public static HashMap<RenderLayer, BufferBuilder> BUFFERS = new HashMap<>();
-	public static HashMap<RenderLayer, BufferBuilder> LATE_BUFFERS = new HashMap<>();
-	public static HashMap<RenderLayer, ShaderUniformHandler> HANDLERS = new HashMap<>();
-	public static VertexConsumerProvider.Immediate EARLY_DELAYED_RENDER;
+	public static HashMap<RenderLayer, BufferBuilder> PARTICLE_BUFFERS = new HashMap<>();
+	public static boolean LARGER_BUFFER_SOURCES = QuiltLoader.isModLoaded("sodium");
+
+	public static HashMap<RenderLayer, ShaderUniformHandler> UNIFORM_HANDLERS = new HashMap<>();
 	public static VertexConsumerProvider.Immediate DELAYED_RENDER;
-	public static VertexConsumerProvider.Immediate LATE_DELAYED_RENDER;
-	public static Matrix4f PARTICLE_MATRIX = null;
+	public static VertexConsumerProvider.Immediate DELAYED_PARTICLE_RENDER;
+
+	public static Matrix4f MATRIX4F;
+
+	public static float FOG_NEAR;
+	public static float FOG_FAR;
+	public static FogShape FOG_SHAPE;
+	public static float FOG_RED, FOG_GREEN, FOG_BLUE;
 
 	public static void init() {
-		EARLY_DELAYED_RENDER = VertexConsumerProvider.immediate(EARLY_BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 262144 : 256));
-		DELAYED_RENDER = VertexConsumerProvider.immediate(BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 2097152 : 256));
-		LATE_DELAYED_RENDER = VertexConsumerProvider.immediate(LATE_BUFFERS, new BufferBuilder(QuiltLoader.isModLoaded("sodium") ? 262144 : 256));
-	}
-	public static void renderLast(MatrixStack stack) {
-		stack.push();
-		if (ClientConfig.DELAYED_RENDERING) {
-			RenderSystem.getModelViewStack().push();
-			RenderSystem.getModelViewStack().loadIdentity();
-			if (PARTICLE_MATRIX != null) {
-				RenderSystem.getModelViewStack().multiplyMatrix(PARTICLE_MATRIX);
-			}
-			RenderSystem.applyModelViewMatrix();
-			DELAYED_RENDER.draw(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
-			DELAYED_RENDER.draw(LodestoneRenderLayers.ADDITIVE_PARTICLE);
-			RenderSystem.getModelViewStack().pop();
-			RenderSystem.applyModelViewMatrix();
-		}
-		draw(EARLY_DELAYED_RENDER, EARLY_BUFFERS);
-		draw(DELAYED_RENDER, BUFFERS);
-		draw(LATE_DELAYED_RENDER, LATE_BUFFERS);
-		stack.pop();
+		int size = LARGER_BUFFER_SOURCES ? 262144 : 256;
+		DELAYED_RENDER = VertexConsumerProvider.immediate(BUFFERS, new BufferBuilder(size));
+		DELAYED_PARTICLE_RENDER = VertexConsumerProvider.immediate(PARTICLE_BUFFERS, new BufferBuilder(size));
 	}
 
-	public static void draw(VertexConsumerProvider.Immediate source, HashMap<RenderLayer, BufferBuilder> buffers) {
-		for (RenderLayer type : buffers.keySet()) {
-			ShaderProgram instance = RenderHelper.getShader(type);
-			if (HANDLERS.containsKey(type)) {
-				ShaderUniformHandler handler = HANDLERS.get(type);
+	public static void cacheFogData(float near, float far, FogShape shape) {
+		FOG_NEAR = near;
+		FOG_FAR = far;
+		FOG_SHAPE = shape;
+	}
+
+	public static void cacheFogData(float red, float green, float blue) {
+		FOG_RED = red;
+		FOG_GREEN = green;
+		FOG_BLUE = blue;
+	}
+
+	public static void beginBufferedRendering(MatrixStack matrices) {
+		matrices.push();
+		LightmapTextureManager lightTexture = MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager();
+		lightTexture.enable();
+		RenderSystem.activeTexture(org.lwjgl.opengl.GL13.GL_TEXTURE2);
+		RenderSystem.enableCull();
+		RenderSystem.enableDepthTest();
+		RenderSystem.depthMask(false);
+
+		float fogRed = RenderSystem.getShaderFogColor()[0];
+		float fogGreen = RenderSystem.getShaderFogColor()[1];
+		float fogBlue = RenderSystem.getShaderFogColor()[2];
+		float shaderFogStart = RenderSystem.getShaderFogStart();
+		float shaderFogEnd = RenderSystem.getShaderFogEnd();
+		FogShape shaderFogShape = RenderSystem.getShaderFogShape();
+
+		RenderSystem.setShaderFogStart(FOG_NEAR);
+		RenderSystem.setShaderFogEnd(FOG_FAR);
+		RenderSystem.setShaderFogShape(FOG_SHAPE);
+		RenderSystem.setShaderFogColor(FOG_RED, FOG_GREEN, FOG_BLUE);
+
+		FOG_RED = fogRed;
+		FOG_GREEN = fogGreen;
+		FOG_BLUE = fogBlue;
+
+		FOG_NEAR = shaderFogStart;
+		FOG_FAR = shaderFogEnd;
+		FOG_SHAPE = shaderFogShape;
+	}
+
+	public static void renderBufferedParticles(boolean transparentOnly) {
+		renderBufferedBatches(DELAYED_PARTICLE_RENDER, PARTICLE_BUFFERS, transparentOnly);
+	}
+
+	public static void renderBufferedBatches(boolean transparentOnly) {
+		renderBufferedBatches(DELAYED_RENDER, BUFFERS, transparentOnly);
+	}
+
+	private static void renderBufferedBatches(VertexConsumerProvider.Immediate vcp, HashMap<RenderLayer, BufferBuilder> buffer, boolean transparentOnly) {
+		if (transparentOnly) {
+			Collection<RenderLayer> transparentRenderLayers = new ArrayList<>();
+			for (RenderLayer RenderLayer : buffer.keySet()) {
+				RenderPhase.Transparency transparency = RenderHelper.getTransparency(RenderLayer);
+				if (transparency.equals(NORMAL_TRANSPARENCY)) {
+					transparentRenderLayers.add(RenderLayer);
+				}
+			}
+			endBatches(vcp, transparentRenderLayers);
+		}
+		else {
+			endBatches(vcp, buffer.keySet());
+		}
+	}
+
+	public static void endBufferedRendering(MatrixStack matrices) {
+		LightmapTextureManager lightTexture = MinecraftClient.getInstance().gameRenderer.getLightmapTextureManager();
+		RenderSystem.setShaderFogStart(FOG_NEAR);
+		RenderSystem.setShaderFogEnd(FOG_FAR);
+		RenderSystem.setShaderFogShape(FOG_SHAPE);
+		RenderSystem.setShaderFogColor(FOG_RED, FOG_GREEN, FOG_BLUE);
+
+		matrices.pop();
+		lightTexture.disable();
+		RenderSystem.disableDepthTest();
+		RenderSystem.depthMask(true);
+	}
+
+	public static void endBatches(VertexConsumerProvider.Immediate vcp, Collection<RenderLayer> RenderLayers) {
+		for (RenderLayer layer : RenderLayers) {
+			ShaderProgram instance = RenderHelper.getShader(layer);
+			if (UNIFORM_HANDLERS.containsKey(layer)) {
+				ShaderUniformHandler handler = UNIFORM_HANDLERS.get(layer);
 				handler.updateShaderData(instance);
 			}
-			source.draw(type);
-			if (instance instanceof ExtendedShader extendedShaderInstance) {
-				extendedShaderInstance.setUniformDefaults();
+			vcp.draw(layer);
+			if (instance instanceof ExtendedShaderProgram extendedShaderProgramInstance) {
+				extendedShaderProgramInstance.setUniformDefaults();
 			}
 		}
-		source.draw();
 	}
+
 	public static void addRenderLayer(RenderLayer type) {
-		RenderHandler.EARLY_BUFFERS.put(type, new BufferBuilder(type.getExpectedBufferSize()));
-		RenderHandler.BUFFERS.put(type, new BufferBuilder(type.getExpectedBufferSize()));
-		RenderHandler.LATE_BUFFERS.put(type, new BufferBuilder(type.getExpectedBufferSize()));
+		int size = LARGER_BUFFER_SOURCES ? 262144 : type.getExpectedBufferSize();
+		HashMap<RenderLayer, BufferBuilder> buffers = BUFFERS;
+		if (type.name.contains("particle")) {
+			buffers = PARTICLE_BUFFERS;
+		}
+		buffers.put(type, new BufferBuilder(size));
 	}
+
 }

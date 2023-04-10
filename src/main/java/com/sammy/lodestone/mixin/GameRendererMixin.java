@@ -30,7 +30,7 @@ final class GameRendererMixin {
 		matrix.push();
 		matrix.translate(-cameraPos.getX(), -cameraPos.getY(), -cameraPos.getZ());
 		PostProcessHandler.renderLast(matrix);
-		RenderHandler.renderLast(matrix);
+		//RenderHandler.(matrix);
 		matrix.pop();
 	}
 	@Inject(method = "loadShaders", at = @At(value = "INVOKE_ASSIGN", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)

@@ -38,7 +38,7 @@ public class PositionedScreenshakeInstance extends ScreenshakeInstance{
 
 		Vector3f lookDirection = camera.getHorizontalPlane();
 		Vec3d directionToScreenshake = position.subtract(camera.getPos()).normalize();
-		float angle = Math.max(minDot, lookDirection.dot(directionToScreenshake.m_sruzucpd()));
+		float angle = Math.max(minDot, lookDirection.dot(directionToScreenshake.toVector3f()));
 		return intensity * distanceMultiplier * angle;
 	}
 }

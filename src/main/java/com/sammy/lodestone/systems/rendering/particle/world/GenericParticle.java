@@ -4,9 +4,11 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.setup.LodestoneRenderLayers;
-import com.sammy.lodestone.systems.rendering.particle.ParticleTextureSheets;
+import com.sammy.lodestone.systems.rendering.particle.LodestoneWorldParticleTextureSheet;
 import com.sammy.lodestone.systems.rendering.particle.SimpleParticleEffect;
 import net.fabricmc.fabric.impl.client.particle.FabricSpriteProviderImpl;
+import net.minecraft.client.gui.screen.ingame.SmithingScreen;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.particle.ParticleTextureSheet;
 import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.render.Camera;
@@ -149,13 +151,8 @@ public class GenericParticle extends SpriteBillboardParticle {
     @Override
     public void buildGeometry(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
 		VertexConsumer consumer = vertexConsumer;
-		if (ClientConfig.DELAYED_RENDERING) {
-			if (getType().equals(ParticleTextureSheets.ADDITIVE)) {
-				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.ADDITIVE_PARTICLE);
-			}
-			if (getType().equals(ParticleTextureSheets.TRANSPARENT)) {
-				consumer = RenderHandler.DELAYED_RENDER.getBuffer(LodestoneRenderLayers.TRANSPARENT_PARTICLE);
-			}
+		if (ClientConfig.DELAYED_RENDERING && textureSheet instanceof LodestoneWorldParticleTextureSheet shit) {
+			consumer = RenderHandler.DELAYED_PARTICLE_RENDER.getBuffer(shit.getRenderLayer());
 		}
         super.buildGeometry(consumer, camera, tickDelta);
     }

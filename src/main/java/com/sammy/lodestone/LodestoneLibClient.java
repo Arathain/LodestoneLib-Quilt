@@ -1,5 +1,6 @@
 package com.sammy.lodestone;
 
+import com.google.common.reflect.Reflection;
 import com.sammy.lodestone.config.ClientConfig;
 import com.sammy.lodestone.handlers.RenderHandler;
 import com.sammy.lodestone.network.screenshake.PositionedScreenshakePacket;
@@ -17,7 +18,7 @@ public class LodestoneLibClient implements ClientModInitializer {
 	public void onInitializeClient(ModContainer mod) {
 		MidnightConfig.init(MODID, ClientConfig.class);
 
-		LodestoneRenderLayers.yea();
+		Reflection.initialize(LodestoneRenderLayers.class);
 		RenderHandler.init();
 
 		ClientPlayNetworking.registerGlobalReceiver(ScreenshakePacket.ID, (client, handler, buf, responseSender) -> new ScreenshakePacket(buf).apply(client.getNetworkHandler()));
