@@ -72,8 +72,8 @@ public class ScreenParticleHandler {
 						}
 					}
 					Matrix4f last = matrixStack.peek().getModel();
-					float x = last.m03();
-					float y = last.m13();
+					float x = last.m30();
+					float y = last.m31();
 					if (canSpawnParticles) {
 						emitter.tick(stack, x, y, renderOrder);
 					}
