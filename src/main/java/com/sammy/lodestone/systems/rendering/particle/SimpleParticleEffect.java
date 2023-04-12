@@ -1,58 +1,33 @@
 package com.sammy.lodestone.systems.rendering.particle;
 
+import com.sammy.lodestone.systems.rendering.particle.data.ColorParticleData;
+import com.sammy.lodestone.systems.rendering.particle.data.GenericParticleData;
+import com.sammy.lodestone.systems.rendering.particle.data.SpinParticleData;
 import net.minecraft.client.particle.ParticleTextureSheet;
 
+import java.awt.*;
+
 public class SimpleParticleEffect {
-    public enum Animator {
-        FIRST_INDEX, LAST_INDEX, WITH_AGE, RANDOM_SPRITE
-    }
-	public enum MotionStyle {
-		START_TO_END, CURRENT_TO_END
+	public static final ColorParticleData DEFAULT_COLOR = ColorParticleData.create(Color.WHITE, Color.BLACK).build();
+	public static final SpinParticleData DEFAULT_SPIN = SpinParticleData.create(0).build();
+	public static final GenericParticleData DEFAULT_GENERIC = GenericParticleData.create(1, 0).build();
+
+	public enum ParticleSpritePicker {
+		FIRST_INDEX, LAST_INDEX, WITH_AGE, RANDOM_SPRITE
 	}
-	public enum SpecialRemovalProtocol {
+
+	public enum ParticleDiscardFunctionType {
 		NONE, INVISIBLE, ENDING_CURVE_INVISIBLE
 	}
 
-    public ParticleTextureSheet textureSheet = LodestoneWorldParticleTextureSheet.ADDITIVE;
-    public Animator animator = Animator.FIRST_INDEX;
-	public SpecialRemovalProtocol removalProtocol = SpecialRemovalProtocol.NONE;
-	public float r1 = 1, g1 = 1, b1 = 1, r2 = 1, g2 = 1, b2 = 1;
-	public float colorCoefficient = 1f;
-	public Easing colorCurveEasing = Easing.LINEAR;
+	public ParticleSpritePicker spritePicker = ParticleSpritePicker.FIRST_INDEX;
+	public ParticleDiscardFunctionType discardFunctionType = ParticleDiscardFunctionType.NONE;
 
-	public float scale1 = 1, scale2 = 0, scale3 = 0;
-	public float scaleCoefficient = 1f;
-	public Easing scaleCurveStartEasing = Easing.LINEAR, scaleCurveEndEasing = Easing.LINEAR;
-
-	public float alpha1 = 1, alpha2 = 0, alpha3 = 0;
-	public float alphaCoefficient = 1f;
-	public Easing alphaCurveStartEasing = Easing.LINEAR, alphaCurveEndEasing = Easing.LINEAR;
-
-	public boolean forcedMotion = false;
-	public MotionStyle motionStyle = MotionStyle.START_TO_END;
-	public float motionCoefficient = 1f;
-	public Easing motionEasing = Easing.LINEAR;
-
-	public float spin1 = 0, spin2 = 0, spin3 = 0;
-	public float spinCoefficient = 1f, spinOffset = 0;
-	public Easing spinCurveStartEasing = Easing.LINEAR, spinCurveEndEasing = Easing.LINEAR;
+	public ColorParticleData colorData = DEFAULT_COLOR;
+	public GenericParticleData transparencyData = DEFAULT_GENERIC;
+	public GenericParticleData scaleData = DEFAULT_GENERIC;
+	public SpinParticleData spinData = DEFAULT_SPIN;
 
 	public int lifetime = 20;
 	public float gravity = 0f;
-	public boolean noClip = false;
-
-	public SimpleParticleEffect() {
-	}
-	public boolean isTrinaryScale()
-	{
-		return scale2 != scale3;
-	}
-	public boolean isTrinaryAlpha()
-	{
-		return alpha2 != alpha3;
-	}
-	public boolean isTrinarySpin()
-	{
-		return spin2 != spin3;
-	}
 }

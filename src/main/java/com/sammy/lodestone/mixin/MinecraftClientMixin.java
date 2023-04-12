@@ -1,6 +1,6 @@
 package com.sammy.lodestone.mixin;
 
-import com.sammy.lodestone.handlers.ScreenParticleHandler;
+import com.sammy.lodestone.handlers.screenparticle.ScreenParticleHandler;
 import com.sammy.lodestone.handlers.ScreenshakeHandler;
 import com.sammy.lodestone.setup.LodestoneParticles;
 import com.sammy.lodestone.setup.LodestoneScreenParticles;
@@ -23,7 +23,7 @@ final class MinecraftClientMixin {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void lodestone$clientTick(CallbackInfo ci) {
-		ScreenParticleHandler.clientTick();
+		ScreenParticleHandler.tickParticles();
 		ScreenshakeHandler.clientTick(MinecraftClient.getInstance().gameRenderer.getCamera(), RANDOM);
 	}
 

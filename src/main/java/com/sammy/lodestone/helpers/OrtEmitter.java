@@ -1,66 +1,70 @@
 package com.sammy.lodestone.helpers;
 
+import com.sammy.lodestone.handlers.screenparticle.ParticleEmitterHandler;
 import com.sammy.lodestone.setup.LodestoneScreenParticles;
 import com.sammy.lodestone.systems.rendering.particle.Easing;
-import com.sammy.lodestone.systems.rendering.particle.ParticleBuilders;
+import com.sammy.lodestone.systems.rendering.particle.ScreenParticleBuilder;
+import com.sammy.lodestone.systems.rendering.particle.data.ColorParticleData;
+import com.sammy.lodestone.systems.rendering.particle.data.GenericParticleData;
+import com.sammy.lodestone.systems.rendering.particle.data.SpinParticleData;
+import com.sammy.lodestone.systems.rendering.particle.screen.LodestoneScreenParticleTextureSheet;
 import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
-import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class OrtEmitter implements ItemParticleEmitter {
+public class OrtEmitter implements ParticleEmitterHandler.ItemParticleSupplier {
+
 	@Override
-	public void particleTick(ItemStack stack, float x, float y, ScreenParticle.RenderOrder renderOrder) {
+	public void spawnParticles(HashMap<LodestoneScreenParticleTextureSheet, ArrayList<ScreenParticle>> target, World world, float tickDelta, ItemStack stack, float x, float y) {
 		final MinecraftClient client = MinecraftClient.getInstance();
-		World world = client.world;
 		float gameTime = world.getTime() + client.getTickDelta();
 		Color firstColor = Color.BLUE;
 		Color secondColor = Color.CYAN;
-		ParticleBuilders.create(LodestoneScreenParticles.STAR)
-				.setAlpha(0.03f, 0f)
+		ScreenParticleBuilder.create(LodestoneScreenParticles.STAR, target)
+				.setColorData(ColorParticleData
+						.create(firstColor, secondColor)
+						.setCoefficient(1.25f)
+						.build())
 				.setLifetime(8)
-				.setScale((float) (0.75f + Math.sin(gameTime * 0.05f) * 0.15f), 0)
-				.setColor(firstColor, secondColor)
-				.setColorCoefficient(1.25f)
-				.randomOffset(0.05f)
-				.setSpinOffset(0.025f * gameTime % 6.28f)
-				.setSpin(0, 1)
-				.setSpinEasing(Easing.EXPO_IN_OUT)
-				.setAlphaEasing(Easing.QUINTIC_IN)
-				.overrideRenderOrder(renderOrder)
-				.centerOnStack(stack, -2, 2)
+				.setTransparencyData(GenericParticleData.create(0.5f, 0).setEasing(Easing.QUINTIC_IN).build())
+				.setScaleData(GenericParticleData.create((float) (0.75f + Math.sin(gameTime * 0.05f) * 0.15f), 0).build())
+				.setRandomOffset(0.05f)
+				.setSpinData(SpinParticleData.create(0, 1).setSpinOffset(0.025f * gameTime % 6.28f).setEasing(Easing.EXPO_IN_OUT).build())
+				.spawnOnStack(x, y)
+				.setColorData(ColorParticleData
+						.create(secondColor, firstColor)
+						.setCoefficient(1.25f)
+						.build())
+				.setScaleData(GenericParticleData.create((float) (0.75f - Math.sin(gameTime * 0.075f) * 0.15f), 0).build())
+				.setSpinData(SpinParticleData.create(0, 1).setSpinOffset(0.785f - 0.01f * gameTime % 6.28f).setEasing(Easing.EXPO_IN_OUT).build())
 				.repeat(x, y, 1)
-				.setScale((float) (0.75f - Math.sin(gameTime * 0.075f) * 0.15f), 0)
-				.setColor(secondColor, firstColor)
-				.setSpinOffset(0.785f - 0.01f * gameTime % 6.28f)
-				.repeat(x, y, 1)
-				.setScale((float) (0.9f - Math.sin(gameTime * 0.1f) * 0.175f), 0)
-				.setColor(secondColor, firstColor)
-				.setSpinOffset(0.8f - 0.01f * gameTime % 6.28f)
-				.repeat(x, y, 1);
+				.setScaleData(GenericParticleData.create((float) (0.9f - Math.sin(gameTime * 0.1f) * 0.175f), 0).build())
+				.setSpinData(SpinParticleData.create(0, 1).setSpinOffset(0.8f - 0.01f * gameTime % 6.28f).setEasing(Easing.EXPO_IN_OUT).build())
+				.spawnOnStack(x, y);
 		gameTime += 31.4f;
-		ParticleBuilders.create(LodestoneScreenParticles.STAR)
-				.setAlpha(0.028f, 0f)
-				.setLifetime(8)
-				.setScale((float) (0.75f + Math.sin(gameTime * 0.05f) * 0.125f), 0)
-				.setColor(firstColor, secondColor)
-				.setColorCoefficient(1.25f)
-				.randomOffset(0.05f)
-				.setSpinOffset(0.025f * gameTime % 6.28f)
-				.setAlphaEasing(Easing.QUINTIC_IN)
-				.overrideRenderOrder(renderOrder)
-				.centerOnStack(stack, 3, -3)
-				.repeat(x, y, 1)
-				.setScale((float) (0.85f - Math.sin(gameTime * 0.075f) * 0.15f), 0)
-				.setColor(secondColor, firstColor)
-				.setSpinOffset(0.785f - 0.01f * gameTime % 6.28f)
-				.repeat(x, y, 1)
-				.setScale((float) (0.95f - Math.sin(gameTime * 0.1f) * 0.175f), 0)
-				.setColor(secondColor, firstColor)
-				.setSpinOffset(0.8f - 0.01f * gameTime % 6.28f)
-				.repeat(x, y, 1);
+//		ScreenParticleBuilder.create(LodestoneScreenParticles.STAR, target)
+//				.setAlpha(0.028f, 0f)
+//				.setLifetime(8)
+//				.setScale((float) (0.75f + Math.sin(gameTime * 0.05f) * 0.125f), 0)
+//				.setColor(firstColor, secondColor)
+//				.setColorCoefficient(1.25f)
+//				.randomOffset(0.05f)
+//				.setSpinOffset(0.025f * gameTime % 6.28f)
+//				.setAlphaEasing(Easing.QUINTIC_IN)
+//				.centerOnStack(stack, 3, -3)
+//				.repeat(x, y, 1)
+//				.setScale((float) (0.85f - Math.sin(gameTime * 0.075f) * 0.15f), 0)
+//				.setColor(secondColor, firstColor)
+//				.setSpinOffset(0.785f - 0.01f * gameTime % 6.28f)
+//				.repeat(x, y, 1)
+//				.setScale((float) (0.95f - Math.sin(gameTime * 0.1f) * 0.175f), 0)
+//				.setColor(secondColor, firstColor)
+//				.setSpinOffset(0.8f - 0.01f * gameTime % 6.28f)
+//				.repeat(x, y, 1);
 	}
 }

@@ -1,26 +1,17 @@
 package com.sammy.lodestone.helpers;
 
 import com.sammy.lodestone.network.screenshake.PositionedScreenshakePacket;
-import com.sammy.lodestone.setup.LodestoneScreenParticles;
 import com.sammy.lodestone.systems.rendering.particle.Easing;
-import com.sammy.lodestone.systems.rendering.particle.ParticleBuilders;
-import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
-import com.sammy.lodestone.systems.rendering.particle.screen.emitter.ItemParticleEmitter;
 import io.netty.buffer.Unpooled;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 import org.quiltmc.qsl.networking.api.ServerPlayNetworking;
-
-import java.awt.*;
 
 public class OrtTestItem extends Item {
 	public OrtTestItem(Settings settings) {

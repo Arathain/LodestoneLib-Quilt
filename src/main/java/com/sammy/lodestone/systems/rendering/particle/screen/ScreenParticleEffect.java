@@ -4,17 +4,16 @@ import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec2f;
 
+import java.util.function.Consumer;
+
 public class ScreenParticleEffect extends SimpleParticleEffect {
 
-    public final ScreenParticleType<?> type;
-    public ScreenParticle.RenderOrder renderOrder;
-    public ItemStack stack;
-    public float xOrigin;
-    public float yOrigin;
-    public float xOffset;
-    public float yOffset;
-
-	public Vec2f startingVelocity = Vec2f.ZERO, endingMotion = Vec2f.ZERO;
+	public final ScreenParticleType<?> type;
+	public LodestoneScreenParticleTextureSheet renderType = LodestoneScreenParticleTextureSheet.ADDITIVE;
+	public Consumer<GenericScreenParticle> actor;
+	public boolean tracksStack;
+	public double stackTrackXOffset;
+	public double stackTrackYOffset;
 
     public ScreenParticleEffect(ScreenParticleType<?> type) {
         this.type = type;

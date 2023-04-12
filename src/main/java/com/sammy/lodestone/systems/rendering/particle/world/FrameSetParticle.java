@@ -6,6 +6,8 @@ import net.minecraft.client.world.ClientWorld;
 
 import java.util.ArrayList;
 
+import static com.sammy.lodestone.systems.rendering.particle.SimpleParticleEffect.ParticleSpritePicker.FIRST_INDEX;
+
 public class FrameSetParticle extends GenericParticle {
     public ArrayList<Integer> frameSet = new ArrayList<>();
     public FrameSetParticle(ClientWorld world, WorldParticleEffect data, FabricSpriteProviderImpl spriteSet, double x, double y, double z, double xd, double yd, double zd) {
@@ -20,10 +22,10 @@ public class FrameSetParticle extends GenericParticle {
         super.tick();
     }
 
-    @Override
-    public SimpleParticleEffect.Animator getAnimator() {
-        return SimpleParticleEffect.Animator.FIRST_INDEX;
-    }
+	@Override
+	public SimpleParticleEffect.ParticleSpritePicker getSpritePicker() {
+		return FIRST_INDEX;
+	}
 
     protected void addLoop(int min, int max, int times) {
         for (int i = 0; i < times; i++) {
