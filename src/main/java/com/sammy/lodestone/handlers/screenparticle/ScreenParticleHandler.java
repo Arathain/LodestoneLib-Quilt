@@ -26,6 +26,7 @@ import java.util.Iterator;
  * Use {@link ScreenParticleHandler#addParticle(HashMap, ScreenParticleEffect, double, double, double, double)} to create a screen particle, which will then be ticked.
  */
 public class ScreenParticleHandler {
+	public static int x, y;
 
 	/**
 	 * Earliest Screen Particles are rendered before nearly every piece of user interface.

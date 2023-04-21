@@ -18,6 +18,8 @@ final class InGameHudMixin {
 	@Inject(at = @At("HEAD"), method = "renderHotbar")
 	private void lodestone$renderHotbarStart(float l1, MatrixStack j1, CallbackInfo ci) {
 		ScreenParticleHandler.renderingHotbar = true;
+		ScreenParticleHandler.x = 0;
+		ScreenParticleHandler.y = 0;
 	}
 
 	@Inject(at = @At("RETURN"), method = "renderHotbar")

@@ -15,7 +15,7 @@ final class ItemRendererMixin {
 
 	@Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/BufferBuilderStorage;getEntityVertexConsumers()Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;", ordinal = 0), method = "renderItemInGui(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/item/ItemStack;IILnet/minecraft/client/render/model/BakedModel;)V")
 	private void lodestone$itemParticleEmitter(MatrixStack matrices, ItemStack stack, int x, int y, BakedModel model, CallbackInfo ci) {
-		ScreenParticleHandler.renderItemStackEarly(stack, x, y);
+		ScreenParticleHandler.renderItemStackEarly(stack, x+ScreenParticleHandler.x, y+ScreenParticleHandler.y);
 	}
 
 	@Inject(at = @At(value = "TAIL"), method = "renderItemInGui(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/item/ItemStack;IILnet/minecraft/client/render/model/BakedModel;)V")
