@@ -28,7 +28,7 @@ public abstract class SpriteBillboardScreenParticle extends BillboardScreenParti
 	}
 
 	protected float getMaxU() {
-		return this.sprite.getMinU();
+		return this.sprite.getMaxU();
 	}
 
 	protected float getMinV() {
