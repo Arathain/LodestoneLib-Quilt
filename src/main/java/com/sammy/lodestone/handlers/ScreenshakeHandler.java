@@ -38,7 +38,7 @@ public class ScreenshakeHandler {
 	public static float randomizeOffset(int offset) {
 		float min = -intensity * 2;
 		float max = intensity * 2;
-		float sampled = (float) sampler.sample((MinecraftClient.getInstance().world.getTime() + MinecraftClient.getInstance().getTickDelta())/intensity, offset, 0) * 1.5f;
+		float sampled = (float) sampler.sample((MinecraftClient.getInstance().world.getTime() % 24000L + MinecraftClient.getInstance().getTickDelta())/intensity, offset, 0) * 1.5f;
 		return min >= max ? min : sampled * max;
 	}
 }
