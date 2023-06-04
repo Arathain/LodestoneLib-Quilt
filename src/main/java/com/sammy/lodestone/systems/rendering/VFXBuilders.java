@@ -395,7 +395,7 @@ public class VFXBuilders {
 			start.add(xOffset, yOffset, zOffset);
 			end.add(xOffset, yOffset, zOffset);
 			stack.translate(-start.x, -start.y, -start.z);
-			Vec3d cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getEyePos();
+			Vec3d cameraPosition = minecraft.getBlockEntityRenderDispatcher().camera.getPos();
 			Vec3d delta = end.subtract(start);
 			Vec3d normal = start.subtract(cameraPosition).crossProduct(delta).normalize().multiply(width / 2f, width / 2f, width / 2f);
 			Matrix4f last = stack.peek().getModel();
