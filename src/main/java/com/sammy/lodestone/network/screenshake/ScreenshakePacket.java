@@ -4,9 +4,9 @@ import com.sammy.lodestone.LodestoneLib;
 import com.sammy.lodestone.handlers.ScreenshakeHandler;
 import com.sammy.lodestone.systems.rendering.particle.Easing;
 import com.sammy.lodestone.systems.screenshake.ScreenshakeInstance;
-import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.util.Identifier;
 
 public class ScreenshakePacket implements Packet<ClientPlayPacketListener> {

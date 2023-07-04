@@ -15,8 +15,9 @@ import net.minecraft.client.gl.ShaderEffect;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Matrix4f;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Matrix4f;
+import org.joml.Vector3f;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public abstract class PostProcessor {
 	protected static final MinecraftClient MC = MinecraftClient.getInstance();
 
 	public static final Collection<Pair<String, Consumer<GlUniform>>> COMMON_UNIFORMS = Lists.newArrayList(
-			Pair.of("cameraPos", u -> u.setVec3(new Vec3f(MC.gameRenderer.getCamera().getPos()))),
+			Pair.of("cameraPos", u -> u.setVec3(MC.gameRenderer.getCamera().getPos().toVector3f())),
 			Pair.of("lookVector", u -> u.setVec3(MC.gameRenderer.getCamera().getHorizontalPlane())),
 			Pair.of("upVector", u -> u.setVec3(MC.gameRenderer.getCamera().getVerticalPlane())),
 			Pair.of("leftVector", u -> u.setVec3(MC.gameRenderer.getCamera().getDiagonalPlane())),

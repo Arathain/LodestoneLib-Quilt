@@ -6,12 +6,12 @@ import com.sammy.lodestone.systems.rendering.particle.SimpleParticleEffect;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 
 public class WorldParticleEffect extends SimpleParticleEffect implements ParticleEffect {
 
     public ParticleType<?> type;
-    public Vec3f startingVelocity = Vec3f.ZERO, endingMotion = Vec3f.ZERO;
+    public Vector3f startingVelocity = new Vector3f(0,0,0), endingMotion = new Vector3f(0,0,0);
     public WorldParticleEffect(ParticleType<?> type) {
         this.type = type;
     }

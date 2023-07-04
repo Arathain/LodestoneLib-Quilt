@@ -2,6 +2,7 @@ package com.sammy.lodestone.mixin;
 
 import com.sammy.lodestone.handlers.ScreenParticleHandler;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Final;
@@ -16,12 +17,12 @@ final class InGameHudMixin {
 	@Shadow @Final private MinecraftClient client;
 
 	@Inject(at = @At("HEAD"), method = "renderHotbar")
-	private void lodestone$renderHotbarStart(float l1, MatrixStack j1, CallbackInfo ci) {
+	private void lodestone$renderHotbarStart(float tickDelta, GuiGraphics graphics, CallbackInfo ci) {
 		ScreenParticleHandler.renderingHotbar = true;
 	}
 
 	@Inject(at = @At("RETURN"), method = "renderHotbar")
-	private void lodestone$renderHotbarEnd(float l1, MatrixStack j1, CallbackInfo ci) {
+	private void lodestone$renderHotbarEnd(float tickDelta, GuiGraphics graphics, CallbackInfo ci) {
 		ScreenParticleHandler.renderingHotbar = false;
 	}
 }

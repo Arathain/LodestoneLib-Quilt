@@ -3,7 +3,7 @@ package com.sammy.lodestone.systems.rendering;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.util.math.Vec2f;
-import net.minecraft.util.math.Vector4f;
+import org.joml.Vector4f;
 
 public class TrailPoint {
 
@@ -23,7 +23,7 @@ public class TrailPoint {
 	}
 
 	public TrailPoint(Vector4f pos, Vec2f perp) {
-		this(pos.getX() + perp.x, pos.getX() - perp.x, pos.getY() + perp.y, pos.getY() - perp.y, pos.getZ());
+		this(pos.x() + perp.x, pos.x() - perp.x, pos.y() + perp.y, pos.y() - perp.y, pos.z());
 	}
 
 	public void renderStart(VertexConsumer builder, VFXBuilders.WorldVFXBuilder.WorldVertexPlacementSupplier supplier, float u0, float v0, float u1, float v1) {

@@ -1,6 +1,7 @@
 package com.sammy.lodestone.mixin;
 
 import com.sammy.lodestone.handlers.ScreenParticleHandler;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,8 +13,8 @@ import static com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenP
 
 @Mixin(Screen.class)
 final class ScreenMixin {
-	@Inject(at = @At("HEAD"), method = "renderBackground(Lnet/minecraft/client/util/math/MatrixStack;I)V")
-	private void lodestone$beforeBackgroundParticle(MatrixStack pPoseStack, int pVOffset, CallbackInfo ci) {
+	@Inject(at = @At("HEAD"), method = "renderBackground")
+	private void lodestone$beforeBackgroundParticle(GuiGraphics graphics, CallbackInfo ci) {
 		ScreenParticleHandler.renderParticles(BEFORE_UI);
 	}
 }

@@ -13,7 +13,7 @@ import net.minecraft.client.render.Camera;
 import net.minecraft.client.util.ColorUtil;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3f;
+import org.joml.Vector3f;
 
 import java.awt.*;
 
@@ -21,7 +21,7 @@ public class GenericParticle extends SpriteBillboardParticle {
     protected WorldParticleEffect data;
     private final ParticleTextureSheet textureSheet;
     protected final FabricSpriteProviderImpl spriteProvider;
-	private final Vec3f startingVelocity;
+	private final Vector3f startingVelocity;
 	private boolean reachedPositiveAlpha;
 	private boolean reachedPositiveScale;
     float[] hsv1 = new float[3], hsv2 = new float[3];
@@ -40,7 +40,7 @@ public class GenericParticle extends SpriteBillboardParticle {
         this.gravityStrength = data.gravity;
         this.collidesWithWorld = !data.noClip;
         this.velocityMultiplier = 1;
-		this.startingVelocity = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? data.startingVelocity : new Vec3f((float)velocityX, (float)velocityY, (float)velocityZ);
+		this.startingVelocity = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? data.startingVelocity : new Vector3f((float)velocityX, (float)velocityY, (float)velocityZ);
 		Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r1)), (int) (255 * Math.min(1.0f, data.g1)), (int) (255 * Math.min(1.0f, data.b1)), hsv1);
         Color.RGBtoHSB((int) (255 * Math.min(1.0f, data.r2)), (int) (255 * Math.min(1.0f, data.g2)), (int) (255 * Math.min(1.0f, data.b2)), hsv2);
 		if (spriteProvider != null) {
@@ -127,10 +127,10 @@ public class GenericParticle extends SpriteBillboardParticle {
 		}
 		if (data.forcedMotion) {
 			float motionAge = getCurve(data.motionCoefficient);
-			Vec3f currentMotion = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? startingVelocity : new Vec3f((float) velocityX, (float) velocityY, (float) velocityZ);
-			velocityX = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.getX(), data.endingMotion.getX());
-			velocityY = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.getY(), data.endingMotion.getY());
-			velocityZ = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.getZ(), data.endingMotion.getZ());
+			Vector3f currentMotion = data.motionStyle == SimpleParticleEffect.MotionStyle.START_TO_END ? startingVelocity : new Vector3f((float) velocityX, (float) velocityY, (float) velocityZ);
+			velocityX = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.x(), data.endingMotion.x());
+			velocityY = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.y(), data.endingMotion.y());
+			velocityZ = MathHelper.lerp(data.motionEasing.ease(motionAge, 0, 1, 1), currentMotion.z(), data.endingMotion.z());
 		} else {
 			velocityX *= data.motionCoefficient;
 			velocityY *= data.motionCoefficient;

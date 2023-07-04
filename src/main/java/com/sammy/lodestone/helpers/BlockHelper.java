@@ -218,14 +218,14 @@ public class BlockHelper {
 	}
 
 	/**
-	 * Returns a list of block entities within an Box.
+	 * Returns a list of block entities within a Box.
 	 */
 	public static <T> Collection<T> getBlockEntities(Class<T> type, World world, Box bb) {
 		return getBlockEntitiesStream(type, world, bb).collect(Collectors.toSet());
 	}
 
 	/**
-	 * Returns a list of block entities within an Box, as stream
+	 * Returns a list of block entities within a Box, as stream
 	 */
 	public static <T> Stream<T> getBlockEntitiesStream(Class<T> type, World world, Box bb) {
 
@@ -428,7 +428,7 @@ public class BlockHelper {
 		ArrayList<BlockPos> positions = new ArrayList<>();
 		for (int i = 0; i < nodes; i++) {
 			PathNode node = path.getNode(i);
-			positions.add(new BlockPos(node.x, node.y - 0.5, node.z));
+			positions.add(new BlockPos(node.x, (int)(node.y - 0.5f), node.z));
 		}
 		if (!inclusive) {
 			positions.remove(0);
