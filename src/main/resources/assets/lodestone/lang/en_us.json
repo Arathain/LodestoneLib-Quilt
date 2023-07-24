@@ -7,5 +7,6 @@
   "lodestone.midnightconfig.SCREENSHAKE_INTENSITY": "Screenshake Intensity",
   "lodestone.midnightconfig.title": "LodestoneLib Config",
   "options.lodestone.screenshake_intensity.tooltip": "Controls how much screenshake is applied to your screen.",
-  "lodestone.midnightconfig.DELAYED_RENDERING": "Delayed Rendering"
+  "lodestone.midnightconfig.DELAYED_RENDERING": "Delayed Rendering",
+  "lodestone.midnightconfig.ENABLE_SCREEN_PARTICLES": "Enable Screen Particles"
 }

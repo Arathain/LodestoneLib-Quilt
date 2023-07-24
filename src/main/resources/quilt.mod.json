@@ -1,7 +1,7 @@
 {
 	"schema_version": 1,
 	"quilt_loader": {
-		"group": "com.sammy.lodestone",
+		"group": "team.lodestar.lodestone",
 		"id": "lodestone",
 		"version": "${version}",
 		"metadata": {
@@ -20,8 +20,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": "com.sammy.lodestone.LodestoneLib",
-			"client_init": "com.sammy.lodestone.LodestoneLibClient"
+			"init": "team.lodestar.lodestone.LodestoneLib",
+			"client_init": "team.lodestar.lodestone.LodestoneLibClient"
 		},
 		"depends": [
 			{

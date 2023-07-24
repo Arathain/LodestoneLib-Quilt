@@ -1,6 +1,6 @@
 plugins {
 	id 'maven-publish'
-	id 'org.quiltmc.loom' version '1.0.+'
+	id 'org.quiltmc.loom' version '1.2.+'
 }
 
 archivesBaseName = project.archives_base_name
@@ -12,10 +12,13 @@ targetCompatibility = 1.17
 repositories {
 	maven {
 		name = "Ladysnake"
-		url = "https://ladysnake.jfrog.io/artifactory/mods"
+		url = "https://maven.ladysnake.org/releases"
 	}
 	maven { url 'https://masa.dy.fi/maven' }
-	maven { url 'https://maven.terraformersmc.com' }
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/"
+	}
 	maven { url = "https://jitpack.io" }
 	maven {
 		name = "Modrinth"
@@ -34,9 +37,12 @@ dependencies {
 	modImplementation "org.quiltmc:quilt-loader:${project.loader_version}"
 	modImplementation "org.quiltmc.quilted-fabric-api:quilted-fabric-api:${project.quilted_fabric_api_version}-${project.minecraft_version}"
 	modImplementation include("io.github.ladysnake:satin:${project.satin_version}")
-	modImplementation include("maven.modrinth:midnightlib:${project.midnightlib_version}-fabric")
-	modCompileOnly ("dev.emi:emi:${project.emi_version}")
-	modRuntimeOnly ("dev.emi:emi:${project.emi_version}")
+	modImplementation include("maven.modrinth:midnightlib:${project.midnightlib_version}-quilt")
+	modCompileOnly ("dev.emi:emi-fabric:${project.emi_version}:api")
+	modLocalRuntime ("dev.emi:emi-fabric:${project.emi_version}")
+
+	modImplementation "maven.modrinth:sodium:${project.sodium_version}"
+
 
 	//ease of multiplayer testing & game control
 	//modRuntimeOnly "carpet:fabric-carpet:${project.minecraft_version}-${project.carpet_core_version}"
