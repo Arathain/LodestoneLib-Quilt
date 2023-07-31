@@ -12,7 +12,7 @@ targetCompatibility = 1.17
 repositories {
 	maven {
 		name = "Ladysnake"
-		url = "https://ladysnake.jfrog.io/artifactory/mods"
+		url = "https://maven.ladysnake.org/releases"
 	}
 	maven { url 'https://masa.dy.fi/maven' }
 	maven { url 'https://maven.terraformersmc.com' }
