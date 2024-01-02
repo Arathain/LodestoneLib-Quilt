@@ -12,11 +12,10 @@
 				"Arathain": "Porter"
 			},
 			"contact": {
-				"homepage": "",
-				"issues": "https://github.com/Arathain/OrtusLib/issues",
-				"sources": "https://github.com/Arathain/OrtusLib"
+				"issues": "https://github.com/Arathain/LodestoneLib-Quilt/issues",
+				"sources": "https://github.com/Arathain/LodestoneLib-Quilt"
 			},
-			"icon": "assets/ortus/icon.png"
+			"icon": "assets/lodestone/icon.png"
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
@@ -39,5 +38,8 @@
 		]
 	},
 	"access_widener": "lodestone.accesswidener",
-	"mixin": "lodestone.mixins.json"
+	"mixin": "lodestone.mixins.json",
+	"modmenu": {
+		"badges": [ "library" ]
+	}
 }

@@ -103,8 +103,23 @@ publishing {
 
 	// select the repositories you want to publish to
 	repositories {
+		def ladysnakeMavenUsername = project.findProperty("ladysnake_maven_username")
+		def ladysnakeMavenPassword = project.findProperty("ladysnake_maven_password")
+		if (ladysnakeMavenUsername instanceof String && ladysnakeMavenPassword instanceof String) {
+			maven {
+				name = "LadysnakeReleases"
+				url = new URI("https://maven.ladysnake.org/releases/")
+				credentials {
+					username = ladysnakeMavenUsername
+					password = ladysnakeMavenPassword
+				}
+			}
+		} else {
+			println("Cannot configure Ladysnake Maven publication; please define ladysnakeMavenUsername and ladysnakeMavenPassword before running publish")
+		}
+
 		// uncomment to publish to the local maven
-		// mavenLocal()
+		 mavenLocal()
 	}
 }
 wrapper {
