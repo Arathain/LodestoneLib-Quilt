@@ -22,7 +22,6 @@ public class LodestoneLib implements ModInitializer {
 
 	@Override
 	public void onInitialize(ModContainer mod) {
-		LOGGER.info("jesser where is the cocainer");
 		LodestoneParticles.init();
 		if(QuiltLoader.isDevelopmentEnvironment()) {
 			Registry.register(Registry.ITEM, id("ort"), new OrtTestItem(new QuiltItemSettings().rarity(Rarity.EPIC).group(ItemGroup.MISC)));
