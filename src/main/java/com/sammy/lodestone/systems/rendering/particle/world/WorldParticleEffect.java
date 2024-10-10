@@ -8,10 +8,13 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleType;
 import net.minecraft.util.math.Vec3f;
 
+import java.util.function.Consumer;
+
 public class WorldParticleEffect extends SimpleParticleEffect implements ParticleEffect {
 
     public ParticleType<?> type;
     public Vec3f startingVelocity = Vec3f.ZERO, endingMotion = Vec3f.ZERO;
+	public Consumer<GenericParticle> actor;
     public WorldParticleEffect(ParticleType<?> type) {
         this.type = type;
     }

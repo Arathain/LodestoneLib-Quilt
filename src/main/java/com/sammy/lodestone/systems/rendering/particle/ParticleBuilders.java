@@ -4,6 +4,7 @@ import com.sammy.lodestone.handlers.ScreenParticleHandler;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleEffect;
 import com.sammy.lodestone.systems.rendering.particle.screen.ScreenParticleType;
 import com.sammy.lodestone.systems.rendering.particle.screen.base.ScreenParticle;
+import com.sammy.lodestone.systems.rendering.particle.world.GenericParticle;
 import com.sammy.lodestone.systems.rendering.particle.world.WorldParticleEffect;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.particle.ParticleTextureSheet;
@@ -20,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("ALL")
@@ -120,6 +122,11 @@ public class ParticleBuilders {
 
 		public WorldParticleBuilder setAlphaEasing(Easing easing) {
 			data.alphaCurveStartEasing = easing;
+			return this;
+		}
+
+		public WorldParticleBuilder setActor(Consumer<GenericParticle> actor) {
+			data.actor = actor;
 			return this;
 		}
 

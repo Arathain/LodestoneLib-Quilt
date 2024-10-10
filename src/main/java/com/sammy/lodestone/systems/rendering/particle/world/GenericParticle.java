@@ -16,6 +16,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
 import java.awt.*;
+import java.util.function.Consumer;
 
 public class GenericParticle extends SpriteBillboardParticle {
     protected WorldParticleEffect data;
@@ -24,6 +25,7 @@ public class GenericParticle extends SpriteBillboardParticle {
 	private final Vec3f startingVelocity;
 	private boolean reachedPositiveAlpha;
 	private boolean reachedPositiveScale;
+	public Consumer<GenericParticle> actor;
     float[] hsv1 = new float[3], hsv2 = new float[3];
     public GenericParticle(ClientWorld world, WorldParticleEffect data, FabricSpriteProviderImpl spriteProvider, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
         super(world, x, y, z);
@@ -31,6 +33,7 @@ public class GenericParticle extends SpriteBillboardParticle {
         this.textureSheet = data.textureSheet;
         this.spriteProvider = spriteProvider;
         this.angle = data.spinOffset + data.spin1;
+		this.actor = data.actor;
         if (!data.forcedMotion) {
             this.velocityX = velocityX;
             this.velocityY = velocityY;
@@ -135,6 +138,9 @@ public class GenericParticle extends SpriteBillboardParticle {
 			velocityX *= data.motionCoefficient;
 			velocityY *= data.motionCoefficient;
 			velocityZ *= data.motionCoefficient;
+		}
+		if (actor != null) {
+			actor.accept(this);
 		}
     }
     @Override
